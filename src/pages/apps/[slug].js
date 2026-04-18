@@ -1,8 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { apps } from '@/data/apps';
 
-export default function AppDetail({ app }) {
+export default function AppDetail() {
+  const { query, isReady } = useRouter();
+
+  if (!isReady) return null;
+
+  const app = apps.find((a) => a.slug === query.slug);
   if (!app) return <div className="prose"><p>App not found.</p></div>;
 
   const iconPath = `/assets/icons/${app.slug}.png`;
@@ -126,7 +132,6 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
-  const app = apps.find((a) => a.slug === params.slug) ?? null;
-  return { props: { app } };
+export async function getStaticProps() {
+  return { props: {} };
 }
