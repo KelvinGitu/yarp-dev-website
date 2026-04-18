@@ -5,12 +5,16 @@ export default function Layout({ children }) {
     <div className="layout-container">
       <header className="navbar">
         <div className="nav-content">
-          <Link href="/">
-            <h1 className="logo">Yarp <span>Developers</span></h1>
+          <Link href="/" className="logo">
+            <div className="logo-mark">YD</div>
+            <div className="logo-label">
+              <span className="logo-name">Yarp Developers</span>
+              <span className="logo-sub">Nairobi, Kenya</span>
+            </div>
           </Link>
           <nav className="nav-links">
-            <Link href="/">Home</Link>
-            <Link href="/support">Support</Link>
+            <Link href="/">Apps</Link>
+            <Link href="/support" className="nav-cta">Contact</Link>
           </nav>
         </div>
       </header>
@@ -21,10 +25,8 @@ export default function Layout({ children }) {
 
       <footer className="footer">
         <div className="footer-content">
-          <p>© {new Date().getFullYear()} Yarp Developers. Built by Kelvin Gitu.</p>
-          <div className="footer-links">
-            <Link href="/support">Support / Contact</Link>
-          </div>
+          <p>© {new Date().getFullYear()} Yarp Developers · Built by Kelvin Gitu</p>
+          <Link href="/support">Support</Link>
         </div>
       </footer>
     </div>
