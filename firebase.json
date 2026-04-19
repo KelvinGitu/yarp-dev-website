@@ -3,13 +3,7 @@
     "public": "out",
     "cleanUrls": true,
     "trailingSlash": false,
-    "rewrites": [
-      { "source": "/web/days-end/**",     "destination": "/web/days-end/index.html" },
-      { "source": "/web/narp/**",         "destination": "/web/narp/index.html" },
-      { "source": "/web/sleevr/**",        "destination": "/web/sleevr/index.html" },
-      { "source": "/web/greenconnect/**", "destination": "/web/greenconnect/index.html" },
-      { "source": "**",                   "destination": "/index.html" }
-    ],
+    "rewrites": [],
     "headers": [
       {
         "source": "/ads.txt",
