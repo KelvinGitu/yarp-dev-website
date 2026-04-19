@@ -25,7 +25,7 @@ export default function Layout({ children }) {
 
       <footer className="footer">
         <div className="footer-content">
-          <p>© {new Date().getFullYear()} Yarp Developers · Built by Kelvin Gitu</p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} Yarp Developers · Built by Kelvin Gitu</p>
           <Link href="/support">Support</Link>
         </div>
       </footer>

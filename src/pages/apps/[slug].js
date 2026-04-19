@@ -1,17 +1,25 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { apps } from '@/data/apps';
 
-export default function AppDetail() {
-  const { query, isReady } = useRouter();
+function AppIcon({ slug, name }) {
+  const [error, setError] = useState(false);
+  if (error) return <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--gold)' }}>{name.charAt(0)}</span>;
+  return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+}
 
-  if (!isReady) return null;
+export default function AppDetail() {
+  const [mounted, setMounted] = useState(false);
+  const { query } = useRouter();
+
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) return null;
 
   const app = apps.find((a) => a.slug === query.slug);
   if (!app) return <div className="prose"><p>App not found.</p></div>;
-
-  const iconPath = `/assets/icons/${app.slug}.png`;
 
   return (
     <>
@@ -25,14 +33,7 @@ export default function AppDetail() {
         {/* ── Header ── */}
         <div className="ad-header">
           <div className="ad-icon">
-            <img
-              src={iconPath}
-              alt={app.name}
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = `<span class="ad-icon-fallback">${app.name.charAt(0)}</span>`;
-              }}
-            />
+            <AppIcon slug={app.slug} name={app.name} />
           </div>
           <div className="ad-header-text">
             <h1 className="ad-title">{app.name}</h1>

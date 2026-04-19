@@ -1,7 +1,14 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
 import AppCard from '@/components/AppCard';
+
+function HvcIcon({ slug, name }) {
+  const [error, setError] = useState(false);
+  if (error) return <div className="hvc-icon-fallback">{name.charAt(0)}</div>;
+  return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+}
 
 const heroApps = [
   { slug: 'days-end',   name: "Day's End",  tag: 'Social · AI'     },
@@ -62,14 +69,7 @@ export default function Home() {
           {heroApps.map((app) => (
             <div key={app.slug} className="hero-visual-card">
               <div className="hvc-icon">
-                <img
-                  src={`/assets/icons/${app.slug}.png`}
-                  alt={app.name}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = `<div class="hvc-icon-fallback">${app.name.charAt(0)}</div>`;
-                  }}
-                />
+                <HvcIcon slug={app.slug} name={app.name} />
               </div>
               <div>
                 <div className="hvc-name">{app.name}</div>

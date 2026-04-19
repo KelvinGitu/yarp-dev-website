@@ -1,21 +1,20 @@
+import { useState } from 'react';
 import Link from 'next/link';
 
+function AppIcon({ slug, name }) {
+  const [error, setError] = useState(false);
+  if (error) return <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem', color: 'var(--gold)' }}>{name.charAt(0)}</span>;
+  return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+}
+
 export default function AppCard({ app }) {
-  const iconPath = `/assets/icons/${app.slug}.png`;
   const previewFeatures = app.features.slice(0, 3);
 
   return (
     <div className="app-card">
       <div className="app-card-top">
         <div className="app-icon">
-          <img
-            src={iconPath}
-            alt={app.name}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = `<span style="font-family:var(--font-display);font-weight:800;font-size:1.2rem;color:var(--gold)">${app.name.charAt(0)}</span>`;
-            }}
-          />
+          <AppIcon slug={app.slug} name={app.name} />
         </div>
         <div className="app-meta">
           <div className="app-name">{app.name}</div>
