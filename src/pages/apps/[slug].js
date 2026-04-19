@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { apps } from '@/data/apps';
 
 function AppIcon({ slug, name }) {
@@ -10,15 +9,7 @@ function AppIcon({ slug, name }) {
   return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
 }
 
-export default function AppDetail() {
-  const [mounted, setMounted] = useState(false);
-  const { query } = useRouter();
-
-  useEffect(() => { setMounted(true); }, []);
-
-  if (!mounted) return null;
-
-  const app = apps.find((a) => a.slug === query.slug);
+export default function AppDetail({ app }) {
   if (!app) return <div className="prose"><p>App not found.</p></div>;
 
   return (
@@ -133,6 +124,7 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps() {
-  return { props: {} };
+export async function getStaticProps({ params }) {
+  const app = apps.find((a) => a.slug === params.slug) ?? null;
+  return { props: { app } };
 }
