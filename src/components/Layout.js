@@ -9,7 +9,7 @@ export default function Layout({ children }) {
             <div className="logo-mark">YD</div>
             <div className="logo-label">
               <span className="logo-name">Yarp Developers</span>
-              <span className="logo-sub">Nairobi, Kenya</span>
+              <span className="logo-sub">App Studio</span>
             </div>
           </Link>
           <nav className="nav-links">

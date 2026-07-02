@@ -29,7 +29,7 @@ export default function Home() {
     <>
       <Head>
         <title>Yarp Developers</title>
-        <meta name="description" content="Crafting mobile experiences — AI, social, gaming, and productivity. Built from Kenya to the world." />
+        <meta name="description" content="Crafting mobile experiences — AI, social, gaming, and productivity." />
       </Head>
 
       {/* ── HERO ── */}
@@ -37,7 +37,7 @@ export default function Home() {
         <div className="hero-bg" />
 
         <div className="hero-left">
-          <span className="hero-eyebrow">Nairobi, Kenya</span>
+          <span className="hero-eyebrow">Independent App Studio</span>
           <h1>
             Building apps<br />
             the world <em>loves.</em>
@@ -106,7 +106,7 @@ export default function Home() {
               <em>Relentless</em> craft.
             </h2>
             <p>
-              Kelvin Gitu is a Flutter developer based in Nairobi, Kenya, building across AI, social, gaming, and productivity. Every app ships with real monetisation, real users, and a real obsession with quality.
+              Kelvin Gitu is a Flutter developer building across AI, social, gaming, and productivity. Every app ships with real monetisation, real users, and a real obsession with quality.
             </p>
           </div>
           <div className="about-right">
