@@ -16,14 +16,14 @@ function getFallbackPolicy(app) {
   ];
 }
 
-export default function PrivacyPolicy({ app, paragraphs }) {
+export default function PrivacyPolicy({ app, paragraphs, lastUpdated }) {
   if (!app) return <div className="prose"><p>Policy not found.</p></div>;
 
   return (
-    <PolicyPage 
-      title={`Privacy Policy for ${app.name}`} 
-      paragraphs={paragraphs} 
-      lastUpdated="April 2026" 
+    <PolicyPage
+      title={`Privacy Policy for ${app.name}`}
+      paragraphs={paragraphs}
+      lastUpdated={lastUpdated}
     />
   );
 }
@@ -37,18 +37,22 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const app = apps.find(a => a.packageId === params.pkg);
+  const entry = app ? extractedData[app.slug] : null;
   let paragraphs = [];
-  
-  if (app && extractedData[app.slug] && extractedData[app.slug].privacy) {
-    paragraphs = extractedData[app.slug].privacy;
+
+  if (entry && entry.privacy) {
+    paragraphs = entry.privacy;
   } else if (app) {
     paragraphs = getFallbackPolicy(app);
   }
 
-  return { 
-    props: { 
-      app, 
-      paragraphs 
-    } 
+  const lastUpdated = (entry && entry.privacyUpdated) || 'April 2026';
+
+  return {
+    props: {
+      app,
+      paragraphs,
+      lastUpdated
+    }
   };
 }

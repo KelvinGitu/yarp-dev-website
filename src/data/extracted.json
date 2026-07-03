@@ -748,5 +748,29 @@
       "In-App: Use the feedback option in Settings",
       "By using Sleevr, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
     ]
+  },
+  "three-clues": {
+    "privacyUpdated": "July 2026",
+    "privacy": [
+      "Three Clues (\"the app\", \"we\", \"us\") is a word puzzle game. We respect your privacy. This policy explains what data the app and its third-party services process. We do not require an account, and we do not collect your name, email address, phone number, precise location, contacts, photos, or any similar personal information.",
+      "Information We Process",
+      "The app uses a small number of third-party services that process limited, non-identifying data to keep the app free and working:",
+      "\u2022 Advertising (Google AdMob). We show ads. AdMob may process a device advertising identifier, ads you have seen or interacted with, and general usage signals to serve and measure ads. On iOS, ads are personalized only if you allow tracking via the App Tracking Transparency prompt; if you decline, you still see non-personalized ads.\n\u2022 Analytics (Google Firebase Analytics). We collect anonymous, aggregated usage data \u2014 for example levels completed, stars earned, in-app credit totals, and days since install \u2014 to understand how the game is played and improve it. This data is tied to a random app-instance identifier, not to your identity.\n\u2022 In-app purchases (Apple App Store / Google Play). If you buy a credit pack, the purchase is processed by Apple or Google. We do not receive or store your payment card details. We log the pack purchased and credit amount for analytics only.",
+      "We do not collect precise or coarse location for any app feature, and we do not sell your personal information.",
+      "How the Data Is Used",
+      "\u2022 To display and measure advertising.\n\u2022 To analyze and improve gameplay and app performance.\n\u2022 To process in-app purchases.",
+      "Your Tracking Choices",
+      "\u2022 iOS: You control ad tracking through the App Tracking Transparency prompt and in Settings \u2192 Privacy & Security \u2192 Tracking.\n\u2022 Android: You can reset or limit your advertising ID in Settings \u2192 Google \u2192 Ads.\n\u2022 You can request an ads-consent form (region-permitting) via the in-app privacy options where available.",
+      "Children's Privacy",
+      "The app is not directed at children under 13 and we do not knowingly collect personal information from children.",
+      "Data Retention",
+      "Advertising and analytics data are retained by Google according to their respective policies. We do not maintain our own user database.",
+      "Third-Party Policies",
+      "\u2022 Google (AdMob & Firebase): https://policies.google.com/privacy\n\u2022 Apple: https://www.apple.com/legal/privacy/",
+      "Changes to This Policy",
+      "We may update this policy from time to time. Material changes will be reflected by the \"Last updated\" date above.",
+      "Contact",
+      "Three Clues is developed by YARP Developers. Questions about this policy: yarpsports@gmail.com"
+    ]
   }
 }
