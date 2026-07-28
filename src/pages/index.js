@@ -1,126 +1,77 @@
-import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
-import AppCard from '@/components/AppCard';
-
-function HvcIcon({ slug, name }) {
-  const [error, setError] = useState(false);
-  if (error) return <div className="hvc-icon-fallback">{name.charAt(0)}</div>;
-  return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
-}
-
-const heroApps = [
-  { slug: 'days-end',   name: "Day's End",  tag: 'Social · AI'     },
-  { slug: 'narp',       name: 'Narp',        tag: 'Social Network'  },
-  { slug: 'sleevr',     name: 'Sleevr',      tag: 'Trivia Game'     },
-];
+import ProjectCard from '@/components/ProjectCard';
 
 const techGroups = [
-  { label: 'Mobile',    items: ['Flutter', 'Dart', 'Riverpod', 'Go Router'] },
-  { label: 'Backend',   items: ['Firebase', 'Firestore', 'Cloud Functions'] },
-  { label: 'AI',        items: ['Google Gemini AI', 'Vertex AI'] },
-  { label: 'Monetise',  items: ['RevenueCat', 'AdMob', 'In-App Purchase'] },
-  { label: 'Web',       items: ['Next.js', 'Firebase Hosting', 'GitHub Actions'] },
+  { label: 'Mobile', items: ['Flutter', 'Dart', 'Riverpod', 'Go Router', 'Hive'] },
+  { label: 'Backend', items: ['Firebase', 'Firestore', 'Cloud Functions', 'Cloud Monitoring'] },
+  { label: 'AI', items: ['Google Gemini', 'Vertex AI'] },
+  { label: 'Revenue', items: ['RevenueCat', 'AdMob', 'in_app_purchase'] },
+  { label: 'Web & CI', items: ['Next.js', 'Firebase Hosting', 'GitHub Actions', 'Codemagic'] },
 ];
+
+const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Yarp Developers</title>
-        <meta name="description" content="Crafting mobile experiences — AI, social, gaming, and productivity." />
+        <title>Kelvin Gitu — Mobile &amp; Web Developer</title>
+        <meta
+          name="description"
+          content="Flutter developer in Kenya. Five apps live on Google Play — built, shipped, and operated end to end."
+        />
       </Head>
 
-      {/* ── HERO ── */}
-      <section className="hero">
-        <div className="hero-bg" />
-
-        <div className="hero-left">
-          <span className="hero-eyebrow">Independent App Studio</span>
-          <h1>
-            Building apps<br />
-            the world <em>loves.</em>
-          </h1>
-          <p className="hero-subtitle">
-            AI, social, gaming, and productivity — five apps on the Play Store, crafted with an obsessive eye for detail.
+      <section id="about" className="section">
+        <h2 className="section-label">About</h2>
+        <div className="lede">
+          <p>
+            I&apos;m a Flutter developer in Kenya. I have five apps live on Google Play, and
+            I built all of them alone — the interface, the Firestore schema behind it, the
+            Cloud Functions, the subscription plumbing, and the store listing that gets
+            rejected and resubmitted.
           </p>
-          <div className="hero-actions">
-            <a href="#apps" className="btn-primary">View Portfolio</a>
-            <Link href="/support" className="btn-ghost">Get in Touch</Link>
-          </div>
-          <div className="hero-stats">
-            <div>
-              <div className="hero-stat-value">5</div>
-              <div className="hero-stat-label">Apps Live</div>
-            </div>
-            <div>
-              <div className="hero-stat-value">4+</div>
-              <div className="hero-stat-label">Years Building</div>
-            </div>
-            <div>
-              <div className="hero-stat-value">KE</div>
-              <div className="hero-stat-label">Based In</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="hero-right">
-          {heroApps.map((app) => (
-            <div key={app.slug} className="hero-visual-card">
-              <div className="hvc-icon">
-                <HvcIcon slug={app.slug} name={app.name} />
-              </div>
-              <div>
-                <div className="hvc-name">{app.name}</div>
-                <div className="hvc-tag">{app.tag}</div>
-              </div>
-            </div>
-          ))}
+          <p>
+            My degree is in mechatronic engineering, which mostly taught me that shipping is
+            the hard part. Writing a feature takes an afternoon. Keeping it running for real
+            users, on someone else&apos;s billing account, under someone else&apos;s review
+            policy, is the actual work — and it&apos;s the part these projects are really
+            about. That&apos;s {totalBuilds} releases so far.
+          </p>
         </div>
       </section>
 
-      {/* ── APPS ── */}
-      <section id="apps" className="apps-section">
-        <div className="section-header">
-          <div>
-            <div className="section-eyebrow">Portfolio</div>
-            <h2 className="section-title">Our Apps</h2>
-          </div>
-          <span className="section-count">{apps.length} apps</span>
-        </div>
-        <div className="apps-grid">
+      <section id="projects" className="section">
+        <h2 className="section-label">Projects</h2>
+        <div className="projects">
           {apps.map((app) => (
-            <AppCard key={app.slug} app={app} />
+            <ProjectCard key={app.slug} app={app} />
           ))}
         </div>
       </section>
 
-      {/* ── ABOUT ── */}
-      <section className="about-section">
-        <div className="about-grid">
-          <div className="about-left">
-            <div className="section-eyebrow">About</div>
-            <h2>
-              One developer.<br />
-              <em>Relentless</em> craft.
-            </h2>
-            <p>
-              Kelvin Gitu is a Flutter developer building across AI, social, gaming, and productivity. Every app ships with real monetisation, real users, and a real obsession with quality.
-            </p>
-          </div>
-          <div className="about-right">
-            {techGroups.map((group) => (
-              <div key={group.label} className="tech-group">
-                <div className="tech-group-label">{group.label}</div>
-                <div className="tech-pills">
-                  {group.items.map((item) => (
-                    <span key={item} className="tech-pill">{item}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      <section id="stack" className="section">
+        <h2 className="section-label">Stack</h2>
+        <dl className="stack-groups">
+          {techGroups.map((group) => (
+            <div key={group.label} className="stack-group">
+              <dt>{group.label}</dt>
+              <dd>{group.items.join(' · ')}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="contact">
+          <p>
+            Available for mobile and web work. Reach me at{' '}
+            <a href="mailto:gitukelvin01@gmail.com">gitukelvin01@gmail.com</a>.
+          </p>
+          <p className="contact-secondary">
+            Using one of the apps and something is broken? That goes to{' '}
+            <Link href="/support">support</Link> instead.
+          </p>
         </div>
       </section>
     </>

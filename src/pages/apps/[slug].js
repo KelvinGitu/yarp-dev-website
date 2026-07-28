@@ -2,11 +2,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { apps } from '@/data/apps';
+import { PlayIcon, GlobeIcon } from '@/components/icons';
 
 function AppIcon({ slug, name }) {
   const [error, setError] = useState(false);
-  if (error) return <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--gold)' }}>{name.charAt(0)}</span>;
-  return <img src={`/assets/icons/${slug}.png`} alt={name} onError={() => setError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+  if (error) return <span className="detail-icon-fallback">{name.charAt(0)}</span>;
+  return <img src={`/assets/icons/${slug}.png`} alt="" onError={() => setError(true)} />;
 }
 
 export default function AppDetail({ app }) {
@@ -29,10 +30,9 @@ export default function AppDetail({ app }) {
           <div className="detail-header-text">
             <h1 className="detail-title">{app.name}</h1>
             <p className="detail-tagline">{app.tagline}</p>
-            <div className="app-badges">
-              {app.status === 'live' && <span className="badge badge-play">Play Store</span>}
-              {app.webUrl && <span className="badge badge-web">Web App</span>}
-            </div>
+            <p className="detail-release">
+              v{app.version} · <strong>{app.builds} builds</strong> · {app.packageId}
+            </p>
           </div>
         </div>
 
@@ -40,6 +40,26 @@ export default function AppDetail({ app }) {
         <div className="detail-description">
           <p>{app.description}</p>
         </div>
+
+        {/* ── Screens ── */}
+        {app.shots?.length > 0 && (
+          <section className="detail-section">
+            <h2 className="detail-section-title">Screens</h2>
+            <div className={`shot-strip shot-strip-${app.shots.length}`}>
+              {app.shots.map((file, i) => (
+                <div key={file} className="shot">
+                  <img
+                    src={`/assets/shots/${app.slug}/${file}`}
+                    alt={`${app.name} screen ${i + 1}`}
+                    width={420}
+                    height={909}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ── Features ── */}
         <section className="detail-section">
@@ -54,14 +74,22 @@ export default function AppDetail({ app }) {
           </ul>
         </section>
 
+        {/* ── Engineering note ── */}
+        {app.note && (
+          <section className="detail-section">
+            <h2 className="detail-section-title">{app.note.kind}</h2>
+            <p className="detail-body">{app.note.text}</p>
+          </section>
+        )}
+
         {/* ── Tech Stack ── */}
         <section className="detail-section">
           <h2 className="detail-section-title">Tech Stack</h2>
-          <div className="tech-pills">
+          <ul className="project-stack">
             {app.stack.map((t) => (
-              <span key={t} className="tech-pill">{t}</span>
+              <li key={t}>{t}</li>
             ))}
-          </div>
+          </ul>
         </section>
 
         {/* ── Legal & Links ── */}
@@ -70,7 +98,7 @@ export default function AppDetail({ app }) {
           <div className="detail-links">
             {app.playUrl && app.status === 'live' && (
               <a href={app.playUrl} target="_blank" rel="noopener noreferrer" className="detail-btn-store">
-                <span className="detail-btn-icon">▶</span>
+                <span className="detail-btn-icon"><PlayIcon /></span>
                 <span>
                   <span className="detail-btn-sub">Get it on</span>
                   <span className="detail-btn-main">Google Play</span>
@@ -78,13 +106,13 @@ export default function AppDetail({ app }) {
               </a>
             )}
             {app.webUrl && (
-              <Link href={app.webUrl} className="detail-btn-launch">
-                <span className="detail-btn-icon">⊕</span>
+              <a href={app.webUrl} target="_blank" rel="noopener noreferrer" className="detail-btn-launch">
+                <span className="detail-btn-icon"><GlobeIcon /></span>
                 <span>
                   <span className="detail-btn-sub">Open in browser</span>
                   <span className="detail-btn-main">Web App</span>
                 </span>
-              </Link>
+              </a>
             )}
             <div className="detail-legal-links">
               <Link href={`/privacy/${app.packageId}`} className="detail-btn-legal">
@@ -110,7 +138,7 @@ export default function AppDetail({ app }) {
         )}
 
         <div className="detail-back">
-          <Link href="/" className="detail-back-link">← All apps</Link>
+          <Link href="/#projects" className="detail-back-link">← All projects</Link>
         </div>
       </div>
     </>
