@@ -51,8 +51,6 @@ export default function AppDetail({ app }) {
                   <img
                     src={`/assets/shots/${app.slug}/${file}`}
                     alt={`${app.name} screen ${i + 1}`}
-                    width={420}
-                    height={909}
                     loading="lazy"
                   />
                 </div>

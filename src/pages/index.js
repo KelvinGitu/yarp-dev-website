@@ -20,7 +20,7 @@ export default function Home() {
         <title>Kelvin Gitu — Mobile &amp; Web Developer</title>
         <meta
           name="description"
-          content="Flutter developer in Kenya. Five apps live on Google Play — built, shipped, and operated end to end."
+          content="Flutter developer. Five apps live on Google Play — built, shipped, and operated end to end."
         />
       </Head>
 
@@ -28,17 +28,16 @@ export default function Home() {
         <h2 className="section-label">About</h2>
         <div className="lede">
           <p>
-            I&apos;m a Flutter developer in Kenya. I have five apps live on Google Play, and
-            I built all of them alone — the interface, the Firestore schema behind it, the
-            Cloud Functions, the subscription plumbing, and the store listing that gets
-            rejected and resubmitted.
+            I&apos;m a Flutter developer with five apps live on Google Play, each shipped
+            solo — interface, Firestore schema, Cloud Functions, subscription plumbing, and
+            the store listing that gets rejected and resubmitted until it isn&apos;t.
           </p>
           <p>
-            My degree is in mechatronic engineering, which mostly taught me that shipping is
-            the hard part. Writing a feature takes an afternoon. Keeping it running for real
-            users, on someone else&apos;s billing account, under someone else&apos;s review
-            policy, is the actual work — and it&apos;s the part these projects are really
-            about. That&apos;s {totalBuilds} releases so far.
+            My degree is in mechatronic engineering, which taught me less about code than
+            about the distance between building something and keeping it alive. A feature is
+            an afternoon&apos;s work. Keeping it running for real users, on someone else&apos;s
+            billing account, under someone else&apos;s review policy, is the actual work — and
+            it&apos;s what these projects are really about. {totalBuilds} releases so far.
           </p>
         </div>
       </section>
