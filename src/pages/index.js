@@ -20,7 +20,7 @@ export default function Home() {
         <title>Kelvin Gitu — Mobile &amp; Web Developer</title>
         <meta
           name="description"
-          content="Flutter developer. Five apps live on Google Play — built, shipped, and operated end to end."
+          content="Flutter developer. Four apps live on Google Play — built, shipped, and operated end to end."
         />
       </Head>
 
@@ -28,7 +28,7 @@ export default function Home() {
         <h2 className="section-label">About</h2>
         <div className="lede">
           <p>
-            I&apos;m a Flutter developer with five apps live on Google Play, each shipped
+            I&apos;m a Flutter developer with four apps live on Google Play, each shipped
             solo — interface, Firestore schema, Cloud Functions, subscription plumbing, and
             the store listing that gets rejected and resubmitted until it isn&apos;t.
           </p>

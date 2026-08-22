@@ -94,27 +94,5 @@ export const apps = [
     hasAds: true,
     hasPurchases: true,
     hasMic: false,
-  },
-  {
-    slug: 'narp',
-    name: 'Narp',
-    tagline: 'Social networking app with AI connections',
-    packageId: 'com.chat.narp',
-    status: 'live',
-    version: '1.7.1',
-    builds: 30,
-    playUrl: 'https://play.google.com/store/apps/details?id=com.chat.narp',
-    webUrl: 'https://narp.yarpdevelopers.com',
-    description: "Social networking app with connections, matching, AI chat, and video calling.",
-    features: ['User posts with draft saving', 'AI companion "Franz"', 'User connections and profile viewing', 'Video conferencing', 'Matching/lobby system'],
-    stack: ['Flutter', 'Firebase', 'Google Gemini', 'RevenueCat', 'GitHub Actions'],
-    shots: [],
-    note: {
-      kind: 'Cost',
-      text: 'Video calling and an always-available AI companion are both metered per use, which makes an idle user expensive. Sessions tear down aggressively and AI replies are gated behind the subscription, so the cost of a free account stays close to zero.',
-    },
-    hasAds: false,
-    hasPurchases: true,
-    hasMic: false,
   }
 ];
