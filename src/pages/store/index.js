@@ -69,7 +69,7 @@ export default function Store() {
         </ul>
 
         <div className="detail-back">
-          <Link href="/" className="detail-back-link">← Kelvin Gitu</Link>
+          <Link href="/" className="detail-back-link">← Home</Link>
           <span className="store-legal">
             <Link href="/store/privacy">Privacy</Link> · <Link href="/store/terms">Licence terms</Link>
           </span>

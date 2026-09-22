@@ -4,103 +4,76 @@ import { apps } from '@/data/apps';
 import ProjectCard from '@/components/ProjectCard';
 import { products } from '@/data/products';
 
-const techGroups = [
-  { label: 'Mobile', items: ['Flutter', 'Dart', 'Riverpod', 'Go Router', 'Hive'] },
-  { label: 'Backend', items: ['Firebase', 'Firestore', 'Cloud Functions', 'Cloud Monitoring'] },
-  { label: 'AI', items: ['Google Gemini', 'Vertex AI'] },
-  { label: 'Revenue', items: ['RevenueCat', 'AdMob', 'in_app_purchase'] },
-  { label: 'Web & CI', items: ['Next.js', 'Firebase Hosting', 'GitHub Actions', 'Codemagic'] },
-];
-
 const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Kelvin Gitu — Mobile &amp; Web Developer</title>
+        <title>Yarp Developers — Mobile apps, built and shipped</title>
         <meta
           name="description"
-          content="Flutter developer. Four apps live on Google Play — built, shipped, and operated end to end."
+          content={`${apps.length} Flutter apps live on Google Play, built, shipped, and operated end to end by Yarp Developers.`}
         />
       </Head>
 
-      <section id="about" className="section">
-        <h2 className="section-label">About</h2>
-        <div className="lede">
-          <p>
-            I&apos;m a Flutter developer with four apps live on Google Play, each shipped
-            solo — interface, Firestore schema, Cloud Functions, subscription plumbing, and
-            the store listing that gets rejected and resubmitted until it isn&apos;t.
+      <div className="home">
+        <header className="store-head">
+          <h1 className="detail-title">Mobile apps, built and shipped.</h1>
+          <p className="store-lede">
+            We&apos;re Yarp Developers. {apps.length} Flutter apps live on Google Play, each one built and kept
+            running by us — interface, backend, billing, and the store review that comes after. {totalBuilds}{' '}
+            releases so far.
           </p>
-          <p>
-            My degree is in mechatronic engineering, which taught me less about code than
-            about the distance between building something and keeping it alive. A feature is
-            an afternoon&apos;s work. Keeping it running for real users, on someone else&apos;s
-            billing account, under someone else&apos;s review policy, is the actual work — and
-            it&apos;s what these projects are really about. {totalBuilds} releases so far.
-          </p>
-        </div>
-      </section>
+          <div className="store-actions">
+            <a href="#projects" className="store-btn store-btn-download">
+              <span className="store-btn-main">See the apps</span>
+            </a>
+            <Link href="/store" className="store-btn">
+              <span className="store-btn-main">Desktop apps</span>
+            </Link>
+          </div>
+        </header>
 
-      <section id="projects" className="section">
-        <h2 className="section-label">Projects</h2>
-        <div className="projects">
-          {apps.map((app) => (
-            <ProjectCard key={app.slug} app={app} />
-          ))}
-        </div>
-      </section>
+        <section id="projects" className="section">
+          <h2 className="section-label">Mobile apps</h2>
+          <div className="projects">
+            {apps.map((app) => (
+              <ProjectCard key={app.slug} app={app} />
+            ))}
+          </div>
+        </section>
 
-      <section id="desktop" className="section">
-        <h2 className="section-label">Desktop apps</h2>
-        <div className="lede">
-          <p>
-            Two Windows programs for documents you&apos;d rather not upload anywhere. They run on your own computer
-            with no account and no cloud, and they work with the internet switched off.
-          </p>
-        </div>
-        <ul className="home-desktop">
-          {products.map((p) => (
-            <li key={p.slug}>
-              <Link href={`/store/${p.slug}`} className="home-desktop-item">
-                <img src={`/assets/icons/${p.slug}.png`} alt="" width={42} height={42} />
-                <span>
-                  <span className="project-name">{p.name}</span>
-                  <span className="project-tagline">{p.tagline}</span>
-                </span>
-                <span className="home-desktop-price">{p.price}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p className="contact-secondary">
-          Free to try, then a one-time price. <Link href="/store">See all four</Link>.
-        </p>
-      </section>
-
-      <section id="stack" className="section">
-        <h2 className="section-label">Stack</h2>
-        <dl className="stack-groups">
-          {techGroups.map((group) => (
-            <div key={group.label} className="stack-group">
-              <dt>{group.label}</dt>
-              <dd>{group.items.join(' · ')}</dd>
-            </div>
-          ))}
-        </dl>
-
-        <div className="contact">
-          <p>
-            Available for mobile and web work. Reach me at{' '}
-            <a href="mailto:gitukelvin01@gmail.com">gitukelvin01@gmail.com</a>.
+        <section id="desktop" className="section">
+          <h2 className="section-label">Desktop apps</h2>
+          <div className="lede">
+            <p>
+              Windows programs for documents you&apos;d rather not upload anywhere. They run on your own computer
+              with no account and no cloud, and they work with the internet switched off.
+            </p>
+          </div>
+          <ul className="home-desktop">
+            {products.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/store/${p.slug}`} className="home-desktop-item">
+                  <img src={`/assets/icons/${p.slug}.png`} alt="" width={42} height={42} />
+                  <span>
+                    <span className="project-name">{p.name}</span>
+                    <span className="project-tagline">{p.tagline}</span>
+                  </span>
+                  <span className="home-desktop-price">{p.price}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="contact-secondary">
+            Free to try, then a one-time price. <Link href="/store">See all four</Link>.
           </p>
           <p className="contact-secondary">
-            Using one of the apps and something is broken? That goes to{' '}
-            <Link href="/support">support</Link> instead.
+            Want to know who&apos;s behind this? <Link href="/about">About us</Link>.
           </p>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

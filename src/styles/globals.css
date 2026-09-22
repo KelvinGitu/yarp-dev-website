@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   Kelvin Gitu — portfolio
+   Yarp Developers
    Cool near-black navy base. Warm gold is the only warm thing on
    the page, so it is spent only on: the active nav item, the note
    rule, and link hover. Nothing else.
@@ -21,7 +21,6 @@
   --border:        #1C2534;
   --border-strong: #2A3547;
 
-  --shell:         1180px;
   --pad:           2rem;
 
   --ease:          cubic-bezier(0.2, 0, 0.2, 1);
@@ -46,7 +45,6 @@ body {
 /* next/font exposes --font-* on the shell element (see _app.js), so the family has
    to be declared there too — on `body` the variable would not yet be defined and
    the whole declaration would fall back to the browser default serif. */
-.portfolio,
 .layout-container {
   font-family: var(--font-body), system-ui, sans-serif;
 }
@@ -62,121 +60,25 @@ img { max-width: 100%; display: block; }
 }
 
 /* ─────────────────────────────────────────────
-   PORTFOLIO SHELL — homepage only
+   SOCIAL ICON ROW — used on the About page
    ───────────────────────────────────────────── */
 
-.portfolio {
-  max-width: var(--shell);
-  margin: 0 auto;
-  padding: 0 var(--pad);
-  display: grid;
-  grid-template-columns: minmax(0, 330px) minmax(0, 1fr);
-  gap: 5rem;
-  align-items: start;
-}
-
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 6rem 0 3rem;
-}
-
-.sidebar-name {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: clamp(2.4rem, 4.4vw, 3.25rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
-  color: var(--text);
-}
-
-.sidebar-role {
-  margin-top: 0.85rem;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.sidebar-tagline {
-  margin-top: 1.15rem;
-  max-width: 20rem;
-  font-size: 0.92rem;
-  line-height: 1.65;
-  color: var(--text-muted);
-}
-
-/* Nav — the rule grows and turns gold as its section comes into view. */
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  margin-top: 3.5rem;
-}
-
-.sidebar-nav-link {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.55rem 0;
-  width: fit-content;
-}
-
-.sidebar-nav-rule {
-  display: block;
-  height: 1px;
-  width: 26px;
-  background: var(--text-dim);
-  transition: width 0.28s var(--ease), background-color 0.28s var(--ease);
-}
-
-.sidebar-nav-label {
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  transition: color 0.28s var(--ease);
-}
-
-.sidebar-nav-link:hover .sidebar-nav-rule,
-.sidebar-nav-link.is-active .sidebar-nav-rule {
-  width: 52px;
-  background: var(--gold);
-}
-
-.sidebar-nav-link:hover .sidebar-nav-label,
-.sidebar-nav-link.is-active .sidebar-nav-label {
-  color: var(--text);
-}
-
-.sidebar-socials {
+.socials {
   display: flex;
   gap: 1.15rem;
   list-style: none;
-  margin-top: 2rem;
+  margin-top: 1.75rem;
 }
 
-.sidebar-socials a {
+.socials a {
   display: block;
   color: var(--text-dim);
   transition: color 0.2s var(--ease);
 }
 
-.sidebar-socials svg { width: 20px; height: 20px; }
+.socials svg { width: 20px; height: 20px; }
 
-.sidebar-socials a:hover { color: var(--text); }
-
-.portfolio-main {
-  padding: 6rem 0 9rem;
-  min-width: 0;
-}
+.socials a:hover { color: var(--text); }
 
 /* ─────────────────────────────────────────────
    SECTIONS
@@ -864,14 +766,22 @@ img { max-width: 100%; display: block; }
 }
 
 /* ─────────────────────────────────────────────
-   SUPPORT
+   HOME + SUPPORT + ABOUT — plain content pages
+   Home reuses the store page's hero/button styling since both are making the
+   same kind of pitch (here's the thing, here's the button). Support and About
+   share a simple prose-header shape.
    ───────────────────────────────────────────── */
 
-.support { padding: 4rem 0 2rem; }
+.home { padding: 4rem 0 2rem; }
 
-.support-head { max-width: 40rem; }
+.support,
+.about { padding: 4rem 0 2rem; }
 
-.support-head h1 {
+.support-head,
+.about-head { max-width: 40rem; }
+
+.support-head h1,
+.about-head h1 {
   font-family: var(--font-display), system-ui, sans-serif;
   font-size: 2rem;
   font-weight: 700;
@@ -879,12 +789,16 @@ img { max-width: 100%; display: block; }
   line-height: 1.2;
 }
 
-.support-head p {
+.support-head p,
+.about-head p {
   margin-top: 0.85rem;
   color: var(--text-muted);
   font-size: 0.98rem;
   line-height: 1.75;
 }
+
+.about-head p + p { margin-top: 1.15rem; }
+.about-head { margin-bottom: 1rem; }
 
 .support-email {
   display: inline-flex;
@@ -1277,35 +1191,13 @@ img { max-width: 100%; display: block; }
 .home-desktop-item .project-name,
 .home-desktop-item .project-tagline { display: block; }
 .home-desktop-price { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.8rem; color: var(--text); }
-.home-desktop + .contact-secondary { margin-top: 1rem; }
-.home-desktop + .contact-secondary a { color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; }
-.home-desktop + .contact-secondary a:hover { color: var(--gold-bright); }
+.home-desktop ~ .contact-secondary { margin-top: 1rem; }
+.home-desktop ~ .contact-secondary a { color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; }
+.home-desktop ~ .contact-secondary a:hover { color: var(--gold-bright); }
 
 /* ─────────────────────────────────────────────
    RESPONSIVE
    ───────────────────────────────────────────── */
-
-@media (max-width: 960px) {
-  .portfolio {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .sidebar {
-    position: static;
-    height: auto;
-    max-height: none;
-    padding: 4.5rem 0 0;
-  }
-
-  /* The page is short enough to scroll on a phone; the nav would only get in
-     the way, so it goes rather than becoming a second sticky bar. */
-  .sidebar-nav { display: none; }
-
-  .sidebar-socials { margin-top: 2rem; }
-
-  .portfolio-main { padding: 3.5rem 0 6rem; }
-}
 
 @media (max-width: 640px) {
   :root { --pad: 1.25rem; }

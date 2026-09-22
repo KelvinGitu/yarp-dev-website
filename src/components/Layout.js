@@ -1,38 +1,24 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import PortfolioSidebar from '@/components/PortfolioSidebar';
 
-// The homepage is the portfolio: sticky sidebar, one scrolling column, no chrome.
-// Everything else — app detail, support, privacy, terms — keeps the site shell so
-// those pages stay navigable on their own.
+// One shell for every page, homepage included: a fixed navbar (Home, Store, About)
+// over a single scrolling column, so the site reads as a studio with a product
+// front and center rather than a personal portfolio with a sidebar bio.
 export default function Layout({ children, className = '' }) {
-  const { pathname } = useRouter();
-  const isPortfolio = pathname === '/';
-
-  if (isPortfolio) {
-    return (
-      <div className={`portfolio ${className}`}>
-        <PortfolioSidebar />
-        <main className="portfolio-main">{children}</main>
-      </div>
-    );
-  }
-
   return (
     <div className={`layout-container ${className}`}>
       <header className="navbar">
         <div className="nav-content">
           <Link href="/" className="logo">
-            <div className="logo-mark">KG</div>
+            <div className="logo-mark">YD</div>
             <div className="logo-label">
-              <span className="logo-name">Kelvin Gitu</span>
-              <span className="logo-sub">Yarp Developers</span>
+              <span className="logo-name">Yarp Developers</span>
+              <span className="logo-sub">Mobile &amp; desktop apps</span>
             </div>
           </Link>
           <nav className="nav-links">
-            <Link href="/#projects">Projects</Link>
-            <Link href="/store">Desktop apps</Link>
-            <Link href="/support" className="nav-cta">Support</Link>
+            <Link href="/">Home</Link>
+            <Link href="/store" className="nav-cta">Store</Link>
+            <Link href="/about">About</Link>
           </nav>
         </div>
       </header>
@@ -41,9 +27,7 @@ export default function Layout({ children, className = '' }) {
 
       <footer className="footer">
         <div className="footer-content">
-          <p suppressHydrationWarning>
-            © {new Date().getFullYear()} Yarp Developers · Built by Kelvin Gitu
-          </p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} Yarp Developers</p>
           <Link href="/support">Support</Link>
         </div>
       </footer>
