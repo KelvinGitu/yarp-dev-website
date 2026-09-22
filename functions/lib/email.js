@@ -6,7 +6,7 @@ const logger = require("firebase-functions/logger");
 
 const { APPS, PRODUCTS } = require("../products");
 
-const SUPPORT = "yarpsports@gmail.com";
+const SUPPORT = "yarpdevelopers@gmail.com";
 
 function licenceEmail(product, licenseKey) {
   const bought = PRODUCTS[product];

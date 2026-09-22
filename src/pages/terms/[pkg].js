@@ -17,7 +17,7 @@ function getFallbackTerms(app) {
     `6. Governing Law`,
     `These Terms shall be governed by the laws of Kenya.`,
     `7. Contact Information`,
-    `If you have any questions, contact yarpsports@gmail.com.`
+    `If you have any questions, contact yarpdevelopers@gmail.com.`
   ];
 }
 

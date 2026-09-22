@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { apps } from '@/data/apps';
 import { MailIcon, PlayIcon } from '@/components/icons';
 
-const SUPPORT_EMAIL = 'yarpsports@gmail.com';
+const SUPPORT_EMAIL = 'yarpdevelopers@gmail.com';
 
 function AppIcon({ slug, name }) {
   const [error, setError] = useState(false);

@@ -12,7 +12,7 @@ function getFallbackPolicy(app) {
     `3. Data Sharing`,
     `We do not sell your personal information. Data is only shared with third-party service providers (like Google AdMob or RevenueCat) to provide core application functionality.`,
     `4. Contact Us`,
-    `For any privacy-related questions, please contact yarpsports@gmail.com.`
+    `For any privacy-related questions, please contact yarpdevelopers@gmail.com.`
   ];
 }
 
