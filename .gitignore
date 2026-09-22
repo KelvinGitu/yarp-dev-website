@@ -46,3 +46,9 @@ firebase-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# store functions
+/functions/node_modules/
+# Local-only secrets for the emulator. Never commit.
+.secret.local
+*.secret.local

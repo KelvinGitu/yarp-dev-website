@@ -31,6 +31,7 @@ export default function Layout({ children, className = '' }) {
           </Link>
           <nav className="nav-links">
             <Link href="/#projects">Projects</Link>
+            <Link href="/store">Desktop apps</Link>
             <Link href="/support" className="nav-cta">Support</Link>
           </nav>
         </div>

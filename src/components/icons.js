@@ -50,3 +50,20 @@ export function MailIcon() {
     </svg>
   );
 }
+
+export function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14" />
+    </svg>
+  );
+}
+
+export function KeyIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="8" cy="14.5" r="4" />
+      <path d="M11 11.5l8.5-8.5M16 6.5l2.5 2.5M13.5 9l2 2" />
+    </svg>
+  );
+}

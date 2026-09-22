@@ -3,7 +3,12 @@
     "public": "out",
     "cleanUrls": true,
     "trailingSlash": false,
-    "rewrites": [],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "function": { "functionId": "api", "region": "europe-west1" }
+      }
+    ],
     "headers": [
       {
         "source": "/ads.txt",
@@ -12,7 +17,24 @@
       {
         "source": "/app-ads.txt",
         "headers": [{ "key": "Content-Type", "value": "text/plain" }]
+      },
+      {
+        "source": "/store/success",
+        "headers": [{ "key": "Cache-Control", "value": "no-store" }, { "key": "Referrer-Policy", "value": "no-referrer" }]
       }
     ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "store",
+      "runtime": "nodejs22",
+      "ignore": ["node_modules", ".git", "test", "*.local", ".env*"]
+    }
+  ],
+  "emulators": {
+    "hosting": { "port": 5000 },
+    "functions": { "port": 5001 },
+    "ui": { "enabled": false }
   }
 }

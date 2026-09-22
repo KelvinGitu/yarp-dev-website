@@ -1,0 +1,17 @@
+{
+  "name": "yarp-store-functions",
+  "description": "Checkout, Stripe webhook and licence delivery for the desktop apps in /store.",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "node test/license.test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.4.0",
+    "firebase-functions": "^7.4.0",
+    "stripe": "^22.6.2"
+  }
+}

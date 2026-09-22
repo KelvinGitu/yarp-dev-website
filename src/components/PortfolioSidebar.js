@@ -8,6 +8,7 @@ const X_URL = 'https://x.com/GituKelvin';
 const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
+  { id: 'desktop', label: 'Desktop apps' },
   { id: 'stack', label: 'Stack' },
 ];
 

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
 import ProjectCard from '@/components/ProjectCard';
+import { products } from '@/data/products';
 
 const techGroups = [
   { label: 'Mobile', items: ['Flutter', 'Dart', 'Riverpod', 'Go Router', 'Hive'] },
@@ -49,6 +50,33 @@ export default function Home() {
             <ProjectCard key={app.slug} app={app} />
           ))}
         </div>
+      </section>
+
+      <section id="desktop" className="section">
+        <h2 className="section-label">Desktop apps</h2>
+        <div className="lede">
+          <p>
+            Two Windows programs for documents you&apos;d rather not upload anywhere. They run on your own computer
+            with no account and no cloud, and they work with the internet switched off.
+          </p>
+        </div>
+        <ul className="home-desktop">
+          {products.map((p) => (
+            <li key={p.slug}>
+              <Link href={`/store/${p.slug}`} className="home-desktop-item">
+                <img src={`/assets/icons/${p.slug}.png`} alt="" width={42} height={42} />
+                <span>
+                  <span className="project-name">{p.name}</span>
+                  <span className="project-tagline">{p.tagline}</span>
+                </span>
+                <span className="home-desktop-price">{p.price}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="contact-secondary">
+          Free to try, then a one-time price. <Link href="/store">See both apps</Link>.
+        </p>
       </section>
 
       <section id="stack" className="section">
