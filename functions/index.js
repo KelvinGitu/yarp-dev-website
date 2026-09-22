@@ -82,12 +82,13 @@ async function checkout(req, res) {
     // The licence is delivered to an email address, so one is always collected.
     customer_creation: "always",
     allow_promotion_codes: true,
-    automatic_tax: { enabled: STRIPE_AUTOMATIC_TAX.value() === "true" },
+    // Only sent when switched on: with Stripe Managed Payments (Stripe as the
+    // merchant of record, handling VAT) the parameter must be left out, and
+    // leaving it out is the same as off otherwise.
+    ...(STRIPE_AUTOMATIC_TAX.value() === "true" ? { automatic_tax: { enabled: true } } : {}),
     metadata: { product },
     payment_intent_data: { metadata: { product } },
-    custom_text: {
-      submit: { message: "Your licence key appears on the next page and arrives by email straight away." },
-    },
+    // No custom_text on the Pay button either: Managed Payments doesn't allow it.
     success_url: `${origin}/store/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}${back}?checkout=cancelled`,
   });
