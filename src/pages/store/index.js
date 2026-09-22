@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
+import StorePromises from '@/components/StorePromises';
 import { bundle, products } from '@/data/products';
 
 export default function Store() {
@@ -26,6 +27,7 @@ export default function Store() {
             Each one is a single payment, and every download starts as a free trial, so you can try it on your own
             files first.
           </p>
+          <StorePromises />
         </header>
 
         <ul className="store-list">

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import BuyButton from '@/components/BuyButton';
+import StorePromises from '@/components/StorePromises';
 import { DownloadIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
 
@@ -63,9 +64,7 @@ export default function StoreProduct({ product }) {
           </a>
           <BuyButton product={product.slug} price={product.price} />
         </div>
-        <p className="store-price-note">
-          One payment, yours to keep. No subscription, no account.
-        </p>
+        <StorePromises compact />
 
         <div className="detail-description">
           <p>{product.description}</p>
