@@ -87,8 +87,8 @@ export default function StoreSuccess() {
                 <strong>Open the Licence window</strong>:{' '}
                 {downloads.length === 1
                   ? <>{downloads[0].whereIsLicence}.</>
-                  : <>the key icon at the bottom left in pdfsign; the “Trial” button at the top right in Resume Maker,
-                    mediagrab and StoryForge.</>}
+                  : <>the key icon at the bottom left in pdfsign; the “Trial” button at the top right in Resume Maker
+                    and StoryForge.</>}
               </li>
               <li>
                 <strong>Paste the key and click Unlock.</strong> It’s checked on your computer, so it works offline from now on.

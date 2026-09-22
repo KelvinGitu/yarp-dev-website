@@ -17,7 +17,6 @@ const projects = path.resolve(__dirname, "..", "..", "..", "..");
 const apps = [
   { dir: path.join(projects, "pdfsign"), id: "pdfsign", module: "app" },
   { dir: path.join(projects, "resume_maker"), id: "resume-maker", module: "app" },
-  { dir: path.join(projects, "mediagrab"), id: "mediagrab", module: "app" },
   { dir: path.join(projects, "story_forge"), id: "storyforge", module: "desktop" },
 ];
 

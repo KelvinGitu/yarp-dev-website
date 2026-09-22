@@ -11,7 +11,7 @@ export default function Store() {
         <title>Desktop apps · Yarp Developers</title>
         <meta
           name="description"
-          content="pdfsign, Resume Maker, mediagrab and StoryForge: Windows apps that work on your own computer. No account, no cloud."
+          content="pdfsign, Resume Maker and StoryForge: Windows apps that work on your own computer. No account, no cloud."
         />
       </Head>
 
@@ -20,8 +20,8 @@ export default function Store() {
           <h1 className="detail-title">Desktop apps</h1>
           <p className="store-lede">
             Small Windows programs for the things you’d rather not hand to a website: the contract you’re signing, the
-            resume with your phone number on it, the novel you’re halfway through, the videos you save. They run on
-            your computer and nowhere else. No account, no cloud, no server in the middle.
+            resume with your phone number on it, the novel you’re halfway through. They run on your computer and
+            nowhere else. No account, no cloud, and they work with the internet switched off.
           </p>
           <p className="store-lede store-lede-small">
             Each one is a single payment, and every download starts as a free trial, so you can try it on your own
@@ -63,7 +63,7 @@ export default function Store() {
                 <h2 className="project-name">{bundle.name}</h2>
                 <p className="project-tagline">{bundle.tagline}</p>
               </div>
-              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all four" />
+              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all three" />
             </div>
           </li>
         </ul>

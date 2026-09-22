@@ -6,7 +6,6 @@ import { SUPPORT_EMAIL } from '@/data/products';
 const paragraphs = [
   '1. The apps collect nothing',
   'pdfsign, Resume Maker and StoryForge run entirely on your computer. The documents you open, the signatures you draw, the resumes and stories you write and the files you save stay on your computer. The apps have no accounts, no analytics, no crash reporting and no advertising, and they make no connections to the internet: to us, or to anyone else.',
-  'mediagrab downloads from the internet by its nature, so it connects to exactly what it has to and nothing else: the site you paste a link from (and that site’s media servers) when you fetch it, and PyPI, the Python package index, only when you click “Update engines”. It has no accounts, analytics, crash reporting or advertising either, and it never contacts us. If you import sign-in cookies so it can list a whole account, they stay on your computer and are only ever sent to the site they belong to.',
   'Your licence key is checked on your computer against a public key built into the app. Checking it doesn’t contact us.',
   'Profiles (StoryForge)',
   'StoryForge profiles are a name and, if you choose, a password, stored on your computer. A password is kept only as a one-way hash.',

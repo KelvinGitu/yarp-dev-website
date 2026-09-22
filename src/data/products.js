@@ -10,7 +10,7 @@
 
 export const DOWNLOADS = 'https://github.com/KelvinGitu/yarp-downloads/releases/latest/download';
 
-export const SUPPORT_EMAIL = 'yarpsports@gmail.com';
+export const SUPPORT_EMAIL = 'yarpdevelopers@gmail.com';
 
 // Each app's free trial, as the store describes it: `trialShort` under the
 // Download button, `trialLong` in "How it works". Keep in step with each app
@@ -84,39 +84,6 @@ export const products = [
     ],
   },
   {
-    slug: 'mediagrab',
-    name: 'mediagrab',
-    tagline: 'Save videos and photos from YouTube, X, Instagram and more, straight to your computer.',
-    price: '€15',
-    version: '1.0.0',
-    download: `${DOWNLOADS}/mediagrab-setup.exe`,
-    size: '123 MB',
-    trialShort: '10 free downloads, then a key',
-    trialLong: 'Everything works; the first 10 files you download are free.',
-    whereIsLicence: 'the Trial button at the top right',
-    description:
-      'Paste a link and pick a quality. mediagrab lists every size a video comes in, joins the best picture and ' +
-      'sound into one file, and saves photo posts and carousels too. Point it at an X or Instagram account and ' +
-      'pick what you want from a grid of recent posts. There is no website in the middle: files come straight from ' +
-      'the site to your disk, and no one sees what you save.',
-    shots: [
-      { file: '1.webp', alt: 'mediagrab with a video link pasted, listing its qualities from 1080p down to audio only, and a download in progress' },
-    ],
-    features: [
-      'YouTube, X, Instagram, Reddit, TikTok and over a thousand other sites',
-      'Every quality listed with its size; the best video and audio joined for you',
-      'Photos, carousels and GIFs as well as video',
-      'Whole X and Instagram accounts: pick from a grid of recent posts, and skip what you already have',
-      'Downloads run in the background, several at once, with a queue you can stop',
-      'Update the download engines from inside the app when a site changes',
-    ],
-    privacy: [
-      'No account, no sign-in, no middleman server: it connects only to the site you paste a link from.',
-      'Your sign-in cookies, for account downloads, stay on your computer.',
-      'Only download what you have the right to keep.',
-    ],
-  },
-  {
     slug: 'storyforge',
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
@@ -154,9 +121,9 @@ export const products = [
 // Every app for less. A bundle key unlocks all of them.
 export const bundle = {
   slug: 'yarp-bundle',
-  name: 'All four apps',
-  tagline: 'pdfsign, Resume Maker, mediagrab and StoryForge, with one licence key that unlocks them all.',
-  price: '€49',
+  name: 'All three apps',
+  tagline: 'pdfsign, Resume Maker and StoryForge, with one licence key that unlocks them all.',
+  price: '€39',
 };
 
 export const productBySlug = (slug) => products.find((p) => p.slug === slug) ?? null;
