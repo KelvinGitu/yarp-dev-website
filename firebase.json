@@ -6,21 +6,43 @@
     "rewrites": [
       {
         "source": "/api/**",
-        "function": { "functionId": "api", "region": "europe-west1" }
+        "function": {
+          "functionId": "api",
+          "region": "europe-west1"
+        }
       }
     ],
     "headers": [
       {
         "source": "/ads.txt",
-        "headers": [{ "key": "Content-Type", "value": "text/plain" }]
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ]
       },
       {
         "source": "/app-ads.txt",
-        "headers": [{ "key": "Content-Type", "value": "text/plain" }]
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ]
       },
       {
         "source": "/store/success",
-        "headers": [{ "key": "Cache-Control", "value": "no-store" }, { "key": "Referrer-Policy", "value": "no-referrer" }]
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          }
+        ]
       }
     ]
   },
@@ -29,12 +51,25 @@
       "source": "functions",
       "codebase": "store",
       "runtime": "nodejs22",
-      "ignore": ["node_modules", ".git", "test", "*.local", ".env*"]
+      "ignore": [
+        "node_modules",
+        ".git",
+        "test",
+        "*.local",
+        ".env*"
+      ]
     }
   ],
   "emulators": {
-    "hosting": { "port": 5000 },
-    "functions": { "port": 5001 },
-    "ui": { "enabled": false }
+    "hosting": {
+      "port": 5000
+    },
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

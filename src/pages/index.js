@@ -22,8 +22,7 @@ export default function Home() {
           <h1 className="detail-title">Mobile apps, built and shipped.</h1>
           <p className="store-lede">
             We&apos;re Yarp Developers. {apps.length} Flutter apps live on Google Play, each one built and kept
-            running by us — interface, backend, billing, and the store review that comes after. {totalBuilds}{' '}
-            releases so far.
+            running by us — interface, backend, billing, and the store review that comes after.
           </p>
           <div className="store-actions">
             <a href="#projects" className="store-btn store-btn-download">

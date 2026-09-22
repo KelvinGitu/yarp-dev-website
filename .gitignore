@@ -43,6 +43,9 @@ firebase-debug.log*
 # claude
 .claude/
 
+# agents
+.agents/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
