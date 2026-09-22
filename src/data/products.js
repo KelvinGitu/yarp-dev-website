@@ -123,7 +123,7 @@ export const products = [
     price: '€25',
     version: '1.0.0',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
-    size: '35 MB',
+    size: '33 MB',
     trialShort: '10,000 free words, then a key',
     trialLong: 'Everything works for one project and your first 10,000 words. After that your writing stays yours to read, edit and export; a key lets you keep adding.',
     whereIsLicence: 'the Trial button at the top right, or Settings → Licence & data',
