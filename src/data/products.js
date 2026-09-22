@@ -21,7 +21,7 @@ export const products = [
     slug: 'pdfsign',
     name: 'pdfsign',
     tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
-    price: '€19',
+    price: '€9.99',
     version: '1.0.0',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     size: '21 MB',
@@ -54,7 +54,7 @@ export const products = [
     slug: 'resume-maker',
     name: 'Resume Maker',
     tagline: 'Write your resume once, set it in seven styles, and export a clean PDF.',
-    price: '€15',
+    price: '€9.99',
     version: '1.0.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     size: '20 MB',
@@ -87,7 +87,7 @@ export const products = [
     slug: 'storyforge',
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
-    price: '€25',
+    price: '€24.99',
     version: '1.0.0',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
     size: '33 MB',
@@ -116,14 +116,48 @@ export const products = [
       'Nothing about you or what you write is sent anywhere, ever.',
     ],
   },
+  {
+    slug: 'ink-lifter',
+    name: 'Ink Lifter',
+    tagline: 'Lift signatures, stamps and handwriting off a photo of paper, onto a transparent background.',
+    price: '€4.99',
+    version: '1.0.0',
+    download: `${DOWNLOADS}/InkLifter-setup.exe`,
+    size: '19 MB',
+    trialShort: '10 free exports, then a key',
+    trialLong: 'Everything works; the first 10 images you save, copy or export are free.',
+    whereIsLicence: 'the Trial button at the top right',
+    description:
+      'Snap your signature, a company stamp or a hand-drawn sketch with your phone, and Ink Lifter turns it into ' +
+      'a clean transparent PNG you can drop into a document, a slide or a website. It reads the paper around every ' +
+      'stroke, so desk-lamp shadows and grey phone-camera "white" vanish while the ink keeps its soft edges. It all ' +
+      'happens on your computer: a photo of your signature is the last thing you should upload to a stranger.',
+    shots: [
+      { file: '1.webp', alt: 'Ink Lifter comparing a photo of a signature under a desk lamp with the same signature lifted onto a transparent background' },
+    ],
+    features: [
+      'Clean up one photo or a whole batch: drop them in, or paste straight from the clipboard',
+      'Judges each stroke against the paper around it, so shadows and uneven light disappear',
+      'Keep the ink’s own colour, or repaint it blue, black or any colour',
+      'Sensitivity and boldness sliders for faint pencil or heavy marker',
+      'Removes dust and specks, and crops to the ink with the margin you choose',
+      'Before-and-after compare, and previews on transparency, white, a page or dark',
+      'Save, copy, or export everything to a folder as transparent PNG or WebP',
+    ],
+    privacy: [
+      'Your photos are processed on your computer. They are never uploaded.',
+      'No account, no sign-in, no cloud. It works with the internet unplugged.',
+      'Nothing is kept: images exist only until you close the window or save them.',
+    ],
+  },
 ];
 
 // Every app for less. A bundle key unlocks all of them.
 export const bundle = {
   slug: 'yarp-bundle',
-  name: 'All three apps',
-  tagline: 'pdfsign, Resume Maker and StoryForge, with one licence key that unlocks them all.',
-  price: '€39',
+  name: 'All four apps',
+  tagline: 'pdfsign, Resume Maker, StoryForge and Ink Lifter, with one licence key that unlocks them all.',
+  price: '€39.99',
 };
 
 export const productBySlug = (slug) => products.find((p) => p.slug === slug) ?? null;

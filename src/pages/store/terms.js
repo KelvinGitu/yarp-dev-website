@@ -6,10 +6,10 @@ import { SUPPORT_EMAIL } from '@/data/products';
 // not legal advice.
 const paragraphs = [
   '1. The licence',
-  'Buying pdfsign, Resume Maker or StoryForge gets you a personal licence key for that app; a bundle key covers all three. You may install and use the app on computers you own or use yourself. A licence for a business covers one person. Please don’t share or publish your key.',
+  'Buying pdfsign, Resume Maker, StoryForge or Ink Lifter gets you a personal licence key for that app; a bundle key covers all four. You may install and use the app on computers you own or use yourself. A licence for a business covers one person. Please don’t share or publish your key.',
   'The licence doesn’t expire, and the app keeps working without contacting us. It covers the version you bought and the updates we publish for that major version.',
   '2. The free trial',
-  'Every download is a free trial, and the app works fully during it. pdfsign and Resume Maker: the first three PDFs you save are free; after that, saving needs a licence key, and opening and editing keep working. StoryForge: one project and 10,000 words on a computer are free; after that a key is needed to add more, and everything you wrote stays readable, editable and exportable.',
+  'Every download is a free trial, and the app works fully during it. pdfsign and Resume Maker: the first three PDFs you save are free; after that, saving needs a licence key, and opening and editing keep working. StoryForge: one project and 10,000 words on a computer are free; after that a key is needed to add more, and everything you wrote stays readable, editable and exportable. Ink Lifter: the first 10 images you save, copy or export are free; after that, saving needs a licence key, and opening and previewing keep working.',
   '3. Refunds',
   'If the app doesn’t work for you, email us within 30 days of buying and we’ll refund you in full. This doesn’t affect any rights you have under the law where you live.',
   '4. No warranty',

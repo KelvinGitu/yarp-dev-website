@@ -18,6 +18,7 @@ const apps = [
   { dir: path.join(projects, "pdfsign"), id: "pdfsign", module: "app" },
   { dir: path.join(projects, "resume_maker"), id: "resume-maker", module: "app" },
   { dir: path.join(projects, "story_forge"), id: "storyforge", module: "desktop" },
+  { dir: path.join(projects, "ink_lifter"), id: "ink-lifter", module: "app" },
 ];
 
 // The apps' virtualenvs: .venv, or StoryForge's older venv.
@@ -33,7 +34,7 @@ function verify(app, key) {
   const script = [
     "import os, sys, tempfile",
     "d = tempfile.mkdtemp()",
-    "for k in ('PDFSIGN_DATA','PDFSIGN_DIR','RESUME_DATA','RESUME_OUTPUT','MEDIAGRAB_DATA','MEDIAGRAB_DIR','STORYFORGE_DATA'): os.environ[k] = d",
+    "for k in ('PDFSIGN_DATA','PDFSIGN_DIR','RESUME_DATA','RESUME_OUTPUT','MEDIAGRAB_DATA','MEDIAGRAB_DIR','STORYFORGE_DATA','INKLIFTER_DATA','INKLIFTER_DIR'): os.environ[k] = d",
     "sys.path.insert(0, os.getcwd())",
     `from ${app.module} import license`,
     "try:",

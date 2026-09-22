@@ -4,7 +4,7 @@
 // is whatever that Stripe Price says.
 //
 // `product` ids are what licence keys carry, so they must match APP_ID in each
-// app's config.py ("pdfsign", "resume-maker", "storyforge") and license.BUNDLE.
+// app's config.py ("pdfsign", "resume-maker", "storyforge", "ink-lifter") and license.BUNDLE.
 
 const DOWNLOADS = "https://github.com/KelvinGitu/yarp-downloads/releases/latest/download";
 
@@ -24,15 +24,21 @@ const APPS = {
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
     whereIsLicence: "click the Trial button at the top right, or open Settings, then Licence & data",
   },
+  "ink-lifter": {
+    name: "Ink Lifter",
+    download: `${DOWNLOADS}/InkLifter-setup.exe`,
+    whereIsLicence: "click the Trial button at the top right",
+  },
 };
 
 const PRODUCTS = {
   pdfsign: { name: "pdfsign", apps: ["pdfsign"] },
   "resume-maker": { name: "Resume Maker", apps: ["resume-maker"] },
   storyforge: { name: "StoryForge", apps: ["storyforge"] },
+  "ink-lifter": { name: "Ink Lifter", apps: ["ink-lifter"] },
   "yarp-bundle": {
-    name: "pdfsign, Resume Maker and StoryForge",
-    apps: ["pdfsign", "resume-maker", "storyforge"],
+    name: "pdfsign, Resume Maker, StoryForge and Ink Lifter",
+    apps: ["pdfsign", "resume-maker", "storyforge", "ink-lifter"],
   },
 };
 

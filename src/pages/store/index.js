@@ -11,7 +11,7 @@ export default function Store() {
         <title>Desktop apps · Yarp Developers</title>
         <meta
           name="description"
-          content="pdfsign, Resume Maker and StoryForge: Windows apps that work on your own computer. No account, no cloud."
+          content="pdfsign, Resume Maker, StoryForge and Ink Lifter: Windows apps that work on your own computer. No account, no cloud."
         />
       </Head>
 
@@ -63,7 +63,7 @@ export default function Store() {
                 <h2 className="project-name">{bundle.name}</h2>
                 <p className="project-tagline">{bundle.tagline}</p>
               </div>
-              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all three" />
+              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all four" />
             </div>
           </li>
         </ul>

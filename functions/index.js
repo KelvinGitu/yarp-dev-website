@@ -38,6 +38,7 @@ const PRICES = {
   pdfsign: defineString("STRIPE_PRICE_PDFSIGN", { default: "" }),
   "resume-maker": defineString("STRIPE_PRICE_RESUME_MAKER", { default: "" }),
   storyforge: defineString("STRIPE_PRICE_STORYFORGE", { default: "" }),
+  "ink-lifter": defineString("STRIPE_PRICE_INK_LIFTER", { default: "" }),
   "yarp-bundle": defineString("STRIPE_PRICE_BUNDLE", { default: "" }),
 };
 
