@@ -12,7 +12,9 @@ export const DOWNLOADS = 'https://github.com/KelvinGitu/yarp-downloads/releases/
 
 export const SUPPORT_EMAIL = 'yarpsports@gmail.com';
 
-export const FREE_EXPORTS = 3;
+// Each app's free trial, as the store describes it: `trialShort` under the
+// Download button, `trialLong` in "How it works". Keep in step with each app
+// (license.FREE_EXPORTS, or StoryForge's core/trial.py).
 
 export const products = [
   {
@@ -23,6 +25,9 @@ export const products = [
     version: '1.0.0',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     size: '21 MB',
+    trialShort: '3 free exports, then a key',
+    trialLong: 'Everything works; the first 3 PDFs you save are free.',
+    whereIsLicence: 'the key icon at the bottom left, labelled Trial',
     description:
       'Contracts, forms, rental agreements, tax papers: the documents you sign are the ones you least want on ' +
       "someone else's server. pdfsign opens them on your own computer, lets you sign, fill in and tidy them up, and " +
@@ -53,6 +58,9 @@ export const products = [
     version: '1.0.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     size: '20 MB',
+    trialShort: '3 free exports, then a key',
+    trialLong: 'Everything works; the first 3 PDFs you export are free.',
+    whereIsLicence: 'the Trial button at the top right',
     description:
       "A resume holds your address, your phone number and your whole work history. Resume Maker keeps it on your " +
       'computer: edit on the left, watch the page update on the right, switch between seven designs, and export a ' +
@@ -75,14 +83,80 @@ export const products = [
       'Nothing about you or what you write is sent anywhere, ever.',
     ],
   },
+  {
+    slug: 'mediagrab',
+    name: 'mediagrab',
+    tagline: 'Save videos and photos from YouTube, X, Instagram and more, straight to your computer.',
+    price: '€15',
+    version: '1.0.0',
+    download: `${DOWNLOADS}/mediagrab-setup.exe`,
+    size: '123 MB',
+    trialShort: '10 free downloads, then a key',
+    trialLong: 'Everything works; the first 10 files you download are free.',
+    whereIsLicence: 'the Trial button at the top right',
+    description:
+      'Paste a link and pick a quality. mediagrab lists every size a video comes in, joins the best picture and ' +
+      'sound into one file, and saves photo posts and carousels too. Point it at an X or Instagram account and ' +
+      'pick what you want from a grid of recent posts. There is no website in the middle: files come straight from ' +
+      'the site to your disk, and no one sees what you save.',
+    shots: [
+      { file: '1.webp', alt: 'mediagrab with a video link pasted, listing its qualities from 1080p down to audio only, and a download in progress' },
+    ],
+    features: [
+      'YouTube, X, Instagram, Reddit, TikTok and over a thousand other sites',
+      'Every quality listed with its size; the best video and audio joined for you',
+      'Photos, carousels and GIFs as well as video',
+      'Whole X and Instagram accounts: pick from a grid of recent posts, and skip what you already have',
+      'Downloads run in the background, several at once, with a queue you can stop',
+      'Update the download engines from inside the app when a site changes',
+    ],
+    privacy: [
+      'No account, no sign-in, no middleman server: it connects only to the site you paste a link from.',
+      'Your sign-in cookies, for account downloads, stay on your computer.',
+      'Only download what you have the right to keep.',
+    ],
+  },
+  {
+    slug: 'storyforge',
+    name: 'StoryForge',
+    tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
+    price: '€25',
+    version: '1.0.0',
+    download: `${DOWNLOADS}/StoryForge-setup.exe`,
+    size: '35 MB',
+    trialShort: '10,000 free words, then a key',
+    trialLong: 'Everything works for one project and your first 10,000 words. After that your writing stays yours to read, edit and export; a key lets you keep adding.',
+    whereIsLicence: 'the Trial button at the top right, or Settings → Licence & data',
+    description:
+      'Your draft is the most personal thing you own. StoryForge keeps it on your computer: write chapter by ' +
+      'chapter with version history, keep characters, places and the rules of your world in a story bible, plan ' +
+      'with outlines and sticky notes, and export a manuscript as Word, PDF, EPUB or Markdown. Several people can ' +
+      'share one computer, each with their own profile.',
+    shots: [
+      { file: '1.webp', alt: 'StoryForge’s chapter editor with a draft open, the word count and save status in the top bar' },
+    ],
+    features: [
+      'A focused chapter editor with autosave, focus mode, split view and version history',
+      'A story bible: characters, locations, plot points, world rules, terminology and a timeline',
+      'Outlines, brainstorm maps, sticky-note boards and story-structure templates',
+      'Daily word goals, streaks and progress charts',
+      'Export to Word, PDF, EPUB and Markdown',
+      'A profile for each person on the computer, with an optional password',
+    ],
+    privacy: [
+      'Everything you write is stored in one file on your computer, backed up daily.',
+      'No account, no cloud. It works with the internet unplugged.',
+      'Nothing about you or what you write is sent anywhere, ever.',
+    ],
+  },
 ];
 
-// Both apps for less. A bundle key unlocks either app.
+// Every app for less. A bundle key unlocks all of them.
 export const bundle = {
   slug: 'yarp-bundle',
-  name: 'Both apps',
-  tagline: 'pdfsign and Resume Maker, with one licence key that unlocks both.',
-  price: '€29',
+  name: 'All four apps',
+  tagline: 'pdfsign, Resume Maker, mediagrab and StoryForge, with one licence key that unlocks them all.',
+  price: '€49',
 };
 
 export const productBySlug = (slug) => products.find((p) => p.slug === slug) ?? null;

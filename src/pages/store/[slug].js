@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import BuyButton from '@/components/BuyButton';
 import { DownloadIcon } from '@/components/icons';
-import { FREE_EXPORTS, SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
+import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
 
 export default function StoreProduct({ product }) {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function StoreProduct({ product }) {
   }, [router.isReady, router.query.checkout]);
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
-  const other = products.find((p) => p.slug !== product.slug);
+  const others = products.filter((p) => p.slug !== product.slug);
 
   return (
     <>
@@ -58,7 +58,7 @@ export default function StoreProduct({ product }) {
             <DownloadIcon />
             <span>
               <span className="store-btn-main">Download free trial</span>
-              <span className="store-btn-sub">{FREE_EXPORTS} free exports, then a key</span>
+              <span className="store-btn-sub">{product.trialShort}</span>
             </span>
           </a>
           <BuyButton product={product.slug} price={product.price} />
@@ -96,7 +96,7 @@ export default function StoreProduct({ product }) {
           <h2 className="detail-section-title">How buying works</h2>
           <ol className="store-steps">
             <li>
-              <strong>Try it.</strong> Download and install the free trial. Everything works; the first {FREE_EXPORTS} PDFs you save are free.
+              <strong>Try it.</strong> Download and install the free trial. {product.trialLong}
             </li>
             <li>
               <strong>Buy a licence</strong> ({product.price}, paid through Stripe). Your licence key arrives by email a moment later.
@@ -161,10 +161,11 @@ export default function StoreProduct({ product }) {
           </div>
         </section>
 
-        {other && (
+        {others.length > 0 && (
           <div className="detail-note">
-            <strong>Want {other.name} too?</strong> {bundle.tagline} {bundle.price} for both.{' '}
-            <Link href="/store">See both apps</Link>.
+            <strong>Want {others.map((p) => p.name).join(', ').replace(/, ([^,]*)$/, ' or $1')} too?</strong>{' '}
+            {bundle.tagline} {bundle.price} for all of them.{' '}
+            <Link href="/store">See all the apps</Link>.
           </div>
         )}
 

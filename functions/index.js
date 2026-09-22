@@ -37,6 +37,8 @@ const STRIPE_AUTOMATIC_TAX = defineString("STRIPE_AUTOMATIC_TAX", { default: "fa
 const PRICES = {
   pdfsign: defineString("STRIPE_PRICE_PDFSIGN", { default: "" }),
   "resume-maker": defineString("STRIPE_PRICE_RESUME_MAKER", { default: "" }),
+  mediagrab: defineString("STRIPE_PRICE_MEDIAGRAB", { default: "" }),
+  storyforge: defineString("STRIPE_PRICE_STORYFORGE", { default: "" }),
   "yarp-bundle": defineString("STRIPE_PRICE_BUNDLE", { default: "" }),
 };
 

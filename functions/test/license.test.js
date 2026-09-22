@@ -1,5 +1,5 @@
 // Round trip: mint a key here with the real signing key, then check it with
-// both apps' Python verifiers. Needs ~/Documents/yarp-signing-key.json and the
+// every app's Python verifier. Needs ~/Documents/yarp-signing-key.json and the
 // app repos next to this one. Run: npm test (from functions/).
 
 const { execFileSync } = require("node:child_process");
@@ -13,24 +13,36 @@ const keyFile = path.join(os.homedir(), "Documents", "yarp-signing-key.json");
 const seed = JSON.parse(fs.readFileSync(keyFile, "utf8")).private_key_b64;
 const projects = path.resolve(__dirname, "..", "..", "..", "..");
 
+// `module` is where each app keeps its copy of license.py.
 const apps = [
-  { dir: path.join(projects, "pdfsign"), id: "pdfsign" },
-  { dir: path.join(projects, "resume_maker"), id: "resume-maker" },
+  { dir: path.join(projects, "pdfsign"), id: "pdfsign", module: "app" },
+  { dir: path.join(projects, "resume_maker"), id: "resume-maker", module: "app" },
+  { dir: path.join(projects, "mediagrab"), id: "mediagrab", module: "app" },
+  { dir: path.join(projects, "story_forge"), id: "storyforge", module: "desktop" },
 ];
+
+// The apps' virtualenvs: .venv, or StoryForge's older venv.
+function pythonFor(app) {
+  for (const name of [".venv", "venv"]) {
+    const exe = path.join(app.dir, name, "Scripts", "python.exe");
+    if (fs.existsSync(exe)) return exe;
+  }
+  throw new Error(`No virtualenv in ${app.dir}; run its run.ps1 once.`);
+}
 
 function verify(app, key) {
   const script = [
     "import os, sys, tempfile",
     "d = tempfile.mkdtemp()",
-    "for k in ('PDFSIGN_DATA','PDFSIGN_DIR','RESUME_DATA','RESUME_OUTPUT'): os.environ[k] = d",
+    "for k in ('PDFSIGN_DATA','PDFSIGN_DIR','RESUME_DATA','RESUME_OUTPUT','MEDIAGRAB_DATA','MEDIAGRAB_DIR','STORYFORGE_DATA'): os.environ[k] = d",
     "sys.path.insert(0, os.getcwd())",
-    "from app import license",
+    `from ${app.module} import license`,
     "try:",
     "    c = license.verify(sys.argv[1]); print('OK', c.product, c.email)",
     "except license.LicenseError as e:",
     "    print('REJECTED', e)",
   ].join("\n");
-  return execFileSync(path.join(app.dir, ".venv", "Scripts", "python.exe"), ["-c", script, key], { cwd: app.dir })
+  return execFileSync(pythonFor(app), ["-c", script, key], { cwd: app.dir })
     .toString()
     .trim();
 }

@@ -57,10 +57,15 @@ half (`private_key_b64`) mints licences.
 
 In the Stripe dashboard, stay in **test mode** for all of Part 1.
 
-1. **Product catalogue → Add product**, three times, each with a **one-time** price in EUR:
+1. **Product catalogue → Add product**, five times, each with a **one-time** price in EUR:
    - `pdfsign`: €19 (or your price)
    - `Resume Maker`: €15
-   - `pdfsign + Resume Maker`: €29
+   - `mediagrab`: €15
+   - `StoryForge`: €25
+   - `All four apps` (the bundle): €49
+
+   The mediagrab, StoryForge and bundle prices in `src/data/products.js` are
+   placeholders until you settle them; change the page and Stripe together.
 2. Copy each **Price ID** (`price_...`, from the price row's ⋯ menu, *not* the
    `prod_...` product ID).
 3. **Developers → API keys**: copy the secret key (`sk_test_...`).
@@ -72,6 +77,8 @@ In the Stripe dashboard, stay in **test mode** for all of Part 1.
 ```
 STRIPE_PRICE_PDFSIGN=price_...
 STRIPE_PRICE_RESUME_MAKER=price_...
+STRIPE_PRICE_MEDIAGRAB=price_...
+STRIPE_PRICE_STORYFORGE=price_...
 STRIPE_PRICE_BUNDLE=price_...
 SITE_URL=http://127.0.0.1:5000
 FIRESTORE_EMULATOR_HOST=127.0.0.1:1   # keeps local tests out of your real Firestore
@@ -135,14 +142,18 @@ The store links to
 `https://github.com/KelvinGitu/yarp-downloads/releases/latest/download/<file>`.
 
 1. Create a **public** repo `KelvinGitu/yarp-downloads` (installers only, no code).
-2. Build both apps (`.\packaging\build.ps1` in each app repo). Each build writes
+2. Build every app (`.\packaging\build.ps1` in each app repo). Each build writes
    `dist\<App>-setup-<version>.exe` **and** a copy without the version.
-3. Publish a release with the version-less copies:
+3. Publish a release with the version-less copies. A new release must carry
+   **all four** installers, because `latest/download/<file>` only looks in the
+   latest release:
    ```powershell
-   gh release create v1.0.0 --repo KelvinGitu/yarp-downloads --title "1.0.0" `
-     ..\..\pdfsign\dist\pdfsign-setup.exe ..\..\resume_maker\dist\ResumeMaker-setup.exe
+   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: mediagrab and StoryForge" `
+     ..\..\pdfsign\dist\pdfsign-setup.exe ..\..\resume_maker\dist\ResumeMaker-setup.exe `
+     ..\..\mediagrab\dist\mediagrab-setup.exe ..\..\story_forge\dist\StoryForge-setup.exe
    ```
-   The links then always serve the latest release.
+   The links then always serve the latest release. mediagrab's installer is
+   about 120 MB (it carries ffmpeg), well inside GitHub's 2 GB asset limit.
 4. Download each from the store page on a machine where it isn't installed,
    and install it. The copy you download is the one buyers get.
 
@@ -156,6 +167,8 @@ The store links to
 | VAT | Stripe Tax + `STRIPE_AUTOMATIC_TAX` | Selling digital goods to EU consumers from Belgium means charging VAT at the buyer's country rate, usually via OSS registration. Turn on Stripe Tax in the dashboard (it needs your tax registrations), then set `STRIPE_AUTOMATIC_TAX=true`. **Worth confirming with an accountant before launch** |
 | Terms & privacy | `src/pages/store/terms.js`, `privacy.js` | Written as a plain-language starting point, not legal advice. The 30-day refund promise appears on the product pages too |
 | Support address | `SUPPORT_EMAIL` in `src/data/products.js`, `functions/lib/email.js` | Currently `yarpsports@gmail.com` |
+| Selling mediagrab | Stripe, and the store's terms | **Check before listing it.** Stripe's restricted-businesses list covers products that help infringe intellectual property, and a media downloader is the kind of product it reviews. mediagrab is a general tool (like 4K Video Downloader or JDownloader, which sell openly), and the terms say to download only what you have the right to keep, but read Stripe's current list and be ready to explain the use case if asked. Also weigh the sites' own terms (YouTube's forbid downloading outside their apps) in how you describe it |
+| The bundle | `products.js`, Stripe | A `yarp-bundle` key unlocks every app, the two new ones included. No bundle has been sold yet, so there's nobody to grandfather; settle the four-app price before launch |
 | Code signing | the installers | Unsigned installers show "Windows protected your PC" (the store page explains it). Azure Trusted Signing (~$10/month, if you're eligible) or an OV certificate removes most of it |
 
 ---
@@ -177,6 +190,8 @@ Non-secret settings go in `functions/.env.yarp-dev-website` (gitignored, read at
 ```
 STRIPE_PRICE_PDFSIGN=price_...     # LIVE-mode price IDs
 STRIPE_PRICE_RESUME_MAKER=price_...
+STRIPE_PRICE_MEDIAGRAB=price_...
+STRIPE_PRICE_STORYFORGE=price_...
 STRIPE_PRICE_BUNDLE=price_...
 RESEND_FROM=Yarp Developers <licences@yarpdevelopers.com>
 SITE_URL=https://yarpdevelopers.com
@@ -223,9 +238,12 @@ store exists.**
 ## Pre-launch checklist
 
 - [ ] `yarp-signing-key.json` backed up somewhere safe, and in no repo
-- [ ] Test purchase → key → unlocks both apps (Part 1)
+- [ ] Test purchase → key → unlocks each of the four apps (Part 1)
 - [ ] A real licence email arrives, not in spam (Part 2)
-- [ ] Both download links work, and the downloaded installers install and run (Part 3)
+- [ ] All four download links work, and the downloaded installers install and run (Part 3)
+- [ ] Screenshots for mediagrab and StoryForge in `public/assets/store/<slug>/1.webp`
+- [ ] Prices for mediagrab, StoryForge and the bundle decided (they're placeholders)
+- [ ] The Stripe check for mediagrab done (Part 4)
 - [ ] Prices in `products.js` match the Stripe prices (Part 4)
 - [ ] VAT handled (Part 4)
 - [ ] Live price IDs, live secret key, live webhook secret deployed (Part 5)

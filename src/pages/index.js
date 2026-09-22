@@ -75,7 +75,7 @@ export default function Home() {
           ))}
         </ul>
         <p className="contact-secondary">
-          Free to try, then a one-time price. <Link href="/store">See both apps</Link>.
+          Free to try, then a one-time price. <Link href="/store">See all four</Link>.
         </p>
       </section>
 

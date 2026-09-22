@@ -4,7 +4,8 @@
 // is whatever that Stripe Price says.
 //
 // `product` ids are what licence keys carry, so they must match APP_ID in each
-// app's app/config.py ("pdfsign", "resume-maker") and license.BUNDLE.
+// app's config.py ("pdfsign", "resume-maker", "mediagrab", "storyforge") and
+// license.BUNDLE.
 
 const DOWNLOADS = "https://github.com/KelvinGitu/yarp-downloads/releases/latest/download";
 
@@ -19,12 +20,27 @@ const APPS = {
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     whereIsLicence: "click the Trial button at the top right",
   },
+  mediagrab: {
+    name: "mediagrab",
+    download: `${DOWNLOADS}/mediagrab-setup.exe`,
+    whereIsLicence: "click the Trial button at the top right",
+  },
+  storyforge: {
+    name: "StoryForge",
+    download: `${DOWNLOADS}/StoryForge-setup.exe`,
+    whereIsLicence: "click the Trial button at the top right, or open Settings, then Licence & data",
+  },
 };
 
 const PRODUCTS = {
   pdfsign: { name: "pdfsign", apps: ["pdfsign"] },
   "resume-maker": { name: "Resume Maker", apps: ["resume-maker"] },
-  "yarp-bundle": { name: "pdfsign and Resume Maker", apps: ["pdfsign", "resume-maker"] },
+  mediagrab: { name: "mediagrab", apps: ["mediagrab"] },
+  storyforge: { name: "StoryForge", apps: ["storyforge"] },
+  "yarp-bundle": {
+    name: "pdfsign, Resume Maker, mediagrab and StoryForge",
+    apps: ["pdfsign", "resume-maker", "mediagrab", "storyforge"],
+  },
 };
 
 module.exports = { APPS, PRODUCTS };

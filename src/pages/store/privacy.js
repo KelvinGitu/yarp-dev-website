@@ -5,8 +5,11 @@ import { SUPPORT_EMAIL } from '@/data/products';
 // them. Review before launch; this is a starting point, not legal advice.
 const paragraphs = [
   '1. The apps collect nothing',
-  'pdfsign and Resume Maker run entirely on your computer. The documents you open, the signatures you draw, the resumes you write and the PDFs you save stay on your computer. The apps have no accounts, no analytics, no crash reporting and no advertising, and they make no connections to the internet: to us, or to anyone else.',
+  'pdfsign, Resume Maker and StoryForge run entirely on your computer. The documents you open, the signatures you draw, the resumes and stories you write and the files you save stay on your computer. The apps have no accounts, no analytics, no crash reporting and no advertising, and they make no connections to the internet: to us, or to anyone else.',
+  'mediagrab downloads from the internet by its nature, so it connects to exactly what it has to and nothing else: the site you paste a link from (and that site’s media servers) when you fetch it, and PyPI, the Python package index, only when you click “Update engines”. It has no accounts, analytics, crash reporting or advertising either, and it never contacts us. If you import sign-in cookies so it can list a whole account, they stay on your computer and are only ever sent to the site they belong to.',
   'Your licence key is checked on your computer against a public key built into the app. Checking it doesn’t contact us.',
+  'Profiles (StoryForge)',
+  'StoryForge profiles are a name and, if you choose, a password, stored on your computer. A password is kept only as a one-way hash.',
   'Phone Signing (pdfsign)',
   'If you choose to sign on your phone, pdfsign briefly opens a connection on your local network, the one your wifi provides, so your phone can reach your computer directly. The signature goes from your phone to your computer and nowhere else. The connection closes when the code is no longer on screen.',
   'Links You Click',
@@ -25,5 +28,5 @@ const paragraphs = [
 ];
 
 export default function StorePrivacy() {
-  return <PolicyPage title="Privacy: pdfsign, Resume Maker and the store" paragraphs={paragraphs} lastUpdated="September 22, 2026" />;
+  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 22, 2026" />;
 }

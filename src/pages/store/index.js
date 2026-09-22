@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
-import { FREE_EXPORTS, bundle, products } from '@/data/products';
+import { bundle, products } from '@/data/products';
 
 export default function Store() {
   return (
@@ -10,7 +10,7 @@ export default function Store() {
         <title>Desktop apps · Yarp Developers</title>
         <meta
           name="description"
-          content="pdfsign and Resume Maker: Windows apps that work on your own computer. Your documents are never uploaded."
+          content="pdfsign, Resume Maker, mediagrab and StoryForge: Windows apps that work on your own computer. No account, no cloud."
         />
       </Head>
 
@@ -18,13 +18,13 @@ export default function Store() {
         <header className="store-head">
           <h1 className="detail-title">Desktop apps</h1>
           <p className="store-lede">
-            Small Windows programs for the documents you’d rather not upload: the contract you’re signing, the resume
-            with your phone number on it. They run on your computer and nowhere else. No account, no cloud, and they
-            work with the internet switched off.
+            Small Windows programs for the things you’d rather not hand to a website: the contract you’re signing, the
+            resume with your phone number on it, the novel you’re halfway through, the videos you save. They run on
+            your computer and nowhere else. No account, no cloud, no server in the middle.
           </p>
           <p className="store-lede store-lede-small">
-            Each one is a single payment, and every download starts as a free trial: {FREE_EXPORTS} exports to try it on
-            your own files first.
+            Each one is a single payment, and every download starts as a free trial, so you can try it on your own
+            files first.
           </p>
         </header>
 
@@ -61,7 +61,7 @@ export default function Store() {
                 <h2 className="project-name">{bundle.name}</h2>
                 <p className="project-tagline">{bundle.tagline}</p>
               </div>
-              <BuyButton product={bundle.slug} price={bundle.price} label="Buy both" />
+              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all four" />
             </div>
           </li>
         </ul>
