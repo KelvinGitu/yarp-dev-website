@@ -7,6 +7,7 @@
 
 const { PRODUCTS } = require("../products");
 const { REGIONS, subunitPrice } = require("../pricing");
+const { cleanCampaign } = require("./campaign");
 
 const API = "https://api.paystack.co";
 
@@ -86,6 +87,7 @@ function paidOrder(tx) {
     amountTotal: tx.amount,
     currency: tx.currency.toLowerCase(),
     country: meta.region,
+    campaign: cleanCampaign(meta.campaign),
     livemode: tx.domain === "live",
     createdAt: new Date(tx.paid_at).toISOString(),
   };

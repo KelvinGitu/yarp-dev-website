@@ -1,0 +1,326 @@
+<title>Kenya Ads Launch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #F5F6F3;
+    --card: #FFFFFF;
+    --ink: #13202F;
+    --muted: #55606E;
+    --faint: #8A93A0;
+    --line: #DDE1DA;
+    --gold: #9C7418;
+    --gold-soft: #F4EAD0;
+    --green: #1F7A45;
+    --green-soft: #E2F1E7;
+    --warn: #9A4A12;
+    --warn-soft: #FBEADB;
+    --code: #EEF0EA;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0C1420; --card: #121C2A; --ink: #E6EAF0; --muted: #A3ADBA; --faint: #6F7A88;
+      --line: #243142; --gold: #D8B25A; --gold-soft: #2C2614; --green: #6CCB93; --green-soft: #15291E;
+      --warn: #F0A56B; --warn-soft: #2E1E12; --code: #0A111B; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0C1420; --card: #121C2A; --ink: #E6EAF0; --muted: #A3ADBA; --faint: #6F7A88;
+    --line: #243142; --gold: #D8B25A; --gold-soft: #2C2614; --green: #6CCB93; --green-soft: #15291E;
+    --warn: #F0A56B; --warn-soft: #2E1E12; --code: #0A111B; color-scheme: dark;
+  }
+
+  body { background: var(--paper); color: var(--ink); font: 16px/1.65 "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 820px; margin: 0 auto; padding-inline: 20px; padding-block: 48px 96px; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif; text-wrap: balance; line-height: 1.12; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.025em; }
+  h2 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.015em; margin-bottom: 0.4rem; }
+  h3 { font-size: 1.15rem; font-weight: 600; }
+  p, li { max-width: 66ch; }
+  a { color: var(--ink); text-decoration-color: var(--gold); text-underline-offset: 3px; }
+  code, .mono { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; font-size: 0.86em; }
+  code { background: var(--code); padding: 0.1em 0.35em; border-radius: 4px; }
+  strong { font-weight: 700; }
+
+  .eyebrow { font: 600 0.78rem/1 "Public Sans", sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .lede { margin-top: 1rem; font-size: 1.14rem; color: var(--muted); }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.6rem; }
+  .toc a { font-size: 0.86rem; text-decoration: none; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); }
+  .toc a:hover, .toc a:focus-visible { border-color: var(--gold); }
+
+  section { margin-top: 4rem; scroll-margin-top: 16px; }
+  section > p.sub { color: var(--muted); margin-bottom: 1.4rem; }
+
+  /* The plan at a glance: the real structure of the campaign. */
+  .tree { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 12px; }
+  .node { display: grid; grid-template-columns: 7.5rem 1fr; gap: 14px; align-items: baseline; }
+  .node .k { font: 600 0.74rem/1.3 "Public Sans", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+  .node .v strong { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem; }
+  .node .v span { color: var(--muted); font-size: 0.93rem; }
+  .ads-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .ads-row span { font-size: 0.86rem; padding: 3px 10px; border-radius: 6px; background: var(--gold-soft); color: var(--ink); }
+  .numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .num { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .num b { display: block; font: 800 1.45rem/1.1 "Bricolage Grotesque", sans-serif; font-variant-numeric: tabular-nums; }
+  .num small { color: var(--muted); font-size: 0.84rem; }
+
+  .note { margin-top: 1.2rem; padding: 14px 16px; border-radius: 10px; background: var(--warn-soft); color: var(--ink); font-size: 0.95rem; }
+  .note b { color: var(--warn); }
+  .ok { background: var(--green-soft); }
+  .ok b { color: var(--green); }
+
+  /* Steps: a real sequence, with a tick that remembers itself. */
+  ol.steps { list-style: none; counter-reset: s; display: grid; gap: 10px; }
+  ol.steps > li { counter-increment: s; position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px 56px; max-width: none; }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 16px; top: 13px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 700 0.8rem/1 "Public Sans", sans-serif; background: var(--paper); border: 1px solid var(--line); color: var(--muted); }
+  ol.steps > li.done { opacity: 0.62; }
+  ol.steps > li.done::before { content: "✓"; background: var(--green); border-color: var(--green); color: var(--card); }
+  .step-head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+  .step-head h3 { padding-top: 1px; }
+  .tick { flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); cursor: pointer; user-select: none; }
+  .tick input { width: 17px; height: 17px; accent-color: var(--green); cursor: pointer; }
+  .step-body { margin-top: 6px; color: var(--muted); font-size: 0.95rem; }
+  .step-body ul { margin: 6px 0 0 1.1rem; display: grid; gap: 3px; }
+  .field { color: var(--ink); font-weight: 600; }
+
+  /* The ads. */
+  .ad { margin-top: 1.6rem; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 22px; }
+  .shots { display: grid; grid-template-columns: 1fr 0.72fr; gap: 8px; align-items: end; }
+  .shots figure { margin: 0; }
+  .shots img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .shots figcaption { margin-top: 4px; font-size: 0.72rem; color: var(--faint); }
+  .ad h3 { font-size: 1.3rem; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .ad h3 .price { font: 600 0.85rem/1 "JetBrains Mono", monospace; color: var(--gold); }
+  .lead-tag { font: 600 0.7rem/1 "Public Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 8px; border-radius: 5px; background: var(--green-soft); color: var(--green); }
+  .kv { margin-top: 12px; display: grid; gap: 10px; }
+  .kv .row { display: grid; gap: 4px; }
+  .kv .label { font: 600 0.72rem/1.2 "Public Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between; gap: 8px; }
+  .kv .label em { font-style: normal; text-transform: none; letter-spacing: 0; color: var(--faint); font-weight: 400; }
+  .copybox { display: flex; gap: 8px; align-items: flex-start; }
+  .copybox .txt { flex: 1; min-width: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 0.93rem; overflow-wrap: anywhere; }
+  .copybox .txt.mono { font-size: 0.8rem; }
+  button.copy { flex: none; font: 600 0.78rem/1 "Public Sans", sans-serif; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  button.copy:hover, button.copy:focus-visible { border-color: var(--gold); }
+  button.copy.did { background: var(--green); border-color: var(--green); color: var(--card); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+  .tablewrap { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 600 0.74rem/1.3 "Public Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+  tr:last-child td { border-bottom: 0; }
+  td.t { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .why { display: grid; gap: 12px; }
+  .why div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .why h3 { margin-bottom: 4px; }
+  .why p { color: var(--muted); font-size: 0.95rem; }
+  .sources { font-size: 0.86rem; color: var(--muted); display: grid; gap: 4px; margin-top: 0.6rem; }
+  footer { margin-top: 4rem; color: var(--faint); font-size: 0.85rem; }
+
+  @media (max-width: 640px) {
+    .ad { grid-template-columns: 1fr; }
+    .shots { max-width: 320px; }
+    .numbers { grid-template-columns: 1fr; }
+    .node { grid-template-columns: 1fr; gap: 2px; }
+  }
+  @media (prefers-reduced-motion: no-preference) { button.copy, .toc a { transition: border-color .15s, background-color .15s; } }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Yarp Developers · Meta ads · Kenya</p>
+  <h1>One day, KES 2,000, four apps</h1>
+  <p class="lede">A one-day test on Facebook and Instagram in Kenya, from setting up the ad account to reading the results. The images and ad text are ready to paste; tick steps off as you go (the ticks stay in this browser).</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#plan">The plan</a><a href="#setup">1 · Set up once</a><a href="#build">2 · Build the campaign</a><a href="#ads">3 · The four ads</a><a href="#day">4 · On the day</a><a href="#after">5 · Afterwards</a><a href="#why">Why this way</a>
+  </nav>
+
+  <section id="plan">
+    <h2>The plan</h2>
+    <p class="sub">One campaign, one audience, four ads. Meta moves the money toward whichever ad people click.</p>
+    <div class="tree">
+      <div class="node"><span class="k">Campaign</span><span class="v"><strong>KE launch</strong> <span>· objective Traffic · KES 2,000 for 24 hours</span></span></div>
+      <div class="node"><span class="k">Ad set</span><span class="v"><strong>Kenya, 18+</strong> <span>· Advantage+ audience · Advantage+ placements · link clicks</span></span></div>
+      <div class="node"><span class="k">Ads</span><span class="v">
+        <span class="ads-row"><span>Resume Maker · KES 1,000</span><span>pdfsign · KES 350</span><span>StoryForge · KES 2,500</span><span>Ink Lifter · KES 250</span></span>
+      </span></div>
+    </div>
+    <div class="numbers">
+      <div class="num"><b>50–250</b><small>clicks to expect, at KES 8–40 a click in Kenya</small></div>
+      <div class="num"><b>~1%+</b><small>link click-through rate that says an ad is working</small></div>
+      <div class="num"><b>0–3</b><small>sales is a normal one-day result; the clicks are the lesson</small></div>
+    </div>
+    <p class="note"><b>Ad sets per product?</b> Not on this budget. KES 2,000 split four ways is KES 500 each, too little for any of them to find its audience in a day. One ad set with four ads lets Meta pour the money into the ad people respond to, and the results still tell you which product that was. Split by product later, once one has proved itself.</p>
+  </section>
+
+  <section id="setup">
+    <h2>1 · Set up once</h2>
+    <p class="sub">About an hour, most of it waiting. Do this at least a day before the ads should run: new ads take up to 24 hours to be approved.</p>
+    <ol class="steps" data-group="setup">
+      <li><div class="step-head"><h3>A Facebook Page for Yarp Developers</h3><label class="tick"><input type="checkbox" id="s-page"> Done</label></div>
+        <div class="step-body">Ads run from a Page, not your profile. <a href="https://www.facebook.com/pages/create" target="_blank" rel="noopener">facebook.com/pages/create</a>, category <span class="field">Software company</span>. Use the YD logo, link <code>yarpdevelopers.com/store</code>, and make one post showing the apps so the Page doesn't look empty to people who tap it. Linking an Instagram account is optional; without one, Instagram ads show the Page's name.</div></li>
+      <li><div class="step-head"><h3>A business portfolio</h3><label class="tick"><input type="checkbox" id="s-portfolio"> Done</label></div>
+        <div class="step-body"><a href="https://business.facebook.com" target="_blank" rel="noopener">business.facebook.com</a> → create a business portfolio named <span class="field">Yarp Developers</span>, and add the Page to it. Running ads from a portfolio rather than a personal ad account means one flagged ad can't take your personal account down with it.</div></li>
+      <li><div class="step-head"><h3>An ad account in shillings</h3><label class="tick"><input type="checkbox" id="s-account"> Done</label></div>
+        <div class="step-body">In the portfolio: Settings → Accounts → Ad accounts → Add → Create a new ad account.
+          <ul><li><span class="field">Country:</span> Kenya · <span class="field">Currency:</span> KES · <span class="field">Time zone:</span> Africa/Nairobi</li>
+          <li>Currency and time zone can't be changed later. <strong>KES is what makes M-Pesa appear as a payment option</strong>; a USD account only takes cards.</li></ul></div></li>
+      <li><div class="step-head"><h3>Pay with M-Pesa (prepaid)</h3><label class="tick"><input type="checkbox" id="s-pay"> Done</label></div>
+        <div class="step-body">Ads Manager → Billing &amp; payments → Add payment method → <span class="field">M-Pesa</span> (only shown on a KES account set to manual payments). Add funds of about <strong>KES 2,500</strong>: the 2,000 budget plus room for any tax Meta adds. Meta spends from this balance and stops when it's empty, so you can't overspend. If M-Pesa doesn't show, a Visa/Mastercard debit or prepaid card works too.</div></li>
+      <li><div class="step-head"><h3>Put the site changes live</h3><label class="tick"><input type="checkbox" id="s-site"> Done</label></div>
+        <div class="step-body">Before any ad runs, the store needs the version that records which ad each sale came from, and tells phone visitors the apps run on Windows. Store pages already default to KES.</div></li>
+    </ol>
+  </section>
+
+  <section id="build">
+    <h2>2 · Build the campaign</h2>
+    <p class="sub">In <a href="https://adsmanager.facebook.com" target="_blank" rel="noopener">Ads Manager</a>, with the new KES ad account selected. Anything not named here, leave at Meta's default.</p>
+    <ol class="steps" data-group="build">
+      <li><div class="step-head"><h3>Campaign</h3><label class="tick"><input type="checkbox" id="b-campaign"> Done</label></div>
+        <div class="step-body">Create → objective <span class="field">Traffic</span> → Continue. Name <code>KE launch</code>. Leave <span class="field">Special ad categories</span> empty: these are software ads, not job, housing or credit offers.</div></li>
+      <li><div class="step-head"><h3>Budget and schedule</h3><label class="tick"><input type="checkbox" id="b-budget"> Done</label></div>
+        <div class="step-body"><span class="field">Campaign budget</span> (Advantage+ campaign budget) → <span class="field">Lifetime</span> → <strong>KES 2,000</strong>. In the ad set, schedule a start and an end 24 hours apart, e.g. 06:00 to 06:00 the next day, Nairobi time. A lifetime budget over a fixed window is how you get exactly one day's spend.</div></li>
+      <li><div class="step-head"><h3>Ad set: where people go and what to count</h3><label class="tick"><input type="checkbox" id="b-conversion"> Done</label></div>
+        <div class="step-body">Name <code>Kenya 18+</code>. <span class="field">Conversion location:</span> Website. <span class="field">Performance goal:</span> Maximise number of link clicks. (Landing page views would need the Meta Pixel, which the site deliberately doesn't have.)</div></li>
+      <li><div class="step-head"><h3>Audience</h3><label class="tick"><input type="checkbox" id="b-audience"> Done</label></div>
+        <div class="step-body"><span class="field">Locations:</span> Kenya (people living in). <span class="field">Minimum age:</span> 18. Keep <span class="field">Advantage+ audience</span> on and add these as suggestions, not limits: <em>Microsoft Windows, Microsoft Office, PDF, Curriculum vitae, Job hunting, Freelancing, Creative writing, Novels</em>. Meta treats them as a starting hint and widens from there.</div></li>
+      <li><div class="step-head"><h3>Placements</h3><label class="tick"><input type="checkbox" id="b-placements"> Done</label></div>
+        <div class="step-body">Leave <span class="field">Advantage+ placements</span> on. In 2026 Meta is removing the option to show ads only on desktop computers, so the ads will reach phones. That's handled: every ad says <em>Windows PC</em>, and a phone visitor sees how to buy with M-Pesa now and install later.</div></li>
+      <li><div class="step-head"><h3>Four ads</h3><label class="tick"><input type="checkbox" id="b-ads"> Done</label></div>
+        <div class="step-body">For each ad in section 3: <span class="field">Identity</span> → the Yarp Developers Page. <span class="field">Ad setup:</span> Create ad → Single image. Upload both images; Meta uses the tall one for Stories and Reels (under <span class="field">Media</span>, check each placement shows the right one). Paste the text, the <span class="field">Website URL</span> and the <span class="field">URL parameters</span>, and pick <span class="field">Learn more</span> as the button. Turn off <span class="field">Advantage+ creative</span> enhancements that add music or rewrite text; the image already has the price on it. Then duplicate the ad and swap in the next product.</div></li>
+      <li><div class="step-head"><h3>Publish, and check approval</h3><label class="tick"><input type="checkbox" id="b-publish"> Done</label></div>
+        <div class="step-body">Publish the evening before the day. Each ad shows <em>In review</em>, then <em>Active</em> (or <em>Scheduled</em>). If one is rejected, the reason is in Account Quality; the usual fix is rewording a line that sounds like a claim about the person reading it.</div></li>
+    </ol>
+  </section>
+
+  <section id="ads">
+    <h2>3 · The four ads</h2>
+    <p class="sub">The images are in <code>marketing/meta-ke-launch/out/</code> in the website repo: upload them from there. Each link carries its own tag, so a sale shows which ad brought it.</p>
+    <div id="adlist"></div>
+  </section>
+
+  <section id="day">
+    <h2>4 · On the day</h2>
+    <p class="sub">The first hours look noisy; don't touch anything before midday. In Ads Manager, add the columns Link clicks, CTR (link click-through rate) and CPC (cost per link click).</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>When</th><th>Look at</th><th>Do</th></tr></thead>
+      <tbody>
+        <tr><td class="t">08:00</td><td>Is the campaign <em>Active</em> and spending?</td><td>Not spending: check the M-Pesa balance and whether any ad is still in review.</td></tr>
+        <tr><td class="t">13:00</td><td>CTR and CPC per ad. Open your store on your own phone from one of the ads.</td><td>Leave it alone unless an ad has spent KES 500+ with CTR under 0.5%: pause that one, the rest get its share.</td></tr>
+        <tr><td class="t">18:00</td><td>Sales so far (section 5). Evening is when people are at their computers.</td><td>Nothing to change; note which ad leads.</td></tr>
+        <tr><td class="t">Next 06:00</td><td>The campaign ends by itself.</td><td>Read the results, then switch the store back (section 5).</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note ok"><b>What good looks like:</b> CPC under KES 25 and CTR above 1% on at least one ad. That ad's product and wording is what a longer campaign should lead with.</p>
+  </section>
+
+  <section id="after">
+    <h2>5 · Afterwards</h2>
+    <ol class="steps" data-group="after">
+      <li><div class="step-head"><h3>Count the sales</h3><label class="tick"><input type="checkbox" id="a-sales"> Done</label></div>
+        <div class="step-body"><a href="https://console.firebase.google.com/project/yarp-dev-website/firestore/data/~2Fstore_orders" target="_blank" rel="noopener">Firestore → store_orders</a>: each order from an ad has <code>campaign.campaign = "ke-launch"</code> and <code>campaign.content</code> naming the ad. The Paystack dashboard lists the same payments with their product.</div></li>
+      <li><div class="step-head"><h3>Compare clicks with sales</h3><label class="tick"><input type="checkbox" id="a-compare"> Done</label></div>
+        <div class="step-body">Per product: KES spent (Ads Manager) against KES earned (orders). One day rarely pays for itself; what matters is which product got clicks <em>and</em> sales. That's the one to run for a week next.</div></li>
+      <li><div class="step-head"><h3>Switch the store back to euros by default</h3><label class="tick"><input type="checkbox" id="a-revert"> Done</label></div>
+        <div class="step-body">In <code>src/data/regions.js</code> set <code>DEFAULT_REGION = INTL</code> and push. Visitors whose computer is on Nairobi time keep seeing shillings anyway.</div></li>
+      <li><div class="step-head"><h3>Refunds and questions</h3><label class="tick"><input type="checkbox" id="a-support"> Done</label></div>
+        <div class="step-body">Watch <span class="mono">yarpdevelopers@gmail.com</span> and the Page's inbox for a few days: ad buyers write to the Page. Refunds for M-Pesa payments are made from the Paystack dashboard.</div></li>
+    </ol>
+  </section>
+
+  <section id="why">
+    <h2>Why this way</h2>
+    <div class="why">
+      <div><h3>Traffic, not Sales</h3><p>Meta's Sales objective needs the Meta Pixel on the site, which would break the store's promise of no trackers. For one day it would barely help anyway: Sales optimisation needs dozens of purchases a week to learn. Traffic finds people who click, and the tagged links tell you which clicks turned into sales.</p></div>
+      <div><h3>Most clicks come from phones</h3><p>Desktop-only targeting is being removed from Meta ads in 2026, and most Kenyans on Facebook are on their phones. So the ads say <em>Windows PC</em> up front, and the store tells phone visitors they can pay with M-Pesa now (the key and download link come by email) or send the page to themselves on WhatsApp to try on their computer.</p></div>
+      <div><h3>Prices on the image</h3><p>KES 350 for a PDF signer is the hook in a market used to paying for subscriptions in dollars. Putting the price and "Pay with M-Pesa" on the image means the people who click already know it's affordable and local.</p></div>
+    </div>
+    <div class="sources">
+      <span>Sources checked September 2026:</span>
+      <a href="https://www.socialmediatoday.com/news/meta-removes-option-to-exclude-ad-placements/828461/" target="_blank" rel="noopener">Meta removes placement and device exclusions (Social Media Today)</a>
+      <a href="https://getmerank.com/blog/meta-removing-placement-controls-2026/" target="_blank" rel="noopener">Placement controls removal, 2026 timeline (Merank)</a>
+      <a href="https://www.smartbizsystems.co.ke/blog/facebook-ads-payment" target="_blank" rel="noopener">Paying for Meta ads with M-Pesa on a KES account (SmartBizSystems)</a>
+      <a href="https://neliumsystems.com/how-to-run-facebook-ads-kenya-2026/" target="_blank" rel="noopener">Kenyan costs: CPC KES 8–40, minimum budgets (Nelium Systems)</a>
+      <a href="https://superscale.ai/learn/meta-ad-sizes" target="_blank" rel="noopener">Meta ad sizes 2026: 1080×1350 feed, 1080×1920 stories (Superscale)</a>
+      <a href="https://adsuploader.com/blog/meta-ad-copy-specs" target="_blank" rel="noopener">Meta ad text limits: 125-character text, 27–40 character headline (AdsUploader)</a>
+    </div>
+  </section>
+
+  <footer>Made for the Yarp Developers store · images rebuild with <code>node marketing/meta-ke-launch/build.js</code></footer>
+</div>
+
+<script>
+  const BASE = "https://yarpdevelopers.com/store/";
+  const PARAMS = (slug) => `utm_source=meta&utm_medium=paid&utm_campaign=ke-launch&utm_content=${slug}`;
+  const ADS = [
+    { slug: "resume-maker", name: "Resume Maker", price: "KES 1,000", lead: true,
+      primary: "Make a clean, one-page CV on your Windows PC. Seven designs, a proper PDF. Try it free, then KES 1,000 once with M-Pesa.",
+      headline: "Resume Maker · KES 1,000",
+      description: "Free to try on Windows" },
+    { slug: "pdfsign", name: "pdfsign", price: "KES 350", lead: true,
+      primary: "Stop printing forms just to sign them. Fill in and sign PDFs on your Windows PC, nothing uploaded. KES 350 once, via M-Pesa.",
+      headline: "Sign PDFs on your PC · KES 350",
+      description: "Free to try on Windows" },
+    { slug: "storyforge", name: "StoryForge", price: "KES 2,500",
+      primary: "For novelists: chapters, characters and notes in one place on your Windows PC, exported to Word, PDF or EPUB. KES 2,500 once.",
+      headline: "StoryForge · KES 2,500",
+      description: "Free to explore on Windows" },
+    { slug: "ink-lifter", name: "Ink Lifter", price: "KES 250",
+      primary: "Turn a photo of your signature or stamp into a clean, transparent PNG for any document. On your Windows PC, KES 250 once.",
+      headline: "Signature to PNG · KES 250",
+      description: "Free to try on Windows" },
+  ];
+
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const row = (label, value, note, mono) => `
+    <div class="row"><span class="label">${label}${note ? `<em>${note}</em>` : ""}</span>
+      <div class="copybox"><div class="txt${mono ? " mono" : ""}">${esc(value)}</div><button type="button" class="copy" data-copy="${esc(value)}">Copy</button></div></div>`;
+
+  document.getElementById("adlist").innerHTML = ADS.map((ad) => `
+    <article class="ad" id="ad-${ad.slug}">
+      <div class="shots">
+        <figure><img src="ads/${ad.slug}-feed.png" alt="${esc(ad.name)} feed ad, 4:5" width="1080" height="1350" loading="lazy"><figcaption>${ad.slug}-feed.png · Feed</figcaption></figure>
+        <figure><img src="ads/${ad.slug}-story.png" alt="${esc(ad.name)} story ad, 9:16" width="1080" height="1920" loading="lazy"><figcaption>${ad.slug}-story.png · Stories, Reels</figcaption></figure>
+      </div>
+      <div>
+        <h3>${esc(ad.name)} <span class="price">${ad.price}</span>${ad.lead ? '<span class="lead-tag">Likely leader</span>' : ""}</h3>
+        <div class="kv">
+          ${row("Primary text", ad.primary, `${ad.primary.length} / 125`)}
+          ${row("Headline", ad.headline, `${ad.headline.length} / 40`)}
+          ${row("Description", ad.description)}
+          ${row("Website URL", BASE + ad.slug, "", true)}
+          ${row("URL parameters", PARAMS(ad.slug), "", true)}
+        </div>
+      </div>
+    </article>`).join("");
+
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("button.copy");
+    if (!b) return;
+    const text = b.dataset.copy;
+    try {
+      await navigator.clipboard.writeText(text);
+      b.textContent = "Copied"; b.classList.add("did");
+      setTimeout(() => { b.textContent = "Copy"; b.classList.remove("did"); }, 1800);
+    } catch {
+      const r = document.createRange(); r.selectNodeContents(b.previousElementSibling);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      b.textContent = "Selected";
+    }
+  });
+
+  // Ticks are a convenience for this viewer only.
+  const KEY = "ke-ads-ticks";
+  let ticks = {};
+  try { ticks = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch {}
+  for (const box of document.querySelectorAll(".tick input")) {
+    const li = box.closest("li");
+    box.checked = !!ticks[box.id];
+    li.classList.toggle("done", box.checked);
+    box.addEventListener("change", () => {
+      ticks[box.id] = box.checked;
+      li.classList.toggle("done", box.checked);
+      try { localStorage.setItem(KEY, JSON.stringify(ticks)); } catch {}
+    });
+  }
+</script>

@@ -32,6 +32,7 @@ const { issueLicense, licenseForSession } = require("./lib/license");
 const { sendLicense, sendUpdateEmail } = require("./lib/email");
 const { findOrder, recordOrder, listOrdersForProducts, markNotified } = require("./lib/orders");
 const paystack = require("./lib/paystack");
+const { cleanCampaign, toStripeMetadata, fromStripeMetadata } = require("./lib/campaign");
 const { PRODUCTS, APPS } = require("./products");
 const { REGIONS, subunitPrice } = require("./pricing");
 
@@ -103,7 +104,7 @@ async function checkout(req, res) {
     // merchant of record, handling VAT) the parameter must be left out, and
     // leaving it out is the same as off otherwise.
     ...(STRIPE_AUTOMATIC_TAX.value() === "true" ? { automatic_tax: { enabled: true } } : {}),
-    metadata: { product },
+    metadata: { product, ...toStripeMetadata(cleanCampaign(req.body?.campaign)) },
     payment_intent_data: { metadata: { product } },
     // No custom_text on the Pay button either: Managed Payments doesn't allow it.
     success_url: `${origin}/store/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -149,6 +150,7 @@ async function paystackCheckout(req, res) {
       source: "yarp-store",
       product,
       region,
+      campaign: cleanCampaign(req.body?.campaign),
       // Where Paystack's Cancel link goes, like Stripe's cancel_url.
       cancel_action: `${origin}${back}?checkout=cancelled`,
       custom_fields: [{ display_name: "Product", variable_name: "product", value: PRODUCTS[product].name }],
@@ -197,6 +199,7 @@ async function fulfill(session) {
     country: session.customer_details?.address?.country ?? null,
     livemode: session.livemode,
     provider: "stripe",
+    campaign: fromStripeMetadata(session.metadata),
     createdAt: new Date(session.created * 1000).toISOString(),
   });
 }

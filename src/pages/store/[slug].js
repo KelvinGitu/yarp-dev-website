@@ -14,11 +14,17 @@ export default function StoreProduct({ product }) {
   const { region } = useRegion();
   const local = REGIONS[region];
   const [cancelled, setCancelled] = useState(false);
+  const [onPhone, setOnPhone] = useState(false);
 
   // Stripe and Paystack send a buyer who backs out of checkout here with ?checkout=cancelled.
   useEffect(() => {
     if (router.isReady) setCancelled(router.query.checkout === 'cancelled');
   }, [router.isReady, router.query.checkout]);
+
+  // Most ad clicks come from phones, and the apps are Windows-only.
+  useEffect(() => {
+    setOnPhone(/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent));
+  }, []);
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
   const others = products.filter((p) => p.slug !== product.slug);
@@ -63,6 +69,20 @@ export default function StoreProduct({ product }) {
             <BuyButton item={product} />
           </div>
           <RegionPicker />
+          {onPhone && (
+            <p className="phone-note">
+              <strong>On your phone?</strong> {product.name} runs on Windows computers. Buy now and your key
+              and the download link arrive by email, or{' '}
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`${product.name} for my PC: https://yarpdevelopers.com/store/${product.slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                send this page to yourself on WhatsApp
+              </a>{' '}
+              and open it on your computer to try it free first.
+            </p>
+          )}
           <StorePromises compact />
         </header>
 

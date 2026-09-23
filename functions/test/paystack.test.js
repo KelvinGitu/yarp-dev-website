@@ -40,4 +40,9 @@ for (const [why, t] of Object.entries(rejected)) {
   assert.equal(paidOrder(t), null, why);
 }
 
+// The ad tag rides along on the order, and only plain values survive.
+const tagged = paidOrder(tx({ metadata: { ...good.metadata, campaign: { source: "meta", campaign: "ke-launch", content: "<b>" } } }));
+assert.deepEqual(tagged.campaign, { source: "meta", campaign: "ke-launch" });
+assert.equal(order.campaign, null);
+
 console.log("paystack: ok");

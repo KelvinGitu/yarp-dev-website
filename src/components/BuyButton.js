@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRegion } from '@/components/Region';
 import { REGIONS, priceFor } from '@/data/regions';
+import { currentCampaign } from '@/data/campaign';
 
 // Sends the buyer to a checkout page for `item` (a products.js entry or the
 // bundle). The session is created by the store function; payment details are
@@ -37,12 +38,12 @@ export default function BuyButton({ item, label = 'Buy a licence', className = '
 
   function buy() {
     if (local) setAsking(true);
-    else start('/api/checkout', { product: item.slug });
+    else start('/api/checkout', { product: item.slug, campaign: currentCampaign() });
   }
 
   function payLocally(e) {
     e.preventDefault();
-    start('/api/paystack/checkout', { product: item.slug, region, email });
+    start('/api/paystack/checkout', { product: item.slug, region, email, campaign: currentCampaign() });
   }
 
   const price = priceFor(item, region);
