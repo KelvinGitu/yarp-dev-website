@@ -7,9 +7,10 @@ import { SUPPORT_EMAIL } from '@/data/products';
 const paragraphs = [
   '1. The licence',
   'Buying pdfsign, Resume Maker, StoryForge or Ink Lifter gets you a personal licence key for that app; a bundle key covers all four. You may install and use the app on computers you own or use yourself. A licence for a business covers one person. Please don’t share or publish your key.',
-  'The licence doesn’t expire, and the app keeps working without contacting us. It covers the version you bought and the updates we publish for that major version.',
+  'The licence doesn’t expire, and the app keeps working without contacting us. It covers the version you bought and every update we publish for that app, free, for as long as we make it.',
   '2. Trying before you buy',
   'Every download works before you pay. pdfsign and Resume Maker: opening, filling in and editing are always free; saving or exporting a PDF needs a licence key. Ink Lifter: opening and previewing are always free; saving, copying or exporting an image needs a licence key. StoryForge: creating your first project on a computer starts a short window (about 15 minutes) in which everything works; after that, a key is needed to start another project or add to what you have, and everything you wrote stays readable, editable and exportable.',
+  'Prices in Kenya are set in Kenyan shillings and paid with M-Pesa or Airtel Money through Paystack. Everywhere else, prices are in euros and paid through Stripe. The key you get is the same either way.',
   '3. Refunds',
   'If the app doesn’t work for you, email us within 30 days of buying and we’ll refund you in full. This doesn’t affect any rights you have under the law where you live.',
   '4. No warranty',

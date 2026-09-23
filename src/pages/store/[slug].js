@@ -4,20 +4,25 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import BuyButton from '@/components/BuyButton';
 import StorePromises from '@/components/StorePromises';
+import { RegionPicker, useRegion } from '@/components/Region';
 import { DownloadIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
+import { REGIONS, priceFor } from '@/data/regions';
 
 export default function StoreProduct({ product }) {
   const router = useRouter();
+  const { region } = useRegion();
+  const local = REGIONS[region];
   const [cancelled, setCancelled] = useState(false);
 
-  // Stripe sends a buyer who backs out of checkout here with ?checkout=cancelled.
+  // Stripe and Paystack send a buyer who backs out of checkout here with ?checkout=cancelled.
   useEffect(() => {
     if (router.isReady) setCancelled(router.query.checkout === 'cancelled');
   }, [router.isReady, router.query.checkout]);
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
   const others = products.filter((p) => p.slug !== product.slug);
+  const [lead, ...more] = product.shots;
 
   return (
     <>
@@ -33,20 +38,55 @@ export default function StoreProduct({ product }) {
           </p>
         )}
 
-        <div className="detail-header">
-          <div className="detail-icon">
-            <img src={`/assets/icons/${product.slug}.png`} alt="" />
+        <header className="product-hero">
+          <div className="detail-header">
+            <div className="detail-icon">
+              <img src={`/assets/icons/${product.slug}.png`} alt="" />
+            </div>
+            <div className="detail-header-text">
+              <h1 className="detail-title">{product.name}</h1>
+              <p className="detail-tagline">{product.tagline}</p>
+              <p className="detail-release">
+                v{product.version} · Windows 10 and 11 · {product.size}
+              </p>
+            </div>
           </div>
-          <div className="detail-header-text">
-            <h1 className="detail-title">{product.name}</h1>
-            <p className="detail-tagline">{product.tagline}</p>
-            <p className="detail-release">
-              v{product.version} · Windows 10 and 11 · {product.size}
-            </p>
-          </div>
-        </div>
 
-        {/* The promise first: it's the reason to buy this over a web tool. */}
+          <div className="store-actions">
+            <a className="store-btn store-btn-download" href={product.download}>
+              <DownloadIcon />
+              <span>
+                <span className="store-btn-main">Download</span>
+                <span className="store-btn-sub">{product.tryShort}</span>
+              </span>
+            </a>
+            <BuyButton item={product} />
+          </div>
+          <RegionPicker />
+          <StorePromises compact />
+        </header>
+
+        <figure className="product-lead-shot">
+          <img src={`/assets/store/${product.slug}/${lead.file}`} alt={lead.alt} width={1440} height={900} />
+        </figure>
+
+        <p className="product-intro">{product.description}</p>
+
+        {/* The features are what people came to compare, so each gets a card. */}
+        <section className="detail-section">
+          <h2 className="detail-section-title">What it does</h2>
+          <ol className="product-features">
+            {product.features.map((f, i) => (
+              <li key={f.title} className="product-feature">
+                <span className="product-feature-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="product-feature-title">{f.title}</h3>
+                <p className="product-feature-text">{f.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* The promise: the reason to buy this over a web tool. */}
         <section className="store-promise">
           <p className="store-promise-line">Your files never leave this computer.</p>
           <ul className="store-promise-list">
@@ -54,42 +94,16 @@ export default function StoreProduct({ product }) {
           </ul>
         </section>
 
-        <div className="store-actions">
-          <a className="store-btn store-btn-download" href={product.download}>
-            <DownloadIcon />
-            <span>
-              <span className="store-btn-main">Download</span>
-              <span className="store-btn-sub">{product.tryShort}</span>
-            </span>
-          </a>
-          <BuyButton product={product.slug} price={product.price} />
-        </div>
-        <StorePromises compact />
-
-        <div className="detail-description">
-          <p>{product.description}</p>
-        </div>
-
-        <section className="detail-section">
-          <h2 className="detail-section-title">Screens</h2>
-          <div className="store-shots">
-            {product.shots.map((shot) => (
-              <img key={shot.file} src={`/assets/store/${product.slug}/${shot.file}`} alt={shot.alt} width={1440} height={900} loading="lazy" />
-            ))}
-          </div>
-        </section>
-
-        <section className="detail-section">
-          <h2 className="detail-section-title">What it does</h2>
-          <ul className="detail-features">
-            {product.features.map((f) => (
-              <li key={f} className="detail-feature-item">
-                <span className="detail-feature-dot" />
-                {f}
-              </li>
-            ))}
-          </ul>
-        </section>
+        {more.length > 0 && (
+          <section className="detail-section">
+            <h2 className="detail-section-title">More screens</h2>
+            <div className={`store-shots${more.length > 1 ? ' store-shots-grid' : ''}`}>
+              {more.map((shot) => (
+                <img key={shot.file} src={`/assets/store/${product.slug}/${shot.file}`} alt={shot.alt} width={1440} height={900} loading="lazy" />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="detail-section">
           <h2 className="detail-section-title">How buying works</h2>
@@ -98,7 +112,9 @@ export default function StoreProduct({ product }) {
               <strong>Try it.</strong> Download and install — no payment needed. {product.tryLong}
             </li>
             <li>
-              <strong>Buy a licence</strong> ({product.price}, paid through Stripe). Your licence key arrives by email a moment later.
+              <strong>Buy a licence</strong>{' '}
+              ({priceFor(product, region)}, {local ? `paid with ${local.payWith} through Paystack` : 'paid through Stripe'}).
+              Your licence key arrives by email a moment later.
             </li>
             <li>
               <strong>Paste the key</strong> into the app’s Licence window. It’s checked on your computer, so it keeps working offline, for good.
@@ -136,6 +152,13 @@ export default function StoreProduct({ product }) {
               <p>{product.licenseFaq}</p>
             </details>
             <details>
+              <summary>Do I get updates?</summary>
+              <p>
+                Yes, for life. Every new version of {product.name} is free for anyone with a key, and you’ll get an email
+                when one comes out. Download it from this page and install it over the old one; your key and your files carry on.
+              </p>
+            </details>
+            <details>
               <summary>Can I use my key on more than one computer?</summary>
               <p>Yes, on your own computers: your desktop and your laptop, say. Please don’t share it beyond that.</p>
             </details>
@@ -161,7 +184,7 @@ export default function StoreProduct({ product }) {
         {others.length > 0 && (
           <div className="detail-note">
             <strong>Want {others.map((p) => p.name).join(', ').replace(/, ([^,]*)$/, ' or $1')} too?</strong>{' '}
-            {bundle.tagline} {bundle.price} for all of them.{' '}
+            {bundle.tagline} {priceFor(bundle, region)} for all of them.{' '}
             <Link href="/store">See all the apps</Link>.
           </div>
         )}

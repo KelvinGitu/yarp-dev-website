@@ -1,6 +1,7 @@
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Layout from "@/components/Layout";
+import { RegionProvider } from "@/components/Region";
 
 // Display face — used loud, and only for the name, section titles, and project names.
 const display = Space_Grotesk({
@@ -24,8 +25,10 @@ const mono = JetBrains_Mono({
 
 export default function App({ Component, pageProps }) {
   return (
-    <Layout className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <Component {...pageProps} />
-    </Layout>
+    <RegionProvider>
+      <Layout className={`${display.variable} ${body.variable} ${mono.variable}`}>
+        <Component {...pageProps} />
+      </Layout>
+    </RegionProvider>
   );
 }

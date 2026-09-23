@@ -5,35 +5,52 @@ import { useEffect, useState } from 'react';
 import { DownloadIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, productBySlug, products } from '@/data/products';
 
-// Where Stripe returns a buyer. Nothing here is taken on trust: the page asks
-// the store function, which checks the session with Stripe, whether the order
-// is really paid before showing a key.
+// Where Stripe (?session_id=) and Paystack (?reference=) return a buyer.
+// Nothing here is taken on trust: the page asks the store function, which
+// checks the order with the payment provider, whether it's really paid before
+// showing a key.
+
+// Mobile money can take a little while to confirm after the buyer approves
+// it on their phone, so a pending order is asked about again a few times.
+const RETRIES = 8;
+const RETRY_MS = 4000;
+
 export default function StoreSuccess() {
   const router = useRouter();
   const [order, setOrder] = useState(null);
   const [state, setState] = useState('loading'); // loading | paid | pending | error
   const [copied, setCopied] = useState(false);
+  const { session_id: sessionId, reference } = router.query;
+  const provider = reference ? 'Paystack' : 'Stripe';
 
   useEffect(() => {
     if (!router.isReady) return;
-    const sessionId = router.query.session_id;
-    if (!sessionId) { setState('error'); return; }
+    const query = sessionId
+      ? `session_id=${encodeURIComponent(sessionId)}`
+      : reference ? `reference=${encodeURIComponent(reference)}` : null;
+    if (!query) { setState('error'); return; }
     let cancelled = false;
-    (async () => {
+    let timer;
+    const ask = async (tries) => {
       try {
-        const res = await fetch(`/api/order?session_id=${encodeURIComponent(sessionId)}`);
+        const res = await fetch(`/api/order?${query}`);
         const data = await res.json().catch(() => ({}));
         if (cancelled) return;
-        if (res.status === 202) { setState('pending'); return; }
+        if (res.status === 202) {
+          if (reference && tries < RETRIES) timer = setTimeout(() => ask(tries + 1), RETRY_MS);
+          else setState('pending');
+          return;
+        }
         if (!res.ok) throw new Error(data.error || 'lookup failed');
         setOrder(data);
         setState('paid');
       } catch {
         if (!cancelled) setState('error');
       }
-    })();
-    return () => { cancelled = true; };
-  }, [router.isReady, router.query.session_id]);
+    };
+    ask(0);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [router.isReady, sessionId, reference]);
 
   async function copyKey() {
     try {
@@ -56,7 +73,7 @@ export default function StoreSuccess() {
       </Head>
 
       <div className="store store-success">
-        {state === 'loading' && <p className="store-lede">Checking your order with Stripe…</p>}
+        {state === 'loading' && <p className="store-lede">Checking your order with {provider}…</p>}
 
         {state === 'paid' && order && (
           <>
@@ -105,7 +122,7 @@ export default function StoreSuccess() {
           <>
             <h1 className="detail-title">Payment received, finishing up</h1>
             <p className="store-lede">
-              Stripe is still confirming your payment. Your licence key will arrive by email within a few minutes;
+              {provider} is still confirming your payment. Your licence key will arrive by email within a few minutes;
               you can close this page.
             </p>
           </>

@@ -15,7 +15,8 @@ const paragraphs = [
   'The “Buy a licence” link in each app opens this website in your normal web browser. That happens only when you click it.',
   '2. Buying a licence',
   'When you buy, you pay on a checkout page run by Stripe, which handles your card details under its own privacy policy (https://stripe.com/privacy). We never see or store your card number.',
-  'From Stripe we receive your email address, your name if you give one, your country, what you bought, and the amount. We use them to create your licence key, email it to you, keep a record of the sale, handle refunds and support, and meet our tax and accounting obligations.',
+  'If you pay in Kenyan shillings, you pay with M-Pesa or Airtel Money on a checkout page run by Paystack, which handles your phone number and payment under its own privacy policy (https://paystack.com/privacy). You give us your email address first, so we know where to send your key.',
+  'From Stripe or Paystack we receive your email address, your name if you give one, your country, what you bought, and the amount. We use them to create your licence key, email it to you, keep a record of the sale, handle refunds and support, and meet our tax and accounting obligations.',
   'Your licence key is emailed to you through Resend (https://resend.com/legal/privacy-policy). Order records are kept in Google Firebase, hosted in the EU.',
   'We keep order records for as long as tax law requires (currently up to ten years in Belgium), then delete them. We don’t sell or share your details with anyone else, and we don’t send marketing email.',
   '3. This website',
@@ -27,5 +28,5 @@ const paragraphs = [
 ];
 
 export default function StorePrivacy() {
-  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 22, 2026" />;
+  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 23, 2026" />;
 }

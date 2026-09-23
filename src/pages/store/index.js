@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
+import { Price, RegionPicker } from '@/components/Region';
 import StorePromises from '@/components/StorePromises';
 import { bundle, products } from '@/data/products';
 
@@ -28,6 +29,7 @@ export default function Store() {
             files first — see each app's page for exactly what's free.
           </p>
           <StorePromises />
+          <RegionPicker />
         </header>
 
         <ul className="store-list">
@@ -44,7 +46,7 @@ export default function Store() {
                   <p className="project-tagline">{p.tagline}</p>
                 </div>
                 <div className="release">
-                  <span className="release-builds">{p.price}</span>
+                  <span className="release-builds"><Price product={p} /></span>
                   <span className="release-version">v{p.version}</span>
                 </div>
               </div>
@@ -63,7 +65,7 @@ export default function Store() {
                 <h2 className="project-name">{bundle.name}</h2>
                 <p className="project-tagline">{bundle.tagline}</p>
               </div>
-              <BuyButton product={bundle.slug} price={bundle.price} label="Buy all four" />
+              <BuyButton item={bundle} label="Buy all four" />
             </div>
           </li>
         </ul>

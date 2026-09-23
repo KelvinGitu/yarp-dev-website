@@ -89,6 +89,7 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...        # from `stripe listen`, next step
 YARP_SIGNING_KEY=<private_key_b64 from yarp-signing-key.json>
 RESEND_API_KEY=                        # leave empty for now
+PAYSTACK_SECRET_KEY=sk_test_...        # Paystack test key; see Part 6
 ```
 
 ### 1.4 Run it
@@ -202,7 +203,11 @@ firebase functions:secrets:set STRIPE_WEBHOOK_SECRET   # from 5.3
 firebase functions:secrets:set YARP_SIGNING_KEY        # private_key_b64
 firebase functions:secrets:set RESEND_API_KEY
 firebase functions:secrets:set ADMIN_NOTIFY_KEY        # any long random string; kept only on your machine
+firebase functions:secrets:set PAYSTACK_SECRET_KEY     # sk_live_... from Paystack (Part 6)
 ```
+
+The function declares every one of these, so **a deploy fails until all of
+them exist**, PAYSTACK_SECRET_KEY included.
 
 Each of those pauses for you to paste the value and press enter. To set one
 without the prompt (e.g. from a script, or a terminal that can't do
@@ -278,6 +283,77 @@ email would tell buyers about a download that isn't actually there yet.
 
 ---
 
+## Part 6: Kenyan prices (Paystack, M-Pesa)
+
+Visitors in Kenya see prices in shillings and pay with M-Pesa or Airtel Money
+through Paystack; everyone else sees euros and pays through Stripe. The site
+guesses from the browser's time zone (`Africa/Nairobi`), and the "Prices for"
+picker on /store and every product page lets anyone switch.
+
+```
+ Buy (Kenya) ── asks for an email ──> /api/paystack/checkout ──> Paystack page (mobile money only)
+                                                                      |
+ /store/success?reference=yds_... <── Paystack sends the buyer back ──┘
+        |  /api/order asks Paystack: paid? right amount? right currency?
+        |  then mints the key, records the order, emails it (once)
+        v
+ paystackReconcile, every 15 min: the same for any paid order whose buyer closed the tab
+```
+
+**Why no webhook.** Paystack allows one webhook URL per business, and this
+business's belongs to small_biz_tool. That app's webhook ignores anything
+without `metadata.subscriptionId`, so store payments pass through it harmlessly.
+Instead, the site asks Paystack's API directly: when the buyer comes back, and
+on the 15-minute schedule. A key can therefore arrive up to ~20 minutes late
+for someone who closes the tab mid-payment; everyone else gets it at once.
+
+**Why mobile money only.** Anyone can pick "Kenya" in the picker. Mobile money
+needs a Kenyan phone line, so the lower price stays with people in Kenya; a
+card from anywhere would not. A Kenya-registered Paystack business can only
+charge KES (and USD), so other countries' currencies aren't possible from this
+account.
+
+**Prices** live in two files that must agree: `functions/pricing.js` (what's
+charged and checked) and `src/data/regions.js` (what's shown). A payment whose
+amount or currency doesn't match `pricing.js` exactly gets no key; it's logged
+as `[paystack] paid but not a valid store order`.
+
+**Every store payment's reference starts with `yds_`**, which is how the
+reconcile tells them apart from small_biz_tool's payments in the same account.
+
+### 6.1 Test it
+
+1. Paystack dashboard → **Settings → API Keys & Webhooks**, test mode: copy the
+   secret key into `functions/.secret.local` as `PAYSTACK_SECRET_KEY`.
+2. Run the emulators (1.4). Open <http://127.0.0.1:5000/store/resume-maker>,
+   pick **Kenya (KES)**, click **Buy**, enter your email and pay with Paystack's
+   test mobile money.
+3. You should land on the success page with a key. Reload it: same key, and no
+   second email.
+4. For the closed-tab case: pay, close the tab, wait 5 minutes (it skips newer
+   payments so they don't race the success page), then run the schedule by
+   hand with `cd functions; firebase functions:shell` and `paystackReconcile()`.
+
+### 6.2 Go live
+
+```powershell
+firebase functions:secrets:set PAYSTACK_SECRET_KEY    # sk_live_...
+npm run build
+firebase deploy --only functions:store,hosting
+```
+
+The first deploy of `paystackReconcile` creates a Cloud Scheduler job (the
+project is already on Blaze). Then buy the cheapest app (Ink Lifter, KES 250)
+with your own M-Pesa, check the key arrives and unlocks the app, and refund
+yourself from the Paystack dashboard.
+
+**Tax.** With Stripe Managed Payments, Stripe is the merchant of record and
+handles VAT. Paystack isn't: for shilling sales, you're the seller, so any tax
+due on them is yours to handle. The licence terms still name the seller as
+Yarp Developers, Belgium; check that's right for these sales.
+
+---
+
 ## Pre-launch checklist
 
 - [ ] `yarp-signing-key.json` backed up somewhere safe, and in no repo
@@ -289,6 +365,7 @@ email would tell buyers about a download that isn't actually there yet.
 - [ ] VAT handled (Part 4)
 - [ ] Live price IDs, live secret key, live webhook secret deployed (Part 5)
 - [ ] You bought each product with a real card, got the key, and refunded (5.5)
+- [ ] PAYSTACK_SECRET_KEY set, and one real M-Pesa purchase made and refunded (Part 6)
 
 ## When something goes wrong after a sale
 

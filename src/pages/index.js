@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
 import ProjectCard from '@/components/ProjectCard';
+import { Price } from '@/components/Region';
 import { products } from '@/data/products';
 
 const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
@@ -60,7 +61,7 @@ export default function Home() {
                     <span className="project-name">{p.name}</span>
                     <span className="project-tagline">{p.tagline}</span>
                   </span>
-                  <span className="home-desktop-price">{p.price}</span>
+                  <span className="home-desktop-price"><Price product={p} /></span>
                 </Link>
               </li>
             ))}

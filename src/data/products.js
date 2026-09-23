@@ -2,7 +2,10 @@
 //
 // `price` is display only: Stripe charges whatever the Price behind
 // STRIPE_PRICE_<PRODUCT> says (see functions/products.js and STORE_SETUP.md).
-// Change one, change the other.
+// Change one, change the other. Local prices (Kenya) are in regions.js.
+//
+// Each feature is a short `title` and a sentence of `text`; the product page
+// shows them as cards, so keep titles to a few words.
 //
 // Downloads are the installers on the public yarp-downloads repo's latest
 // release. They're uploaded under a version-less name so these links never
@@ -38,13 +41,13 @@ export const products = [
       { file: '1.webp', alt: 'pdfsign with a rental agreement open: form fields filled in, a signature placed on the line, and the date beside it' },
     ],
     features: [
-      'Sign by drawing, typing in a handwriting style, uploading a photo of your signature, or signing on your phone',
-      'Fill in fillable forms, with a counter that jumps you to the next empty field',
-      'Add text, dates, your name, ticks and crosses; white out what needs covering',
-      'Put your initials on every page in one click',
-      'Reorder, turn, delete and merge pages',
-      'Undo for everything, and saved snippets for your address, email and ID number',
-      'Lock form fields in the saved copy so answers can’t be changed afterwards',
+      { title: 'Sign any way you like', text: 'Draw it, type it in a handwriting style, upload a photo of your signature, or sign on your phone.' },
+      { title: 'Forms, filled fast', text: 'Fill in fillable forms, with a counter that jumps you to the next empty field.' },
+      { title: 'Write on any page', text: 'Add text, dates, your name, ticks and crosses, and white out what needs covering.' },
+      { title: 'Initial every page', text: 'Put your initials on every page in one click.' },
+      { title: 'Rearrange pages', text: 'Reorder, turn, delete and merge pages.' },
+      { title: 'Undo and snippets', text: 'Undo for everything, and saved snippets for your address, email and ID number.' },
+      { title: 'Lock the answers', text: 'Lock form fields in the saved copy so answers can’t be changed afterwards.' },
     ],
     privacy: [
       'Your PDFs are opened and written on your computer. They are never uploaded.',
@@ -73,12 +76,12 @@ export const products = [
       { file: '2.webp', alt: 'Resume Maker’s Design tab, showing the same resume in Classic, Modern, Column and Timeline templates' },
     ],
     features: [
-      'Seven templates, from a plain one that applicant tracking systems read cleanly to a bold colour sidebar',
-      'Live preview as you type, and your own colour, text size and paper size (A4 or US Letter)',
-      'Fit to one page: type and spacing shrink together until it does',
-      'Keep several versions and duplicate one to tailor it for a new job',
-      'Rename, reorder or hide any section; undo for every change',
-      'PDFs with real text, so recruiters can search and copy from them',
+      { title: 'Seven templates', text: 'From a plain one that applicant tracking systems read cleanly to a bold colour sidebar.' },
+      { title: 'Live preview', text: 'The page updates as you type, in your own colour, text size and paper size (A4 or US Letter).' },
+      { title: 'Fit to one page', text: 'Type and spacing shrink together until it fits.' },
+      { title: 'A version per job', text: 'Keep several versions and duplicate one to tailor it for a new application.' },
+      { title: 'Your sections, your order', text: 'Rename, reorder or hide any section, with undo for every change.' },
+      { title: 'PDFs recruiters can search', text: 'Real text, not a picture of it, so it can be searched and copied.' },
     ],
     privacy: [
       'Your resumes are saved on your computer, and the PDF is made there too.',
@@ -116,12 +119,12 @@ export const products = [
       { file: '10.webp', alt: 'EPUB covers StoryForge generates for a novel, a short story and an essay' },
     ],
     features: [
-      'A focused chapter editor with autosave, focus mode, split view and version history',
-      'A story bible: characters, locations, plot points, world rules, terminology and a timeline',
-      'Outlines, brainstorm maps, sticky-note boards and story-structure templates',
-      'Daily word goals, streaks and progress charts',
-      'Export to Word, PDF, EPUB and Markdown',
-      'A profile for each person on the computer, with an optional password',
+      { title: 'A focused chapter editor', text: 'Autosave, focus mode, split view and version history.' },
+      { title: 'A story bible', text: 'Characters, locations, plot points, world rules, terminology and a timeline.' },
+      { title: 'Plan it your way', text: 'Outlines, brainstorm maps, sticky-note boards and story-structure templates.' },
+      { title: 'Keep the habit', text: 'Daily word goals, streaks and progress charts.' },
+      { title: 'Export anywhere', text: 'Word, PDF, EPUB and Markdown, typeset and ready to send.' },
+      { title: 'One computer, several writers', text: 'A profile for each person, with an optional password.' },
     ],
     privacy: [
       'Everything you write is stored in one file on your computer, backed up daily.',
@@ -150,13 +153,13 @@ export const products = [
       { file: '1.webp', alt: 'Ink Lifter comparing a photo of a signature under a desk lamp with the same signature lifted onto a transparent background' },
     ],
     features: [
-      'Clean up one photo or a whole batch: drop them in, or paste straight from the clipboard',
-      'Judges each stroke against the paper around it, so shadows and uneven light disappear',
-      'Keep the ink’s own colour, or repaint it blue, black or any colour',
-      'Sensitivity and boldness sliders for faint pencil or heavy marker',
-      'Removes dust and specks, and crops to the ink with the margin you choose',
-      'Before-and-after compare, and previews on transparency, white, a page or dark',
-      'Save, copy, or export everything to a folder as transparent PNG or WebP',
+      { title: 'One photo or a batch', text: 'Drop them in, or paste straight from the clipboard.' },
+      { title: 'Shadows disappear', text: 'Each stroke is judged against the paper around it, so shadows and uneven light go.' },
+      { title: 'Any ink colour', text: 'Keep the ink’s own colour, or repaint it blue, black or anything else.' },
+      { title: 'Faint pencil to heavy marker', text: 'Sensitivity and boldness sliders for every kind of stroke.' },
+      { title: 'Clean edges', text: 'Removes dust and specks, and crops to the ink with the margin you choose.' },
+      { title: 'See before you save', text: 'Before-and-after compare, and previews on transparency, white, a page or dark.' },
+      { title: 'Transparent PNG or WebP', text: 'Save, copy, or export everything to a folder at once.' },
     ],
     privacy: [
       'Your photos are processed on your computer. They are never uploaded.',

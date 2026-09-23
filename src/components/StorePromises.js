@@ -1,4 +1,4 @@
-// The four reasons to buy these apps rather than use a web tool, as separate
+// The five reasons to buy these apps rather than use a web tool, as separate
 // badges so each one reads on its own. Used on /store and every product page.
 
 const icons = {
@@ -19,6 +19,15 @@ const icons = {
       <path d="M10.7 12.3L21 2" />
       <path d="M16 7l3 3" />
       <path d="M19 4l2 2" />
+    </>
+  ),
+  // Two chasing arrows: every new version comes to you.
+  updates: (
+    <>
+      <path d="M21 12a9 9 0 0 1-15.4 6.4L3 16" />
+      <path d="M3 21v-5h5" />
+      <path d="M3 12a9 9 0 0 1 15.4-6.4L21 8" />
+      <path d="M21 3v5h-5" />
     </>
   ),
   // A shield with a tick: your data is protected.
@@ -42,6 +51,7 @@ const icons = {
 const PROMISES = [
   { icon: 'subscription', title: 'No subscription', text: 'One price, paid once' },
   { icon: 'own', title: 'Buy once, own forever', text: 'Your licence never expires' },
+  { icon: 'updates', title: 'Lifetime updates', text: 'Every new version, free' },
   { icon: 'data', title: 'Your data stays yours', text: 'Kept on your computer, never uploaded' },
   { icon: 'privacy', title: 'Private', text: 'No account, no tracking, no ads' },
 ];

@@ -2,7 +2,8 @@
    Yarp Developers
    Cool near-black navy base. Warm gold is the only warm thing on
    the page, so it is spent only on: the active nav item, the note
-   rule, and link hover. Nothing else.
+   rule, link hover, the store's promise badges, and the number on
+   each store feature card. Nothing else.
    ══════════════════════════════════════════════════════════════ */
 
 :root {
@@ -961,10 +962,10 @@ img { max-width: 100%; display: block; }
 
 .store-lede-small { font-size: 0.92rem; color: var(--text-dim); }
 
-/* The four promises: one badge each, so none of them hides in a sentence. */
+/* The five promises: one badge each, so none of them hides in a sentence. */
 .store-promises {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.75rem;
   margin: 1.75rem 0 0;
   padding: 0;
@@ -1010,6 +1011,9 @@ img { max-width: 100%; display: block; }
 .store-promises-compact .store-promises-title { font-size: 0.88rem; }
 
 @media (max-width: 900px) {
+  .store-promises { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
   .store-promises { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {
@@ -1085,6 +1089,129 @@ img { max-width: 100%; display: block; }
 .store-btn-sub { display: block; font-size: 0.72rem; opacity: 0.7; line-height: 1.3; }
 
 .buy-error { margin-top: 0.5rem; max-width: 22rem; font-size: 0.82rem; color: #f0a39b; }
+
+/* Local-price checkout (Paystack): the email the key goes to, asked in place. */
+.buy-local { max-width: 26rem; }
+.buy-local-label { display: block; margin-bottom: 0.4rem; font-size: 0.82rem; color: var(--text-muted); }
+.buy-local-row { display: flex; gap: 0.5rem; }
+.buy-local-row input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  min-height: 3.1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-sunken);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+}
+.buy-local-row input:focus { outline: none; border-color: var(--gold); }
+.buy-local-row .store-btn { flex: none; }
+.buy-local-note { margin-top: 0.45rem; font-size: 0.78rem; color: var(--text-dim); }
+.buy-local-cancel {
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.buy-local-cancel:hover { color: var(--gold-bright); }
+
+/* "Prices for [Kenya (KES)]": small, under the buttons it affects. */
+.region-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.region-picker select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+.region-picker select:hover,
+.region-picker select:focus { border-color: var(--gold); color: var(--text); outline: none; }
+.store-head .region-picker { margin-top: 1.25rem; }
+
+/* ── The product page: room at the top, then the features up front. ── */
+.store-product { padding-top: 6.5rem; }
+
+.product-hero .detail-header { gap: 1.5rem; margin-bottom: 2.25rem; }
+.product-hero .detail-icon { width: 88px; height: 88px; border-radius: 20px; }
+.product-hero .detail-title { font-size: clamp(2.2rem, 5vw, 3rem); }
+.product-hero .detail-tagline { margin-top: 0.5rem; font-size: 1.12rem; line-height: 1.55; max-width: 36rem; }
+.product-hero .detail-release { margin-top: 0.75rem; }
+.product-hero .store-promises-compact { margin: 1.75rem 0 0; }
+
+.product-lead-shot { margin: 3.5rem 0 0; }
+.product-lead-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+}
+
+.product-intro {
+  max-width: 42rem;
+  margin-top: 3rem;
+  color: var(--text);
+  font-size: 1.12rem;
+  line-height: 1.75;
+}
+
+.store-product .detail-section { margin-top: 4.5rem; }
+.store-product .detail-section-title { margin-bottom: 1.5rem; }
+.store-product .store-promise { margin: 4.5rem 0 0; }
+
+.product-features {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.product-feature {
+  padding: 1.5rem 1.5rem 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+  transition: border-color 0.2s var(--ease);
+}
+.product-feature:hover { border-color: var(--border-strong); }
+.product-feature-num {
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+.product-feature-title {
+  margin-top: 0.7rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--text);
+}
+.product-feature-text {
+  margin-top: 0.45rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.store-shots-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 
 .store-shots { display: grid; gap: 1rem; }
@@ -1261,6 +1388,20 @@ img { max-width: 100%; display: block; }
   .store-promise { padding: 1.25rem; }
   .store-actions > * { flex: 1 1 100%; }
   .store-btn { width: 100%; justify-content: center; }
+  .buy-local-row { flex-direction: column; }
+  .buy-local-row input { flex: none; }
+
+  .store-product { padding-top: 3.5rem; }
+  .product-hero .detail-icon { width: 72px; height: 72px; border-radius: 16px; }
+  .product-hero .detail-title { font-size: 2.1rem; }
+  .product-hero .detail-tagline { font-size: 1.02rem; }
+  .product-lead-shot { margin-top: 2.5rem; }
+  .product-intro { margin-top: 2.25rem; font-size: 1.02rem; }
+  .store-product .detail-section,
+  .store-product .store-promise { margin-top: 3.25rem; }
+  .product-features,
+  .store-shots-grid { grid-template-columns: 1fr; }
+  .product-feature { padding: 1.25rem; }
   .home-desktop-item { grid-template-columns: auto minmax(0, 1fr); }
   .home-desktop-price { grid-column: 2; }
 }
