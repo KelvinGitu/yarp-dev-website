@@ -204,6 +204,19 @@ firebase functions:secrets:set RESEND_API_KEY
 firebase functions:secrets:set ADMIN_NOTIFY_KEY        # any long random string; kept only on your machine
 ```
 
+Each of those pauses for you to paste the value and press enter. To set one
+without the prompt (e.g. from a script, or a terminal that can't do
+interactive input), pipe it in instead:
+
+```powershell
+echo the-secret-value | firebase functions:secrets:set ADMIN_NOTIFY_KEY --data-file -
+```
+
+Either way, `firebase deploy --only functions:store` afterwards is what
+actually grants the deployed function access to the secret and picks up the
+new value — the output says `Granted roles/secretmanager.secretAccessor ...`
+and `Successful update operation` when it worked.
+
 ### 5.3 The live webhook
 
 **Easy to forget, and everything works until someone pays.** Stripe dashboard
@@ -230,21 +243,38 @@ Stripe dashboard. This is the only test that exercises live keys, the live
 webhook, real DNS and real email at once. **Do it before you tell anyone the
 store exists.**
 
-### 5.6 Push an update to buyers
+### 5.6 Ship an update to buyers
 
-Once a new installer for an app is uploaded to the `yarp-downloads` GitHub
-release (`latest` tag), email everyone who owns that app — bought directly or
-via the bundle — that it's out:
+Four steps, in order — skipping the release step and going straight to the
+email would tell buyers about a download that isn't actually there yet.
 
-```powershell
-$env:ADMIN_NOTIFY_KEY = "..."   # the value you set in Secret Manager
-node scripts/push-update.js --app storyforge --version 1.1.0 --notes "Faster autosave, fixed text selection."
-```
-
-It's safe to re-run: buyers already emailed for that exact version are
-skipped (`store_orders/<session id>.notifiedVersions`), so a retry after a
-partial failure only reaches whoever didn't get it the first time. Works for
-any app in `functions/products.js` — swap `--app`.
+1. **Build.** Bump that app's version (e.g. `desktop/__init__.py` for
+   StoryForge — also update `frontend/src/config.js`'s display version if it
+   has one), then `.\packaging\build.ps1` in its repo. Writes
+   `dist\<App>-setup-<version>.exe` and a version-less copy.
+2. **Release.** A new `yarp-downloads` release must carry **every** app's
+   installer (Part 3) — pull the ones that didn't change from the current
+   release rather than rebuilding them:
+   ```powershell
+   gh release download v1.0.0 --repo KelvinGitu/yarp-downloads --dir dist\others `
+     --pattern "*-setup.exe" --clobber
+   # remove the one(s) you did rebuild from dist\others, then:
+   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: StoryForge" `
+     dist\others\*.exe ..\..\story_forge\dist\StoryForge-setup.exe
+   ```
+3. **Update the listing.** Bump that product's `version` field in
+   `src/data/products.js` (display only, but should match what's in the
+   release) and redeploy (5.4).
+4. **Notify.** Email everyone who owns that app — bought directly or via the
+   bundle — that it's out:
+   ```powershell
+   $env:ADMIN_NOTIFY_KEY = "..."   # the value you set in Secret Manager
+   node scripts/push-update.js --app storyforge --version 1.1.0 --notes "Faster autosave, fixed text selection."
+   ```
+   Safe to re-run: buyers already emailed for that exact version are skipped
+   (`store_orders/<session id>.notifiedVersions`), so a retry after a partial
+   failure only reaches whoever didn't get it the first time. Works for any
+   app in `functions/products.js` — swap `--app`.
 
 ---
 
