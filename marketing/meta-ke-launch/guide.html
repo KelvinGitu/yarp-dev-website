@@ -137,9 +137,9 @@
 
   <section id="plan">
     <h2>The plan</h2>
-    <p class="sub">One campaign, one audience, four ads. Meta moves the money toward whichever ad people click.</p>
+    <p class="sub">The goal is sales. The test finds out which app and which ad sell; each sale is traced to its ad through the link it came from. One campaign, one audience, four ads, and Meta moves the money toward whichever ad people click.</p>
     <div class="tree">
-      <div class="node"><span class="k">Campaign</span><span class="v"><strong>KE launch</strong> <span>· objective Traffic · KES 2,000 for 24 hours</span></span></div>
+      <div class="node"><span class="k">Campaign</span><span class="v"><strong>KE launch</strong> <span>· Meta objective: Traffic · KES 2,000 for 24 hours, plus 16% VAT</span></span></div>
       <div class="node"><span class="k">Ad set</span><span class="v"><strong>Kenya, 18+</strong> <span>· Advantage+ audience · Advantage+ placements · link clicks</span></span></div>
       <div class="node"><span class="k">Ads</span><span class="v">
         <span class="ads-row"><span>Resume Maker · KES 1,000</span><span>pdfsign · KES 350</span><span>StoryForge · KES 2,500</span><span>Ink Lifter · KES 250</span></span>
@@ -148,7 +148,7 @@
     <div class="numbers">
       <div class="num"><b>50–250</b><small>clicks to expect, at KES 8–40 a click in Kenya</small></div>
       <div class="num"><b>~1%+</b><small>link click-through rate that says an ad is working</small></div>
-      <div class="num"><b>0–3</b><small>sales is a normal one-day result; the clicks are the lesson</small></div>
+      <div class="num"><b>A few</b><small>sales is a good one-day result; which ad they came from is the lesson</small></div>
     </div>
     <p class="note"><b>Ad sets per product?</b> Not on this budget. KES 2,000 split four ways is KES 500 each, too little for any of them to find its audience in a day. One ad set with four ads lets Meta pour the money into the ad people respond to, and the results still tell you which product that was. Split by product later, once one has proved itself.</p>
   </section>
@@ -166,7 +166,7 @@
           <ul><li><span class="field">Country:</span> Kenya · <span class="field">Currency:</span> KES · <span class="field">Time zone:</span> Africa/Nairobi</li>
           <li>Currency and time zone can't be changed later. <strong>KES is what makes M-Pesa appear as a payment option</strong>; a USD account only takes cards.</li></ul></div></li>
       <li><div class="step-head"><h3>Pay with M-Pesa (prepaid)</h3><label class="tick"><input type="checkbox" id="s-pay"> Done</label></div>
-        <div class="step-body">Ads Manager → Billing &amp; payments → Add payment method → <span class="field">M-Pesa</span> (only shown on a KES account set to manual payments). Add funds of about <strong>KES 2,500</strong>: the 2,000 budget plus room for any tax Meta adds. Meta spends from this balance and stops when it's empty, so you can't overspend. If M-Pesa doesn't show, a Visa/Mastercard debit or prepaid card works too.</div></li>
+        <div class="step-body">Ads Manager → Billing &amp; payments → Add payment method. On a KES account with manual (prepaid) payments, Kenyan advertisers report <span class="field">M-Pesa</span> among the options: you add funds with an M-Pesa prompt on your phone, and Meta spends from that balance and stops when it's empty. Add <strong>KES 2,500</strong>: Meta adds <strong>16% VAT</strong> on ad spend in Kenya, so KES 2,000 of ads costs KES 2,320. If M-Pesa isn't offered, a Visa or Mastercard debit or prepaid card works instead (it's charged as the ads run, not in advance).</div></li>
       <li><div class="step-head"><h3>Put the site changes live</h3><label class="tick"><input type="checkbox" id="s-site"> Done</label></div>
         <div class="step-body">Before any ad runs, the store needs the version that records which ad each sale came from, and tells phone visitors the apps run on Windows. Store pages already default to KES.</div></li>
     </ol>
@@ -177,13 +177,13 @@
     <p class="sub">In <a href="https://adsmanager.facebook.com" target="_blank" rel="noopener">Ads Manager</a>, with the new KES ad account selected. Anything not named here, leave at Meta's default.</p>
     <ol class="steps" data-group="build">
       <li><div class="step-head"><h3>Campaign</h3><label class="tick"><input type="checkbox" id="b-campaign"> Done</label></div>
-        <div class="step-body">Create → objective <span class="field">Traffic</span> → Continue. Name <code>KE launch</code>. Leave <span class="field">Special ad categories</span> empty: these are software ads, not job, housing or credit offers.</div></li>
+        <div class="step-body">Create → objective <span class="field">Traffic</span> → Continue. Name <code>KE launch</code>. Leave <span class="field">Special ad categories</span> empty. The Employment category is for job offers, job boards and certification programmes; a CV-making app isn't one, and neither are the other three.</div></li>
       <li><div class="step-head"><h3>Budget and schedule</h3><label class="tick"><input type="checkbox" id="b-budget"> Done</label></div>
         <div class="step-body"><span class="field">Campaign budget</span> (Advantage+ campaign budget) → <span class="field">Lifetime</span> → <strong>KES 2,000</strong>. In the ad set, schedule a start and an end 24 hours apart, e.g. 06:00 to 06:00 the next day, Nairobi time. A lifetime budget over a fixed window is how you get exactly one day's spend.</div></li>
       <li><div class="step-head"><h3>Ad set: where people go and what to count</h3><label class="tick"><input type="checkbox" id="b-conversion"> Done</label></div>
         <div class="step-body">Name <code>Kenya 18+</code>. <span class="field">Conversion location:</span> Website. <span class="field">Performance goal:</span> Maximise number of link clicks. (Landing page views would need the Meta Pixel, which the site deliberately doesn't have.)</div></li>
       <li><div class="step-head"><h3>Audience</h3><label class="tick"><input type="checkbox" id="b-audience"> Done</label></div>
-        <div class="step-body"><span class="field">Locations:</span> Kenya (people living in). <span class="field">Minimum age:</span> 18. Keep <span class="field">Advantage+ audience</span> on and add these as suggestions, not limits: <em>Microsoft Windows, Microsoft Office, PDF, Curriculum vitae, Job hunting, Freelancing, Creative writing, Novels</em>. Meta treats them as a starting hint and widens from there.</div></li>
+        <div class="step-body"><span class="field">Locations:</span> Kenya (people living in). <span class="field">Minimum age:</span> 18. Keep <span class="field">Advantage+ audience</span> on and, under audience suggestions, search for interests along these lines and add whichever Meta offers: <em>Microsoft Windows, Microsoft Office, PDF, résumé or CV, job hunting, freelancing, creative writing, novels</em>. They're a starting hint, not a limit; Meta widens from there.</div></li>
       <li><div class="step-head"><h3>Placements</h3><label class="tick"><input type="checkbox" id="b-placements"> Done</label></div>
         <div class="step-body">Leave <span class="field">Advantage+ placements</span> on. In 2026 Meta is removing the option to show ads only on desktop computers, so the ads will reach phones. That's handled: every ad says <em>Windows PC</em>, and a phone visitor sees how to buy with M-Pesa now and install later.</div></li>
       <li><div class="step-head"><h3>Four ads</h3><label class="tick"><input type="checkbox" id="b-ads"> Done</label></div>
@@ -218,20 +218,20 @@
     <h2>5 · Afterwards</h2>
     <ol class="steps" data-group="after">
       <li><div class="step-head"><h3>Count the sales</h3><label class="tick"><input type="checkbox" id="a-sales"> Done</label></div>
-        <div class="step-body"><a href="https://console.firebase.google.com/project/yarp-dev-website/firestore/data/~2Fstore_orders" target="_blank" rel="noopener">Firestore → store_orders</a>: each order from an ad has <code>campaign.campaign = "ke-launch"</code> and <code>campaign.content</code> naming the ad. The Paystack dashboard lists the same payments with their product.</div></li>
+        <div class="step-body"><a href="https://console.firebase.google.com/project/yarp-dev-website/firestore" target="_blank" rel="noopener">Firebase console → Firestore</a> → <code>store_orders</code>: each order from an ad has <code>campaign.campaign = "ke-launch"</code> and <code>campaign.content</code> naming the ad. The Paystack dashboard lists the same payments with their product.</div></li>
       <li><div class="step-head"><h3>Compare clicks with sales</h3><label class="tick"><input type="checkbox" id="a-compare"> Done</label></div>
         <div class="step-body">Per product: KES spent (Ads Manager) against KES earned (orders). One day rarely pays for itself; what matters is which product got clicks <em>and</em> sales. That's the one to run for a week next.</div></li>
       <li><div class="step-head"><h3>Switch the store back to euros by default</h3><label class="tick"><input type="checkbox" id="a-revert"> Done</label></div>
         <div class="step-body">In <code>src/data/regions.js</code> set <code>DEFAULT_REGION = INTL</code> and push. Visitors whose computer is on Nairobi time keep seeing shillings anyway.</div></li>
       <li><div class="step-head"><h3>Refunds and questions</h3><label class="tick"><input type="checkbox" id="a-support"> Done</label></div>
-        <div class="step-body">Watch <span class="mono">yarpdevelopers@gmail.com</span> and the Page's inbox for a few days: ad buyers write to the Page. Refunds for M-Pesa payments are made from the Paystack dashboard.</div></li>
+        <div class="step-body">Watch <span class="mono">yarpdevelopers@gmail.com</span> and the Page's inbox for a few days: ad buyers write to the Page. For a refund of an M-Pesa payment, email Paystack at <span class="mono">support@paystack.com</span> with the reference (<span class="mono">yds_…</span>), amount and date; it goes back to the buyer's M-Pesa. Card payments through Stripe are refunded from the Stripe dashboard.</div></li>
     </ol>
   </section>
 
   <section id="why">
     <h2>Why this way</h2>
     <div class="why">
-      <div><h3>Traffic, not Sales</h3><p>Meta's Sales objective needs the Meta Pixel on the site, which would break the store's promise of no trackers. For one day it would barely help anyway: Sales optimisation needs dozens of purchases a week to learn. Traffic finds people who click, and the tagged links tell you which clicks turned into sales.</p></div>
+      <div><h3>The goal is sales; the Meta setting is Traffic</h3><p>Meta's objective only decides who it shows the ads to. Its Sales objective learns from purchases it can see, which needs the Meta Pixel on the site (breaking the store's no-trackers promise) or purchases sent to Meta from the server, and about 50 purchases a week before that learning works. A one-day test won't get near that. Traffic finds people who click from the first hour, and the tagged links show which clicks became sales. Once one product has proved itself and runs for a week or more, sending purchases to Meta from the server and switching to Sales is worth revisiting.</p></div>
       <div><h3>Most clicks come from phones</h3><p>Desktop-only targeting is being removed from Meta ads in 2026, and most Kenyans on Facebook are on their phones. So the ads say <em>Windows PC</em> up front, and the store tells phone visitors they can pay with M-Pesa now (the key and download link come by email) or send the page to themselves on WhatsApp to try on their computer.</p></div>
       <div><h3>Prices on the image</h3><p>KES 350 for a PDF signer is the hook in a market used to paying for subscriptions in dollars. Putting the price and "Pay with M-Pesa" on the image means the people who click already know it's affordable and local.</p></div>
     </div>
@@ -241,6 +241,9 @@
       <a href="https://getmerank.com/blog/meta-removing-placement-controls-2026/" target="_blank" rel="noopener">Placement controls removal, 2026 timeline (Merank)</a>
       <a href="https://www.smartbizsystems.co.ke/blog/facebook-ads-payment" target="_blank" rel="noopener">Paying for Meta ads with M-Pesa on a KES account (SmartBizSystems)</a>
       <a href="https://neliumsystems.com/how-to-run-facebook-ads-kenya-2026/" target="_blank" rel="noopener">Kenyan costs: CPC KES 8–40, minimum budgets (Nelium Systems)</a>
+      <a href="https://www.facebook.com/business/help/187911129790766" target="_blank" rel="noopener">About Kenya VAT on Meta ads (Meta Business Help Center)</a>
+      <a href="https://www.data-axle.com/resources/blog/meta-special-ad-categories-rules/" target="_blank" rel="noopener">What the Employment special ad category covers (Data Axle)</a>
+      <a href="https://support.paystack.com/en/articles/2128322" target="_blank" rel="noopener">Pay with M-Pesa, and refunds (Paystack Support)</a>
       <a href="https://superscale.ai/learn/meta-ad-sizes" target="_blank" rel="noopener">Meta ad sizes 2026: 1080×1350 feed, 1080×1920 stories (Superscale)</a>
       <a href="https://adsuploader.com/blog/meta-ad-copy-specs" target="_blank" rel="noopener">Meta ad text limits: 125-character text, 27–40 character headline (AdsUploader)</a>
     </div>

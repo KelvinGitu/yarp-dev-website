@@ -44,6 +44,8 @@ const ADS = [
     slug: "storyforge",
     name: "StoryForge",
     shot: "storyforge/7.webp",
+    // Its free use is a short window to explore, not open-ended.
+    trial: "Free to explore",
     headline: "Write the book. Keep it yours.",
     lines: ["Chapters, a story bible, daily word goals.", "Export to Word, PDF and EPUB."],
   },
@@ -101,7 +103,7 @@ function page(ad, size, key) {
   <div class="deal">
     <span class="chip price">${kes(ad.slug)} · once</span>
     <span class="chip">Pay with M-Pesa</span>
-    <span class="chip">Free to try</span>
+    <span class="chip">${ad.trial || "Free to try"}</span>
   </div>
 </div>
 <div class="shot"><img src="${shot}" alt=""></div>

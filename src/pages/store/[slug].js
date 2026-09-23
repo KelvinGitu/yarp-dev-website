@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import BuyButton from '@/components/BuyButton';
 import StorePromises from '@/components/StorePromises';
 import { RegionPicker, useRegion } from '@/components/Region';
@@ -9,22 +9,22 @@ import { DownloadIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
 import { REGIONS, priceFor } from '@/data/regions';
 
+// Most ad clicks come from phones, and the apps are Windows-only. The answer
+// never changes during a visit, so there's nothing to subscribe to.
+const noSubscribe = () => () => {};
+const isPhone = () => /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
+
 export default function StoreProduct({ product }) {
   const router = useRouter();
   const { region } = useRegion();
   const local = REGIONS[region];
   const [cancelled, setCancelled] = useState(false);
-  const [onPhone, setOnPhone] = useState(false);
+  const onPhone = useSyncExternalStore(noSubscribe, isPhone, () => false);
 
   // Stripe and Paystack send a buyer who backs out of checkout here with ?checkout=cancelled.
   useEffect(() => {
     if (router.isReady) setCancelled(router.query.checkout === 'cancelled');
   }, [router.isReady, router.query.checkout]);
-
-  // Most ad clicks come from phones, and the apps are Windows-only.
-  useEffect(() => {
-    setOnPhone(/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent));
-  }, []);
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
   const others = products.filter((p) => p.slug !== product.slug);
