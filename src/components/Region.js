@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { INTL, REGIONS, guessRegion, isRegion, priceFor } from '@/data/regions';
+import { DEFAULT_REGION, INTL, REGIONS, guessRegion, isRegion, priceFor } from '@/data/regions';
 
 // Which prices the visitor sees: their saved choice, else a guess from their
-// time zone. Every page is prerendered with the international prices, so the
-// region is only applied after the page has loaded.
+// time zone, else DEFAULT_REGION (regions.js). Pages are prerendered with
+// DEFAULT_REGION's prices; anything else applies once the page has loaded.
 
 const STORAGE_KEY = 'yarp-region';
-const RegionContext = createContext({ region: INTL, setRegion: () => {} });
+const RegionContext = createContext({ region: DEFAULT_REGION, setRegion: () => {} });
 
 export function RegionProvider({ children }) {
-  const [region, setRegionState] = useState(INTL);
+  const [region, setRegionState] = useState(DEFAULT_REGION);
 
   useEffect(() => {
     let saved = null;

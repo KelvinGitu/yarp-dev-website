@@ -9,6 +9,11 @@
 
 export const INTL = 'intl';
 
+// What a visitor sees before they've picked anything, and what every page is
+// prebuilt with. A saved choice from the picker always wins. Set to KE while
+// Kenyan ads run (so ad visitors never see euros first); INTL otherwise.
+export const DEFAULT_REGION = 'KE';
+
 export const REGIONS = {
   KE: {
     name: 'Kenya',
@@ -36,13 +41,14 @@ export function priceFor(product, region) {
   return `${local.currency} ${amount.toLocaleString('en-US')}`;
 }
 
-// A first guess from the browser's time zone. No request, no IP lookup.
+// A first guess from the browser's time zone, else DEFAULT_REGION. No
+// request, no IP lookup.
 export function guessRegion() {
   try {
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const hit = Object.entries(REGIONS).find(([, r]) => r.timeZones.includes(zone));
-    return hit ? hit[0] : INTL;
+    return hit ? hit[0] : DEFAULT_REGION;
   } catch {
-    return INTL;
+    return DEFAULT_REGION;
   }
 }
