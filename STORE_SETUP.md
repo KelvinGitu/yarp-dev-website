@@ -201,6 +201,7 @@ firebase functions:secrets:set STRIPE_SECRET_KEY       # sk_live_...
 firebase functions:secrets:set STRIPE_WEBHOOK_SECRET   # from 5.3
 firebase functions:secrets:set YARP_SIGNING_KEY        # private_key_b64
 firebase functions:secrets:set RESEND_API_KEY
+firebase functions:secrets:set ADMIN_NOTIFY_KEY        # any long random string; kept only on your machine
 ```
 
 ### 5.3 The live webhook
@@ -228,6 +229,22 @@ arrives, the key unlocks the installed app, and then refund yourself in the
 Stripe dashboard. This is the only test that exercises live keys, the live
 webhook, real DNS and real email at once. **Do it before you tell anyone the
 store exists.**
+
+### 5.6 Push an update to buyers
+
+Once a new installer for an app is uploaded to the `yarp-downloads` GitHub
+release (`latest` tag), email everyone who owns that app — bought directly or
+via the bundle — that it's out:
+
+```powershell
+$env:ADMIN_NOTIFY_KEY = "..."   # the value you set in Secret Manager
+node scripts/push-update.js --app storyforge --version 1.1.0 --notes "Faster autosave, fixed text selection."
+```
+
+It's safe to re-run: buyers already emailed for that exact version are
+skipped (`store_orders/<session id>.notifiedVersions`), so a retry after a
+partial failure only reaches whoever didn't get it the first time. Works for
+any app in `functions/products.js` — swap `--app`.
 
 ---
 

@@ -101,6 +101,11 @@ export const products = [
       'share one computer, each with their own profile.',
     shots: [
       { file: '1.webp', alt: 'StoryForge’s chapter editor with a draft open, the word count and save status in the top bar' },
+      { file: '2.webp', alt: 'The dashboard, showing daily word goal, writing streak and a project card' },
+      { file: '3.webp', alt: 'A project’s chapter list with manuscript progress toward a word-count target' },
+      { file: '4.webp', alt: 'The story bible, with character cards for a cast of two' },
+      { file: '5.webp', alt: 'A sticky-note board with colour-coded notes for planning scenes and reveals' },
+      { file: '6.webp', alt: 'Split view: the chapter editor beside a live outline of the manuscript' },
     ],
     features: [
       'A focused chapter editor with autosave, focus mode, split view and version history',

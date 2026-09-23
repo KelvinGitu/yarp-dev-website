@@ -1,9 +1,10 @@
 // The store's server side: one HTTPS function, reached through Firebase
 // Hosting's rewrite of /api/** (see firebase.json).
 //
-//   POST /api/checkout {product}   -> { url } of a Stripe Checkout page
-//   POST /api/webhook              <- Stripe; mints and emails the licence key
-//   GET  /api/order?session_id=... -> the key, for the success page
+//   POST /api/checkout {product}      -> { url } of a Stripe Checkout page
+//   POST /api/webhook                 <- Stripe; mints and emails the licence key
+//   GET  /api/order?session_id=...    -> the key, for the success page
+//   POST /api/notify-update           <- scripts/push-update.js; emails buyers about a new version
 //
 // The webhook is the source of truth: nothing is granted because a browser
 // says so. The success page gets its key by asking Stripe about the session,
@@ -16,11 +17,12 @@ const { setGlobalOptions } = require("firebase-functions/v2");
 const { defineSecret, defineString } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 const Stripe = require("stripe");
+const crypto = require("node:crypto");
 
 const { licenseForSession } = require("./lib/license");
-const { sendLicense } = require("./lib/email");
-const { findOrder, recordOrder } = require("./lib/orders");
-const { PRODUCTS } = require("./products");
+const { sendLicense, sendUpdateEmail } = require("./lib/email");
+const { findOrder, recordOrder, listOrdersForProducts, markNotified } = require("./lib/orders");
+const { PRODUCTS, APPS } = require("./products");
 
 setGlobalOptions({ region: "europe-west1", maxInstances: 5 });
 
@@ -29,6 +31,9 @@ const STRIPE_WEBHOOK_SECRET = defineSecret("STRIPE_WEBHOOK_SECRET");
 // The private half of yarp-signing-key.json. Anyone holding it can mint keys.
 const YARP_SIGNING_KEY = defineSecret("YARP_SIGNING_KEY");
 const RESEND_API_KEY = defineSecret("RESEND_API_KEY");
+// Shared secret for the /api/notify-update trigger script — not a per-user
+// login, just enough to keep randoms from emailing every buyer.
+const ADMIN_NOTIFY_KEY = defineSecret("ADMIN_NOTIFY_KEY");
 
 const RESEND_FROM = defineString("RESEND_FROM", { default: "" });
 const SITE_URL = defineString("SITE_URL", { default: "https://yarpdevelopers.com" });
@@ -47,13 +52,14 @@ const SESSION_ID = /^cs_(test|live)_[A-Za-z0-9]{10,200}$/;
 const stripe = () => new Stripe(STRIPE_SECRET_KEY.value());
 
 exports.api = onRequest(
-  { secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, YARP_SIGNING_KEY, RESEND_API_KEY] },
+  { secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, YARP_SIGNING_KEY, RESEND_API_KEY, ADMIN_NOTIFY_KEY] },
   async (req, res) => {
     const path = req.path.replace(/\/+$/, "");
     try {
       if (path === "/api/checkout" && req.method === "POST") return await checkout(req, res);
       if (path === "/api/webhook" && req.method === "POST") return await webhook(req, res);
       if (path === "/api/order" && req.method === "GET") return await order(req, res);
+      if (path === "/api/notify-update" && req.method === "POST") return await notifyUpdate(req, res);
       res.status(404).json({ error: "Not found." });
     } catch (err) {
       logger.error("[api] unhandled", { path, err: String(err), stack: err?.stack });
@@ -177,4 +183,53 @@ async function order(req, res) {
   const { email, product, licenseKey } = licenseForSession(session, YARP_SIGNING_KEY.value());
   if (!email || !PRODUCTS[product]) return res.status(404).json({ error: "No such order." });
   res.json({ email, product, licenseKey });
+}
+
+// ---------------------------------------------------------------- notify update
+
+// Emails everyone who owns `app` (bought it directly, or via a bundle that
+// includes it) that a new version is out. Triggered by scripts/push-update.js,
+// not by anything in the browser.
+async function notifyUpdate(req, res) {
+  const key = req.get("x-admin-key") || "";
+  const want = ADMIN_NOTIFY_KEY.value();
+  const authorized = want.length > 0 && key.length === want.length && crypto.timingSafeEqual(Buffer.from(key), Buffer.from(want));
+  if (!authorized) return res.status(401).json({ error: "Not authorized." });
+
+  const app = req.body?.app;
+  const version = String(req.body?.version || "");
+  const notes = req.body?.notes ? String(req.body.notes) : "";
+  if (!APPS[app]) return res.status(400).json({ error: "Unknown app." });
+  if (!version) return res.status(400).json({ error: "Missing version." });
+
+  const products = Object.keys(PRODUCTS).filter((p) => PRODUCTS[p].apps.includes(app));
+  const orders = await listOrdersForProducts(products);
+
+  const seen = new Set();
+  let sent = 0;
+  let skipped = 0;
+  let failed = 0;
+  for (const order of orders) {
+    if (!order.email || seen.has(order.email)) { skipped++; continue; }
+    if ((order.notifiedVersions || []).includes(version)) { skipped++; continue; }
+    seen.add(order.email);
+
+    const result = await sendUpdateEmail({
+      to: order.email,
+      app,
+      version,
+      notes,
+      apiKey: RESEND_API_KEY.value(),
+      from: RESEND_FROM.value(),
+    });
+    if (result === "sent") {
+      await markNotified(order.id, version);
+      sent++;
+    } else {
+      logger.error("[notify-update] not sent", { to: order.email, app, version, result });
+      failed++;
+    }
+  }
+  logger.info("[notify-update] done", { app, version, sent, skipped, failed });
+  res.json({ sent, skipped, failed });
 }
