@@ -12,9 +12,10 @@ export const DOWNLOADS = 'https://github.com/KelvinGitu/yarp-downloads/releases/
 
 export const SUPPORT_EMAIL = 'yarpdevelopers@gmail.com';
 
-// Each app's free trial, as the store describes it: `trialShort` under the
-// Download button, `trialLong` in "How it works". Keep in step with each app
-// (license.FREE_EXPORTS, or StoryForge's core/trial.py).
+// Each app's free-to-licensed line, as the store describes it: `tryShort`
+// under the Download button, `tryLong` in "How it works", `licenseFaq` in
+// Questions. Keep in step with each app (app/license.py, or StoryForge's
+// core/explore.py and desktop/config.py's EXPLORE_DAYS).
 
 export const products = [
   {
@@ -22,12 +23,13 @@ export const products = [
     name: 'pdfsign',
     tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
     price: '€9.99',
-    version: '1.0.0',
+    version: '1.0.1',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     size: '21 MB',
-    trialShort: '3 free exports, then a key',
-    trialLong: 'Everything works; the first 3 PDFs you save are free.',
-    whereIsLicence: 'the key icon at the bottom left, labelled Trial',
+    tryShort: 'Free to fill and sign; a key unlocks saving',
+    tryLong: 'Fill in and sign as many documents as you like. Saving the finished PDF is the only thing that needs a licence key.',
+    licenseFaq: 'You can open, fill in and sign documents for as long as you like. Saving a finished PDF needs a licence key.',
+    whereIsLicence: 'the key icon at the bottom left, labelled Unlicensed',
     description:
       'Contracts, forms, rental agreements, tax papers: the documents you sign are the ones you least want on ' +
       "someone else's server. pdfsign opens them on your own computer, lets you sign, fill in and tidy them up, and " +
@@ -55,12 +57,13 @@ export const products = [
     name: 'Resume Maker',
     tagline: 'Write your resume once, set it in seven styles, and export a clean PDF.',
     price: '€9.99',
-    version: '1.0.0',
+    version: '1.0.1',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     size: '20 MB',
-    trialShort: '3 free exports, then a key',
-    trialLong: 'Everything works; the first 3 PDFs you export are free.',
-    whereIsLicence: 'the Trial button at the top right',
+    tryShort: 'Free to edit and preview; a key unlocks exporting',
+    tryLong: 'Edit and preview as many resumes as you like. Exporting a PDF is the only thing that needs a licence key.',
+    licenseFaq: 'You can edit and preview for as long as you like. Exporting a PDF needs a licence key.',
+    whereIsLicence: 'the Unlicensed button at the top right',
     description:
       "A resume holds your address, your phone number and your whole work history. Resume Maker keeps it on your " +
       'computer: edit on the left, watch the page update on the right, switch between seven designs, and export a ' +
@@ -88,12 +91,13 @@ export const products = [
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
-    version: '1.1.0',
+    version: '1.1.1',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
     size: '33 MB',
-    trialShort: '10,000 free words, then a key',
-    trialLong: 'Everything works for one project and your first 10,000 words. After that your writing stays yours to read, edit and export; a key lets you keep adding.',
-    whereIsLicence: 'the Trial button at the top right, or Settings → Licence & data',
+    tryShort: 'Free to explore, no licence needed at first',
+    tryLong: "Creating your first project starts a short window to try every feature and write a little. After that your writing stays yours to read, edit and export; a licence key lets you keep adding.",
+    licenseFaq: "Creating your first project starts a short window (about 15 minutes) to explore every feature, across every profile on the computer. After that, your writing stays exactly as it is — readable, editable and exportable — but a licence key is needed to start a new project or add to what you have.",
+    whereIsLicence: 'the Explore button at the top right, or Settings → Licence & data',
     description:
       'Your draft is the most personal thing you own. StoryForge keeps it on your computer: write chapter by ' +
       'chapter with version history, keep characters, places and the rules of your world in a story bible, plan ' +
@@ -126,12 +130,13 @@ export const products = [
     name: 'Ink Lifter',
     tagline: 'Lift signatures, stamps and handwriting off a photo of paper, onto a transparent background.',
     price: '€4.99',
-    version: '1.0.0',
+    version: '1.0.1',
     download: `${DOWNLOADS}/InkLifter-setup.exe`,
     size: '19 MB',
-    trialShort: '10 free exports, then a key',
-    trialLong: 'Everything works; the first 10 images you save, copy or export are free.',
-    whereIsLicence: 'the Trial button at the top right',
+    tryShort: 'Free to open and preview; a key unlocks saving',
+    tryLong: 'Open, clean up and preview as many photos as you like. Saving, copying or exporting an image is the only thing that needs a licence key.',
+    licenseFaq: 'You can open, clean up and preview images for as long as you like. Saving, copying or exporting one needs a licence key.',
+    whereIsLicence: 'the Unlicensed button at the top right',
     description:
       'Snap your signature, a company stamp or a hand-drawn sketch with your phone, and Ink Lifter turns it into ' +
       'a clean transparent PNG you can drop into a document, a slide or a website. It reads the paper around every ' +

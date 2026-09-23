@@ -29,7 +29,7 @@ export default function StoreProduct({ product }) {
       <div className="store-product">
         {cancelled && (
           <p className="detail-note" role="status">
-            Checkout was cancelled, and nothing was charged. The free trial is still yours to download.
+            Checkout was cancelled, and nothing was charged. {product.name} is still yours to download and try.
           </p>
         )}
 
@@ -58,8 +58,8 @@ export default function StoreProduct({ product }) {
           <a className="store-btn store-btn-download" href={product.download}>
             <DownloadIcon />
             <span>
-              <span className="store-btn-main">Download free trial</span>
-              <span className="store-btn-sub">{product.trialShort}</span>
+              <span className="store-btn-main">Download</span>
+              <span className="store-btn-sub">{product.tryShort}</span>
             </span>
           </a>
           <BuyButton product={product.slug} price={product.price} />
@@ -95,7 +95,7 @@ export default function StoreProduct({ product }) {
           <h2 className="detail-section-title">How buying works</h2>
           <ol className="store-steps">
             <li>
-              <strong>Try it.</strong> Download and install the free trial. {product.trialLong}
+              <strong>Try it.</strong> Download and install — no payment needed. {product.tryLong}
             </li>
             <li>
               <strong>Buy a licence</strong> ({product.price}, paid through Stripe). Your licence key arrives by email a moment later.
@@ -132,10 +132,8 @@ export default function StoreProduct({ product }) {
               </p>
             </details>
             <details>
-              <summary>What happens after the free exports?</summary>
-              <p>
-                You can keep opening and editing as much as you like. Saving new PDFs needs a licence key.
-              </p>
+              <summary>What's free, and what needs a licence?</summary>
+              <p>{product.licenseFaq}</p>
             </details>
             <details>
               <summary>Can I use my key on more than one computer?</summary>
@@ -150,7 +148,7 @@ export default function StoreProduct({ product }) {
             <details>
               <summary>What if it doesn’t work for me?</summary>
               <p>
-                Email within 30 days of buying and you’ll get a full refund. The free trial is there so you can check first.
+                Email within 30 days of buying and you’ll get a full refund. It's free to try, so you can check first.
               </p>
             </details>
             <details>

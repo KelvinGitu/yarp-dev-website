@@ -12,22 +12,22 @@ const APPS = {
   pdfsign: {
     name: "pdfsign",
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
-    whereIsLicence: "click the key icon at the bottom left, labelled Trial",
+    whereIsLicence: "click the key icon at the bottom left, labelled Unlicensed",
   },
   "resume-maker": {
     name: "Resume Maker",
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
-    whereIsLicence: "click the Trial button at the top right",
+    whereIsLicence: "click the Unlicensed button at the top right",
   },
   storyforge: {
     name: "StoryForge",
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
-    whereIsLicence: "click the Trial button at the top right, or open Settings, then Licence & data",
+    whereIsLicence: "click the Explore button at the top right, or open Settings, then Licence & data",
   },
   "ink-lifter": {
     name: "Ink Lifter",
     download: `${DOWNLOADS}/InkLifter-setup.exe`,
-    whereIsLicence: "click the Trial button at the top right",
+    whereIsLicence: "click the Unlicensed button at the top right",
   },
 };
 

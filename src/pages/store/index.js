@@ -24,8 +24,8 @@ export default function Store() {
             nowhere else. No account, no cloud, and they work with the internet switched off.
           </p>
           <p className="store-lede store-lede-small">
-            Each one is a single payment, and every download starts as a free trial, so you can try it on your own
-            files first.
+            Each one is a single payment, and every download works before you buy, so you can try it on your own
+            files first — see each app's page for exactly what's free.
           </p>
           <StorePromises />
         </header>
@@ -52,7 +52,7 @@ export default function Store() {
                 <img src={`/assets/store/${p.slug}/${p.shots[0].file}`} alt="" width={1440} height={900} loading="lazy" />
               </Link>
               <div className="store-item-links">
-                <Link href={`/store/${p.slug}`} className="detail-btn-legal">Details and free trial</Link>
+                <Link href={`/store/${p.slug}`} className="detail-btn-legal">Details and download</Link>
               </div>
             </li>
           ))}
