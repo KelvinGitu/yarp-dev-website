@@ -58,9 +58,9 @@ export const products = [
   {
     slug: 'resume-maker',
     name: 'Resume Maker',
-    tagline: 'Write your resume once, set it in seven styles, and export a clean PDF.',
+    tagline: 'Write your resume once, set it in eleven styles, and export a clean PDF.',
     price: '€9.99',
-    version: '1.0.1',
+    version: '1.1.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     size: '20 MB',
     tryShort: 'Free to edit and preview; a key unlocks exporting',
@@ -69,18 +69,18 @@ export const products = [
     whereIsLicence: 'the Unlicensed button at the top right',
     description:
       "A resume holds your address, your phone number and your whole work history. Resume Maker keeps it on your " +
-      'computer: edit on the left, watch the page update on the right, switch between seven designs, and export a ' +
+      'computer: edit on the left, watch the page update on the right, switch between eleven designs, and export a ' +
       'PDF that fits on one page. Keep a version per kind of job you apply for.',
     shots: [
       { file: '1.webp', alt: 'Resume Maker editing a resume, shown in the Column template with a teal sidebar' },
       { file: '2.webp', alt: 'Resume Maker’s Design tab, showing the same resume in Classic, Modern, Column and Timeline templates' },
     ],
     features: [
-      { title: 'Seven templates', text: 'From a plain one that applicant tracking systems read cleanly to a bold colour sidebar.' },
+      { title: 'Eleven templates', text: 'From a plain one that applicant tracking systems read cleanly to a bold colour sidebar.' },
       { title: 'Live preview', text: 'The page updates as you type, in your own colour, text size and paper size (A4 or US Letter).' },
       { title: 'Fit to one page', text: 'Type and spacing shrink together until it fits.' },
       { title: 'A version per job', text: 'Keep several versions and duplicate one to tailor it for a new application.' },
-      { title: 'Your sections, your order', text: 'Rename, reorder or hide any section, with undo for every change.' },
+      { title: 'Your sections, your order', text: 'Add certifications, volunteering, awards or a section of your own; rename, reorder or hide any of them, with undo for every change.' },
       { title: 'PDFs recruiters can search', text: 'Real text, not a picture of it, so it can be searched and copied.' },
     ],
     privacy: [
