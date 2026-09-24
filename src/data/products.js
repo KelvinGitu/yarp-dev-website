@@ -9,7 +9,10 @@
 //
 // `web`, when set, is where the app also runs in a browser (built from the
 // app's own repo by web/build.py into public/). The same key unlocks both.
-// Phone visitors are sent there instead of to the Windows download.
+// Phone visitors are sent there instead of to the Windows download. With it
+// come `webKeeps` (what the browser stores), `webOffline` (what still works
+// in airplane mode) and, optionally, `webNote` (anything that works
+// differently there), for the store's Questions.
 //
 // Downloads are the installers on the public yarp-downloads repo's latest
 // release. They're uploaded under a version-less name so these links never
@@ -33,6 +36,8 @@ export const products = [
     version: '1.0.1',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     web: '/pdfsign',
+    webKeeps: 'your saved signatures and profile',
+    webOffline: 'open, sign and download PDFs',
     size: '21 MB',
     tryShort: 'Free to fill and sign; a key unlocks saving',
     tryLong: 'Fill in and sign as many documents as you like. Saving the finished PDF is the only thing that needs a licence key.',
@@ -67,6 +72,10 @@ export const products = [
     price: '€9.99',
     version: '1.1.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
+    web: '/resume-maker',
+    webKeeps: 'your resumes',
+    webOffline: 'edit your resumes and save them as PDFs',
+    webNote: 'On a phone, Save PDF opens its print window: choose Save as PDF, check the paper size, and save.',
     size: '20 MB',
     tryShort: 'Free to edit and preview; a key unlocks exporting',
     tryLong: 'Edit and preview as many resumes as you like. Exporting a PDF is the only thing that needs a licence key.',

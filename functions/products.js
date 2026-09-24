@@ -26,6 +26,8 @@ const APPS = {
     page: `${STORE}/resume-maker`,
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     whereIsLicence: "click the Unlicensed button at the top right",
+    web: "https://yarpdevelopers.com/resume-maker",
+    whereIsWebLicence: "tap Unlicensed at the top",
   },
   storyforge: {
     name: "StoryForge",

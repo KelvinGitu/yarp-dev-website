@@ -205,8 +205,8 @@ export default function StoreProduct({ product }) {
                 Windows’ Resource Monitor while you use it. Its only connections are to 127.0.0.1, your own computer.
                 {product.web && (
                   <>
-                    {' '}In the browser version, open it once, then turn on airplane mode: you can still open, sign and
-                    download PDFs, because it all happens on your phone or computer.
+                    {' '}In the browser version, open it once, then turn on airplane mode: you can still{' '}
+                    {product.webOffline}, because it all happens on your phone or computer.
                   </>
                 )}
               </p>
@@ -217,8 +217,8 @@ export default function StoreProduct({ product }) {
                 <p>
                   Yes. <a href={product.web}>Open {product.name} in your phone’s browser</a>. It works on Android and
                   iPhone, with nothing to install; your browser can add it to your home screen if you like. The same
-                  licence key unlocks the browser version and the Windows app. The key, your saved signatures and your
-                  profile are kept in that browser, so if you clear your browsing data, paste your key again.
+                  licence key unlocks the browser version and the Windows app.{product.webNote && ` ${product.webNote}`}{' '}
+                  The key and {product.webKeeps} are kept in that browser, so clearing your browsing data deletes them.
                 </p>
               </details>
             )}

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" data-mode="web" data-version="1.1.0">
+<head>
+<meta charset="utf-8">
+<base href="/resume-maker/">
+<meta name="description" content="Write your resume on your phone, pick one of eleven designs, and save a clean PDF that fits on one page. Everything stays in your browser: nothing is uploaded.">
+<meta name="theme-color" content="#1d2023">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-180.png">
+<script>try{var q=new URLSearchParams(location.search),t={};["source","campaign","content"].forEach(function(f){var v=q.get("utm_"+f);if(v)t[f]=v});if(t.campaign){t.at=Date.now();localStorage.setItem("yarp-campaign",JSON.stringify(t))}}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Resume Maker: write your CV on your phone, nothing uploaded</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325292d'/%3E%3Cpath d='M9 6.5h14v19H9z' fill='%23fff'/%3E%3Cpath d='M12 11h8M12 15h8M12 19h5' stroke='%234aa6c9' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__mark">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="sheet" d="M6 3.5h12v17H6z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/></svg>
+    <span>resume maker</span>
+  </div>
+
+  <div class="switcher">
+    <button type="button" class="switcher__btn" id="switcher" aria-haspopup="true" aria-expanded="false" aria-controls="menu">
+      <span class="switcher__name" id="current-name">Loading</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
+    </button>
+    <div class="menu" id="menu" hidden>
+      <p class="menu__head">Your resumes</p>
+      <ul class="menu__list" id="menu-list"></ul>
+      <div class="menu__actions">
+        <button type="button" class="menu__action" data-action="new">New resume</button>
+        <button type="button" class="menu__action" data-action="duplicate">Duplicate this one</button>
+        <button type="button" class="menu__action" data-action="rename">Rename</button>
+        <button type="button" class="menu__action menu__action--danger" data-action="delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="bar__status" id="save-status" role="status"></p>
+
+  <div class="view-toggle" role="tablist" aria-label="Show">
+    <button type="button" role="tab" data-view="edit" aria-selected="true">Edit</button>
+    <button type="button" role="tab" data-view="preview" aria-selected="false">Preview</button>
+  </div>
+
+  <div class="bar__actions">
+    <p class="fit" id="fit-status" title="How much the resume was shrunk to fit its page limit"></p>
+    <button type="button" class="trial" id="license-open" data-licensed="false">Unlicensed</button>
+    <button type="button" class="btn btn--primary" id="export" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/></svg>
+      <span>Download PDF</span>
+    </button>
+  </div>
+</header>
+
+<div class="work" data-view="edit">
+  <aside class="editor">
+    <div class="editor__head">
+      <div class="tabs" role="tablist" aria-label="Editor">
+        <button type="button" role="tab" id="tab-content" data-tab="content" aria-selected="true" aria-controls="panel-content">Content</button>
+        <button type="button" role="tab" id="tab-design" data-tab="design" aria-selected="false" aria-controls="panel-design">Design</button>
+      </div>
+      <div class="history">
+        <button type="button" class="icon-btn" id="undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7L4.5 11.5 9 16"/><path d="M5 11.5h9.5a5 5 0 010 10H12"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 7l4.5 4.5L15 16"/><path d="M19 11.5H9.5a5 5 0 000 10H12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="editor__scroll">
+      <section class="panel" id="panel-content" role="tabpanel" aria-labelledby="tab-content">
+        <div id="form"></div>
+      </section>
+
+      <section class="panel" id="panel-design" role="tabpanel" aria-labelledby="tab-design" hidden>
+        <h2 class="panel__title">Template</h2>
+        <p class="panel__lede">Each one is your resume, set in that style.</p>
+        <div class="gallery" id="gallery" role="radiogroup" aria-label="Template"></div>
+
+        <h2 class="panel__title">Colour</h2>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Colour"></div>
+
+        <h2 class="panel__title">Text size</h2>
+        <div class="seg" id="density" role="radiogroup" aria-label="Text size">
+          <button type="button" role="radio" data-value="compact">Compact</button>
+          <button type="button" role="radio" data-value="standard">Standard</button>
+          <button type="button" role="radio" data-value="roomy">Roomy</button>
+        </div>
+
+        <h2 class="panel__title">Paper</h2>
+        <div class="seg" id="paper" role="radiogroup" aria-label="Paper size">
+          <button type="button" role="radio" data-value="letter">US Letter</button>
+          <button type="button" role="radio" data-value="a4">A4</button>
+        </div>
+
+        <h2 class="panel__title">Length</h2>
+        <div class="seg" id="length" role="radiogroup" aria-label="Page limit">
+          <button type="button" role="radio" data-value="1">Fit to 1 page</button>
+          <button type="button" role="radio" data-value="2">Fit to 2 pages</button>
+          <button type="button" role="radio" data-value="0">Don't shrink</button>
+        </div>
+        <p class="panel__note">When it runs long, type and spacing shrink together, down to 78%, until it fits.</p>
+      </section>
+    </div>
+  </aside>
+
+  <main class="desk" id="desk">
+    <div class="paper" id="paper-wrap">
+      <iframe id="preview" title="Resume preview" tabindex="-1"></iframe>
+      <div class="breaks" id="breaks" aria-hidden="true"></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" hidden>
+  <span id="toast-text"></span>
+  <button type="button" class="toast__action" id="toast-action" hidden></button>
+</div>
+
+<dialog class="sheet-dlg" id="name-dlg" aria-labelledby="name-dlg-title">
+  <form method="dialog" id="name-form">
+    <h2 id="name-dlg-title">New resume</h2>
+    <p class="sheet-dlg__lede" id="name-dlg-lede"></p>
+    <label class="field"><span>Name</span><input id="name-input" required maxlength="60" autocomplete="off" spellcheck="false" placeholder="e.g. Backend cloud"></label>
+    <fieldset class="field" id="start-from">
+      <legend>Start from</legend>
+      <label class="radio"><input type="radio" name="start" value="copy" checked> <span>A copy of <strong id="copy-of"></strong></span></label>
+      <label class="radio"><input type="radio" name="start" value="blank"> <span>A blank page</span></label>
+    </fieldset>
+    <footer class="sheet-dlg__foot">
+      <button type="button" class="btn btn--quiet" value="cancel" data-close>Cancel</button>
+      <button type="submit" class="btn btn--primary" id="name-submit" value="ok">Create</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog class="sheet-dlg" id="license-dlg" aria-labelledby="license-dlg-title">
+  <form id="license-form">
+    <h2 id="license-dlg-title">Licence</h2>
+    <p class="sheet-dlg__lede license__state" id="license-state"></p>
+    <label class="field" id="license-field"><span>Licence key</span><input id="license-key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
+    <p class="license__error" id="license-error" role="alert" hidden></p>
+    <p class="sheet-dlg__lede license__privacy">Your key is checked on this computer. Resume Maker never sends it, or your resumes, anywhere. <span id="license-version"></span></p>
+    <footer class="sheet-dlg__foot">
+      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
+      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn--quiet" data-close>Close</button>
+      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog class="sheet-dlg" id="delete-dlg" aria-labelledby="delete-dlg-title">
+  <form method="dialog">
+    <h2 id="delete-dlg-title">Delete <span id="delete-name"></span>?</h2>
+    <p class="sheet-dlg__lede">It moves to <code>data/.trash</code>, so you can undo this from the next message or get the file back from there later.</p>
+    <footer class="sheet-dlg__foot">
+      <button type="button" class="btn btn--quiet" data-close>Keep it</button>
+      <button type="submit" class="btn btn--danger" value="ok">Delete</button>
+    </footer>
+  </form>
+</dialog>
+
+<script type="module" src="static/app.js"></script>
+<script>
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js", { scope: "/resume-maker" }).catch(() => {});
+</script>
+</body>
+</html>

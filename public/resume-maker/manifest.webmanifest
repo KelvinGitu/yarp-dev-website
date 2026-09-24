@@ -1,0 +1,16 @@
+{
+  "name": "Resume Maker",
+  "short_name": "Resume Maker",
+  "description": "Write your resume on your phone and save it as a PDF. Nothing is uploaded.",
+  "id": "/resume-maker",
+  "start_url": "/resume-maker",
+  "scope": "/resume-maker",
+  "display": "standalone",
+  "background_color": "#1d2023",
+  "theme_color": "#1d2023",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

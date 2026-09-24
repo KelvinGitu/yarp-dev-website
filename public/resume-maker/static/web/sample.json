@@ -1,0 +1,89 @@
+{
+    "page_size": "a4",
+    "section_order": [
+        "summary",
+        "experience",
+        "skills",
+        "education",
+        "certifications",
+        "projects"
+    ],
+    "design": {
+        "template": "modern",
+        "accent": "",
+        "density": "standard",
+        "max_pages": 1
+    },
+    "section_titles": {"skills": "Skills"},
+    "personal_info": {
+        "first_name": "Sam",
+        "last_name": "Rivera",
+        "title": "Operations Coordinator",
+        "email": "sam.rivera@example.com",
+        "phone": "+32 470 00 00 00",
+        "location": "Ghent, Belgium",
+        "linkedin_url": "https://www.linkedin.com/",
+        "linkedin_label": "LinkedIn"
+    },
+    "summary": "This is an example resume. Replace it with your own: every section on the left is yours to edit, and the page on the right updates as you type. Operations coordinator with five years keeping small teams organised, from scheduling and supplier orders to the spreadsheets everyone actually uses.",
+    "experience": [
+        {
+            "job_title": "Operations Coordinator",
+            "company": "Harbourline Logistics",
+            "location": "Ghent",
+            "start_date": "03/2022",
+            "end_date": "Present",
+            "highlights": [
+                "Run weekly scheduling for a team of 14 drivers and warehouse staff.",
+                "Cut late deliveries by a third by moving route planning from email to a shared tracker.",
+                "Handle supplier orders and invoices up to €40,000 a month."
+            ]
+        },
+        {
+            "job_title": "Office Assistant",
+            "company": "Van Dael & Partners",
+            "location": "Antwerp",
+            "start_date": "09/2019",
+            "end_date": "02/2022",
+            "highlights": [
+                "Kept the front desk, calendar and post running for a 20-person firm.",
+                "Set up the filing system the office still uses."
+            ]
+        }
+    ],
+    "skill_groups": [
+        {
+            "label": "Tools",
+            "items": ["Excel", "Google Sheets", "Outlook", "Trello"]
+        },
+        {
+            "label": "Strengths",
+            "items": ["Scheduling", "Supplier contact", "Invoicing", "Keeping calm"]
+        }
+    ],
+    "languages": [
+        {"name": "Dutch", "level": "Native"},
+        {"name": "English", "level": "Fluent"},
+        {"name": "French", "level": "Good"}
+    ],
+    "education": [
+        {
+            "degree": "Bachelor in Business Management",
+            "institution": "Example University College",
+            "graduation_date": "2019",
+            "honors": ""
+        }
+    ],
+    "extra_sections": [
+        {
+            "id": "certifications",
+            "kind": "certifications",
+            "title": "",
+            "items": [
+                {"title": "Lean Six Sigma Yellow Belt", "subtitle": "Example Institute", "end_date": "2021", "highlights": []}
+            ]
+        }
+    ],
+    "projects": [],
+    "skills": []
+}

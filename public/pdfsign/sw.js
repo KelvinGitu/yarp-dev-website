@@ -6,7 +6,7 @@
    rest (pdf.js's wasm, cmaps and standard fonts, only needed by some PDFs)
    is cached the first time a PDF asks for it. */
 
-const BUILD = "1.0.1-d3cab61a02";
+const BUILD = "1.0.1-0255888d61";
 const CORE = [
   "icons/apple-touch-180.png",
   "icons/icon-192.png",
