@@ -108,7 +108,7 @@ export const products = [
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
-    version: '1.2.0',
+    version: '1.3.0',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
     size: '37 MB',
     tryShort: 'Free to explore, no licence needed at first',
