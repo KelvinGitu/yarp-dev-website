@@ -10,7 +10,7 @@
 // `web`, when set, is where the app also runs in a browser (built from the
 // app's own repo by web/build.py into public/). The same key unlocks both.
 // Phone visitors are sent there instead of to the Windows download. With it
-// come `webKeeps` (what the browser stores), `webOffline` (what still works
+// come `webKeeps` (a sentence: what the browser stores), `webOffline` (what still works
 // in airplane mode) and, optionally, `webNote` (anything that works
 // differently there), for the store's Questions.
 //
@@ -36,7 +36,7 @@ export const products = [
     version: '1.0.1',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     web: '/pdfsign',
-    webKeeps: 'your saved signatures and profile',
+    webKeeps: 'Your key, saved signatures and profile are kept in that browser, so clearing your browsing data deletes them.',
     webOffline: 'open, sign and download PDFs',
     size: '21 MB',
     tryShort: 'Free to fill and sign; a key unlocks saving',
@@ -73,7 +73,7 @@ export const products = [
     version: '1.1.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     web: '/resume-maker',
-    webKeeps: 'your resumes',
+    webKeeps: 'Your key and your resumes are kept in that browser, so clearing your browsing data deletes them.',
     webOffline: 'edit your resumes and save them as PDFs',
     webNote: 'On a phone, Save PDF opens its print window: choose Save as PDF, check the paper size, and save.',
     size: '20 MB',
@@ -153,6 +153,10 @@ export const products = [
     price: '€4.99',
     version: '1.0.1',
     download: `${DOWNLOADS}/InkLifter-setup.exe`,
+    web: '/ink-lifter',
+    webKeeps: 'Only your key is kept in that browser; your photos never are. If you clear your browsing data, paste the key again.',
+    webOffline: 'open photos, clean them up and save them',
+    webNote: 'On a phone, Share sends the result straight to WhatsApp, email or anywhere else.',
     size: '19 MB',
     tryShort: 'Free to open and preview; a key unlocks saving',
     tryLong: 'Open, clean up and preview as many photos as you like. Saving, copying or exporting an image is the only thing that needs a licence key.',

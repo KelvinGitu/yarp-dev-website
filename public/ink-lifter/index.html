@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" data-mode="web" data-version="1.0.1">
+<head>
+<meta charset="utf-8">
+<base href="/ink-lifter/">
+<meta name="description" content="Photograph your signature, a stamp or handwriting, and get it back on a transparent background, ready for documents and slides. It all happens in your browser: nothing is uploaded.">
+<meta name="theme-color" content="#1d2023">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-180.png">
+<script>try{var q=new URLSearchParams(location.search),t={};["source","campaign","content"].forEach(function(f){var v=q.get("utm_"+f);if(v)t[f]=v});if(t.campaign){t.at=Date.now();localStorage.setItem("yarp-campaign",JSON.stringify(t))}}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ink Lifter: lift a signature off a photo, on your phone, nothing uploaded</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325292d'/%3E%3Cpath d='M6 16c3-5 5-8 7-8s-1 7 1 7 3-4 5-4-1 4 1 4 3-2 6-3' fill='none' stroke='%238fd3ec' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7 24h18' fill='none' stroke='%238fd3ec' stroke-opacity='.45' stroke-width='2' stroke-linecap='round' stroke-dasharray='1 4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__mark">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c3-5 5-9 7-9s-1 8 1 8 3-5 5-5-1 5 1 5 4-2 9-4"/><path class="bar__mark-line" d="M5 25h22"/></svg>
+    Ink Lifter
+  </div>
+  <p class="bar__doc" id="doc-name"></p>
+
+  <div class="bar__actions">
+    <button type="button" class="trial" id="license-open" data-licensed="false">Unlicensed</button>
+    <span class="bar__sep"></span>
+    <button type="button" class="btn btn--quiet" id="copy" disabled title="Copy the cleaned-up image (Ctrl+C)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6.5a2 2 0 00-2-2h-7a2 2 0 00-2 2v7a2 2 0 002 2h2"/></svg>
+      <span>Copy</span>
+    </button>
+    <button type="button" class="btn btn--quiet" id="save" disabled title="Save this image (Ctrl+S)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/></svg>
+      <span>Save…</span>
+    </button>
+    <!-- Browser version only, where the browser can share files (phones): straight to WhatsApp, email... -->
+    <button type="button" class="btn btn--quiet" id="share" disabled hidden title="Share this image">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.8l6.6-4M8.7 13.2l6.6 4"/></svg>
+      <span>Share</span>
+    </button>
+    <button type="button" class="btn btn--primary" id="export-all" disabled title="Save every image into one folder">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5a2 2 0 012-2h4l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2h-13a2 2 0 01-2-2z"/><path d="M12 10.5v6m-2.5-2.5L12 16.5l2.5-2.5"/></svg>
+      <span id="export-all-label">Export all</span>
+    </button>
+  </div>
+</header>
+
+<main class="work" id="work" data-empty="true">
+  <!-- The images you've opened. Nothing here is saved anywhere until you export. -->
+  <aside class="queue" aria-label="Images">
+    <div class="queue__head">
+      <h2>Images <span id="queue-count"></span></h2>
+      <button type="button" class="btn btn--icon" id="add" title="Open images (Ctrl+O)" aria-label="Open images">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+    <ul class="queue__list" id="queue" role="listbox" aria-label="Opened images"></ul>
+    <div class="queue__foot">
+      <button type="button" class="btn btn--quiet btn--small" id="clear" disabled>Clear all</button>
+    </div>
+  </aside>
+
+  <section class="stage" aria-label="Preview">
+    <div class="stage__tools" id="stage-tools">
+      <div class="seg" role="radiogroup" aria-label="Show">
+        <button type="button" role="radio" data-view="after" aria-checked="true">Result</button>
+        <button type="button" role="radio" data-view="split" aria-checked="false">Compare</button>
+        <button type="button" role="radio" data-view="before" aria-checked="false">Photo</button>
+      </div>
+      <div class="swatches" role="radiogroup" aria-label="Preview on">
+        <button type="button" role="radio" class="swatch swatch--checker" data-backdrop="checker" aria-checked="true" title="Transparent"></button>
+        <button type="button" role="radio" class="swatch swatch--white" data-backdrop="white" aria-checked="false" title="White"></button>
+        <button type="button" role="radio" class="swatch swatch--page" data-backdrop="page" aria-checked="false" title="A printed page"></button>
+        <button type="button" role="radio" class="swatch swatch--dark" data-backdrop="dark" aria-checked="false" title="Dark"></button>
+      </div>
+      <span class="stage__spacer"></span>
+      <p class="stage__size" id="size-note"></p>
+      <button type="button" class="btn btn--quiet btn--small" id="zoom" aria-pressed="false" title="Toggle between fit and actual size">Actual size</button>
+    </div>
+
+    <div class="stage__viewport" id="viewport">
+      <div class="stage__frame" id="frame" data-backdrop="checker">
+        <canvas id="view"></canvas>
+        <div class="stage__split" id="split-handle" hidden><span></span></div>
+      </div>
+      <p class="stage__status" id="status" hidden></p>
+    </div>
+
+    <div class="empty" id="empty">
+      <div class="empty__drop">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="14" width="44" height="36" rx="3"/><path d="M17 36c5-8 8-13 11-13s-2 12 1 12 5-7 8-7-2 7 1 7 5-3 9-5"/></svg>
+        <h1>Lift the ink off a photo of paper</h1>
+        <p>Signatures, stamps, handwriting and sketches come out on a transparent background, ready for documents, slides and websites.</p>
+        <button type="button" class="btn btn--primary" id="open-empty">Open images…</button>
+        <p class="empty__or">or drop them here, or paste with Ctrl+V</p>
+      </div>
+      <ul class="empty__tips">
+        <li><strong>Fill the frame.</strong> Get close, so the ink is big in the photo.</li>
+        <li><strong>Even light.</strong> Daylight or a lamp from the side; shadows are fine, glare isn't.</li>
+        <li><strong>Plain paper.</strong> White or cream works best. Lined paper keeps its lines.</li>
+      </ul>
+    </div>
+
+    <div class="dropzone" id="dropzone" hidden><p>Drop to add</p></div>
+  </section>
+
+  <aside class="controls" id="controls" aria-label="Settings">
+    <!-- Phones only: the settings are a sheet over the bottom of the image. -->
+    <button type="button" class="controls__toggle" id="controls-toggle" aria-expanded="false" aria-controls="settings">
+      <span>Settings</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+    </button>
+    <form id="settings" autocomplete="off">
+      <fieldset class="group">
+        <legend>Clean-up</legend>
+        <label class="slider">
+          <span class="slider__label">Sensitivity <output id="start-out"></output></span>
+          <input type="range" name="start" min="0.70" max="0.97" step="0.01">
+          <small>Higher keeps fainter strokes, and more of the paper's texture.</small>
+        </label>
+        <label class="slider">
+          <span class="slider__label">Boldness <output id="solid-out"></output></span>
+          <input type="range" name="solid" min="0.25" max="0.80" step="0.01">
+          <small>Higher makes strokes more solid and less see-through.</small>
+        </label>
+        <label class="check"><input type="checkbox" name="specks"> Remove dust and specks</label>
+        <label class="select">
+          <span>Shadows</span>
+          <select name="cell">
+            <option value="64">Soft, gradual</option>
+            <option value="32">Normal</option>
+            <option value="16">Sharp-edged</option>
+          </select>
+        </label>
+        <label class="check" id="force-row" hidden><input type="checkbox" name="force"> Clean up anyway <small>(this image is already transparent)</small></label>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Ink</legend>
+        <div class="inks" role="radiogroup" aria-label="Ink colour">
+          <label class="ink-opt"><input type="radio" name="ink" value=""><span class="ink-opt__dot ink-opt__dot--own"></span>As photographed</label>
+          <label class="ink-opt"><input type="radio" name="ink" value="#1f3aa8"><span class="ink-opt__dot" style="--dot:#1f3aa8"></span>Blue</label>
+          <label class="ink-opt"><input type="radio" name="ink" value="#1a1c1e"><span class="ink-opt__dot" style="--dot:#1a1c1e"></span>Black</label>
+          <label class="ink-opt"><input type="radio" name="ink" value="custom"><input type="color" name="custom" value="#b3362c" aria-label="Custom ink colour">Custom</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Image</legend>
+        <div class="row">
+          <span>Rotate</span>
+          <button type="button" class="btn btn--quiet btn--small" id="rotate-left" title="Rotate left" aria-label="Rotate left">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5L4.5 8.5 8 12"/><path d="M4.5 8.5H14a5.5 5.5 0 010 11h-3"/></svg>
+          </button>
+          <button type="button" class="btn btn--quiet btn--small" id="rotate-right" title="Rotate right" aria-label="Rotate right">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5l3.5 3.5L16 12"/><path d="M19.5 8.5H10a5.5 5.5 0 000 11h3"/></svg>
+          </button>
+        </div>
+        <label class="slider">
+          <span class="slider__label">Margin <output id="margin-out"></output></span>
+          <input type="range" name="margin" min="0" max="64" step="1">
+        </label>
+        <label class="select">
+          <span title="The longest side of the saved image">Size</span>
+          <select name="size">
+            <option value="0">Full size</option>
+            <option value="2400">Up to 2400 px</option>
+            <option value="1200">Up to 1200 px</option>
+            <option value="600">Up to 600 px</option>
+          </select>
+        </label>
+        <label class="select">
+          <span>Format</span>
+          <select name="format">
+            <option value="png">PNG (transparent)</option>
+            <option value="webp">WebP (transparent, smaller)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <div class="controls__foot">
+        <button type="button" class="btn btn--quiet btn--small" id="reset">Reset</button>
+        <button type="button" class="btn btn--quiet btn--small" id="apply-all" disabled title="Use these settings for every image">Apply to all</button>
+      </div>
+    </form>
+  </aside>
+</main>
+
+<input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/gif" multiple hidden>
+
+<div class="toast" id="toast" role="status" hidden><span id="toast-text"></span><button type="button" class="btn" id="toast-action" hidden></button></div>
+
+<dialog class="sheet" id="license" aria-labelledby="license-title">
+  <form id="license-form">
+    <h2 id="license-title">Licence</h2>
+    <p class="sheet__lede license__state" id="license-state"></p>
+    <label class="input" id="license-field"><span>Licence key</span><input name="key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
+    <p class="license__error" id="license-error" role="alert" hidden></p>
+    <p class="sheet__lede license__privacy">Your key is checked on this computer. Ink Lifter never sends it, or your images, anywhere. <span id="license-version"></span></p>
+    <footer class="sheet__foot">
+      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
+      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
+      <span class="sheet__spacer"></span>
+      <button type="button" class="btn btn--quiet" data-close>Close</button>
+      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
+    </footer>
+  </form>
+</dialog>
+
+<script type="module" src="static/app.js"></script>
+<script>
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js", { scope: "/ink-lifter" }).catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+/* Ink Lifter, on the same graphite table as pdfsign and resume maker.
+   Graphite chrome and a grey desk; the photo and what's lifted off it are
+   the subject. Non-photo blue (the layout artist's pencil) marks the
+   interface; ink colours appear only in what you export. */
+
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 400; font-display: swap; src: url(fonts/schibsted-grotesk-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 500; font-display: swap; src: url(fonts/schibsted-grotesk-latin-500-normal.woff2) format("woff2"); }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 600; font-display: swap; src: url(fonts/schibsted-grotesk-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 700; font-display: swap; src: url(fonts/schibsted-grotesk-latin-700-normal.woff2) format("woff2"); }
+
+:root {
+  /* The frame you hold, the panel set into it, the desk the photo lies on. */
+  --frame:        #1d2023;
+  --panel:        #25292d;
+  --well:         #1a1d20;   /* inputs sit recessed */
+  --desk:         #4c5258;
+  --rule:         rgba(255, 255, 255, 0.08);
+  --rule-hi:      rgba(255, 255, 255, 0.16);
+  --raise:        rgba(255, 255, 255, 0.05);
+  --raise-hi:     rgba(255, 255, 255, 0.1);
+
+  --blotter:      #2b3035;
+  --blotter-edge: #3a4046;
+
+  --chrome-ink:   #eceff1;
+  --chrome-dim:   #9aa3ab;
+  --chrome-faint: #6c757d;
+  --paper:        #ffffff;
+  --paper-rule:   #d8dde1;
+
+  --pencil:       #8fd3ec;   /* the interface's one colour */
+  --pencil-ink:   #0d2a36;   /* text on pencil */
+  --select:       rgba(143, 211, 236, 0.12);
+  --ink-hi:       var(--pencil);
+
+  --fail:         #b3362c;
+  --fail-hi:      #ff8f86;   /* failure, as text on the dark chrome */
+
+  --ui: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --bar-h: 56px;
+  --queue-w: 232px;
+  --controls-w: 296px;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+/* Classes that set display (.btn, .empty) would otherwise un-hide [hidden]. */
+[hidden] { display: none !important; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  display: grid;
+  grid-template-rows: var(--bar-h) 1fr;
+  background: var(--frame);
+  color: var(--chrome-ink);
+  font-family: var(--ui);
+  font-size: 14.5px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+:focus-visible { outline: 2px solid var(--ink-hi); outline-offset: 2px; }
+
+.queue__list, .controls, .stage__viewport {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+/* ---------------------------------------------------------- buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.12s, border-color 0.12s;
+}
+
+.btn svg {
+  width: 18px; height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.btn--primary { background: var(--pencil); color: var(--pencil-ink); }
+.btn--primary:not(:disabled):hover { background: #aee0f2; }
+
+.btn--quiet { border-color: var(--rule); background: var(--raise); color: var(--chrome-ink); }
+.btn--quiet:not(:disabled):hover { background: var(--raise-hi); }
+
+.btn--icon { width: 34px; min-height: 34px; padding: 0; color: var(--chrome-ink); }
+.btn--icon:not(:disabled):hover { background: var(--raise-hi); }
+
+.btn--small { min-height: 32px; padding: 0 11px; font-size: 13px; border-radius: 8px; }
+.btn--small svg { width: 16px; height: 16px; }
+
+/* ---------------------------------------------------------- top bar */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px 0 20px;
+  background: var(--frame);
+  border-bottom: 1px solid var(--rule);
+  min-width: 0;
+}
+
+.bar__mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.bar__mark svg {
+  width: 28px; height: 28px;
+  fill: none;
+  stroke: var(--ink-hi);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The paper the ink was lifted from, left behind. */
+.bar__mark-line { stroke-opacity: 0.45; stroke-width: 1.8; stroke-dasharray: 1 4; }
+
+.bar__doc {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--chrome-dim);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar__doc strong { color: var(--chrome-ink); font-weight: 600; }
+
+.bar__actions { display: flex; align-items: center; gap: 8px; }
+
+.bar__sep { width: 1px; height: 24px; margin: 0 4px; background: var(--rule); }
+
+/* Unlicensed, the chip reads in pencil blue: findable, not nagging.
+   Licensed, it goes quiet. */
+.trial {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: none;
+  color: var(--chrome-dim);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.trial:hover { background: var(--raise); }
+.trial[data-licensed="false"] { color: var(--pencil); border-color: rgba(143, 211, 236, 0.35); }
+
+/* ---------------------------------------------------------- layout */
+
+.work {
+  display: grid;
+  grid-template-columns: var(--queue-w) minmax(0, 1fr) var(--controls-w);
+  min-height: 0;
+}
+
+/* Nothing opened yet: just the invitation. */
+.work[data-empty="true"] { grid-template-columns: minmax(0, 1fr); }
+.work[data-empty="true"] .queue,
+.work[data-empty="true"] .controls,
+.work[data-empty="true"] .stage__tools,
+.work[data-empty="true"] .stage__viewport { display: none; }
+.work:not([data-empty="true"]) .empty { display: none; }
+
+/* ---------------------------------------------------------- queue */
+
+.queue {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--rule);
+}
+
+.queue__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 6px 16px;
+}
+
+.queue__head h2 { margin: 0; font-size: 13px; font-weight: 600; color: var(--chrome-dim); letter-spacing: 0.02em; }
+.queue__head h2 span { color: var(--chrome-faint); font-weight: 500; }
+
+.queue__list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 4px 8px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.queue__foot { padding: 10px 12px; border-top: 1px solid var(--rule); }
+
+.qitem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+  padding: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.qitem:hover { background: var(--raise); }
+.qitem[aria-selected="true"] { background: var(--select); box-shadow: inset 0 0 0 1px rgba(143, 211, 236, 0.35); }
+
+.qitem__thumb {
+  width: 88px; height: 60px;
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+/* Once lifted, the thumbnail shows it on transparency, like the preview. */
+.qitem[data-status="done"] .qitem__thumb,
+.qitem[data-status="working"] .qitem__thumb { background: #fff conic-gradient(#e6e9ec 25%, #fff 0 50%, #e6e9ec 0 75%, #fff 0) 0 0 / 10px 10px; }
+
+.qitem__text { display: flex; flex-direction: column; min-width: 0; }
+
+.qitem__name {
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qitem__state { font-size: 12px; color: var(--chrome-faint); font-variant-numeric: tabular-nums; }
+.qitem[data-status="working"] .qitem__state, .qitem[data-status="queued"] .qitem__state { color: var(--pencil); }
+.qitem[data-status="empty"] .qitem__state, .qitem[data-status="error"] .qitem__state { color: var(--fail-hi); }
+
+.qitem__remove {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--blotter);
+  color: var(--chrome-dim);
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0;
+}
+
+.qitem:hover .qitem__remove, .qitem__remove:focus-visible { opacity: 1; }
+.qitem__remove:hover { background: var(--fail); color: #fff; }
+
+/* ---------------------------------------------------------- stage */
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--desk);
+}
+
+.stage__tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--rule);
+}
+
+.stage__spacer { flex: 1; }
+.stage__size { margin: 0; font-size: 13px; color: var(--chrome-dim); font-variant-numeric: tabular-nums; }
+
+.seg {
+  display: flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--well);
+}
+
+.seg button {
+  padding: 4px 13px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--chrome-dim);
+}
+
+.seg button[aria-checked="true"] { background: var(--raise-hi); color: var(--chrome-ink); }
+
+.swatches { display: flex; gap: 6px; }
+
+.swatch {
+  width: 26px; height: 26px;
+  padding: 0;
+  border: 2px solid var(--panel);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--rule-hi);
+}
+
+.swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--pencil); }
+
+/* Backdrops for the preview. The checkerboard is transparency; the page is
+   a sheet with a few lines of type, to judge the ink in place. */
+.swatch--checker, .stage__frame[data-backdrop="checker"] {
+  background: #fff conic-gradient(#e6e9ec 25%, #fff 0 50%, #e6e9ec 0 75%, #fff 0) 0 0 / 16px 16px;
+}
+.swatch--white, .stage__frame[data-backdrop="white"] { background: #fff; }
+.swatch--dark, .stage__frame[data-backdrop="dark"] { background: #16181b; }
+.swatch--page { background: #fff repeating-linear-gradient(#fff 0 5px, #c9ced3 5px 6px); }
+.stage__frame[data-backdrop="page"] {
+  background:
+    repeating-linear-gradient(transparent 0 22px, rgba(27, 30, 33, 0.2) 22px 24px) 0 12px / 100% 100% no-repeat,
+    #fbfaf7;
+}
+
+.stage__viewport {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 28px;
+  overflow: auto;
+}
+
+.stage__frame {
+  position: relative;
+  display: grid;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.3);
+  touch-action: none;
+}
+
+.stage__frame canvas {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100dvh - var(--bar-h) - 56px - 56px);
+  width: auto;
+  height: auto;
+}
+
+/* Actual size: one image pixel per screen pixel, scrolling if need be. */
+.stage__frame.is-actual { max-width: none; max-height: none; place-self: start center; }
+.stage__frame.is-actual canvas { max-width: none; max-height: none; }
+
+.stage__viewport.is-working .stage__frame { opacity: 0.55; transition: opacity 0.2s 0.15s; }
+
+.stage__split {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 0;
+  pointer-events: none;
+  border-left: 2px solid var(--pencil);
+  cursor: ew-resize;
+}
+
+.stage__split span {
+  position: absolute;
+  top: 50%; left: -13px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--pencil);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform: translateY(-50%);
+}
+
+.stage__frame:has(.stage__split:not([hidden])) { cursor: ew-resize; }
+
+.stage__status {
+  position: absolute;
+  left: 50%; bottom: 20px;
+  max-width: min(520px, calc(100% - 32px));
+  margin: 0;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: rgba(29, 32, 35, 0.92);
+  color: var(--chrome-ink);
+  font-size: 14px;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.dropzone {
+  position: fixed;
+  inset: 12px;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--pencil);
+  border-radius: 16px;
+  background: rgba(13, 42, 54, 0.72);
+  pointer-events: none;
+}
+
+.dropzone p { margin: 0; font-size: 22px; font-weight: 600; color: var(--pencil); }
+
+/* ---------------------------------------------------------- empty state */
+
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 32px 16px;
+  overflow: auto;
+}
+
+.empty__drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 520px;
+  padding: 40px 36px 32px;
+  border: 2px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.empty__drop svg {
+  width: 72px; height: 72px;
+  margin-bottom: 8px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.empty__drop svg rect { fill: rgba(255, 255, 255, 0.9); stroke: none; }
+.empty__drop svg path { stroke: var(--pencil-ink); stroke-width: 2.4; }
+
+.empty h1 { margin: 0 0 8px; font-size: 24px; letter-spacing: -0.015em; }
+.empty__drop > p { margin: 0 0 20px; color: #dfe3e6; }
+.empty .empty__or { margin: 12px 0 0; font-size: 13px; color: #c3c9ce; }
+
+.empty__tips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 200px));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  color: #d3d8dc;
+}
+
+.empty__tips strong { display: block; color: #fff; }
+
+/* ---------------------------------------------------------- controls */
+
+.controls {
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--panel);
+  border-left: 1px solid var(--rule);
+}
+
+.controls form { padding: 6px 18px 18px; }
+.controls form[inert] { opacity: 0.5; }
+
+.group {
+  margin: 0;
+  padding: 14px 0 16px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.group legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chrome-faint);
+}
+
+.slider { display: block; margin-bottom: 14px; clear: both; }
+
+.slider__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.slider output { color: var(--chrome-dim); font-variant-numeric: tabular-nums; }
+.slider small { display: block; margin-top: 2px; color: var(--chrome-faint); font-size: 12.5px; line-height: 1.4; }
+
+input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--pencil); }
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 12px;
+  font-size: 14px;
+  cursor: pointer;
+  clear: both;
+}
+
+.check input { width: 16px; height: 16px; accent-color: var(--pencil); }
+.check small { color: var(--chrome-faint); }
+
+.select {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  clear: both;
+}
+
+.select > span { color: var(--chrome-dim); }
+
+.select select, .input input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--well);
+  color: var(--chrome-ink);
+  min-width: 0;
+}
+
+.select select:focus, .input input:focus {
+  border-color: var(--pencil);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--select);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  clear: both;
+  font-size: 14px;
+}
+
+.row > span { width: 76px; color: var(--chrome-dim); }
+
+.inks { display: grid; gap: 4px; clear: both; }
+
+.ink-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ink-opt:hover { background: var(--raise); }
+.ink-opt:has(input[type="radio"]:checked) { background: var(--select); }
+.ink-opt input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.ink-opt:has(input[type="radio"]:focus-visible) { outline: 2px solid var(--ink-hi); }
+
+.ink-opt__dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--dot);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+/* "As photographed": whatever colour the pen was. */
+.ink-opt__dot--own { background: conic-gradient(#1f3aa8, #1a1c1e, #b3362c, #2e7d4f, #1f3aa8); }
+
+.ink-opt input[type="color"] {
+  width: 20px; height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+.ink-opt input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.ink-opt input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 50%; }
+
+.controls__foot { display: flex; justify-content: space-between; gap: 8px; padding-top: 16px; }
+
+/* ---------------------------------------------------------- toast */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: calc(100vw - 32px);
+  margin: 0;
+  padding: 8px 8px 8px 16px;
+  border-radius: 11px;
+  background: #eef1f3;
+  color: var(--frame);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  transform: translateX(-50%);
+}
+
+.toast[data-tone="error"] { background: #ffe1de; color: #5a1410; }
+.toast:not(:has(#toast-action:not([hidden]))) { padding: 10px 16px; }
+.toast .btn { min-height: 32px; padding: 0 11px; border: 0; border-radius: 7px; background: rgba(0, 0, 0, 0.08); color: inherit; font-weight: 700; }
+.toast .btn:not(:disabled):hover { background: rgba(0, 0, 0, 0.14); }
+
+/* ---------------------------------------------------------- dialogs */
+
+.sheet {
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  border: 1px solid var(--rule-hi);
+  border-radius: 14px;
+  background: var(--blotter);
+  color: var(--chrome-ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.sheet::backdrop { background: rgba(10, 12, 14, 0.55); }
+.sheet h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+.sheet__lede { margin: 6px 0 16px; color: var(--chrome-dim); font-size: 14px; overflow-wrap: anywhere; }
+
+.sheet__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.sheet__spacer { flex: 1; }
+
+.input { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.input > span { font-size: 13px; font-weight: 500; color: var(--chrome-dim); }
+.input input { height: 40px; padding: 0 12px; }
+
+/* ---------------------------------------------------------- licence */
+
+.license__state { color: var(--chrome-ink); font-size: 15px; }
+.license__privacy { margin: 4px 0 0; font-size: 13px; }
+.license__error { margin: -6px 0 10px; color: var(--fail-hi); font-size: 13.5px; }
+#license-form input[name="key"] { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; letter-spacing: 0.02em; }
+
+/* ---------------------------------------------------------- narrow windows */
+
+@media (max-width: 1080px) {
+  :root { --queue-w: 200px; --controls-w: 264px; }
+  .qitem { grid-template-columns: 64px minmax(0, 1fr); }
+  .qitem__thumb { width: 64px; height: 44px; }
+  .btn--quiet span { display: none; }
+  .btn--quiet:has(svg):has(span) { width: 38px; padding: 0; }
+}
+
+@media (max-width: 860px) {
+  .work { grid-template-columns: minmax(0, 1fr) var(--controls-w); grid-template-rows: auto minmax(0, 1fr); }
+  .queue { grid-column: 1 / -1; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .queue__list { display: flex; gap: 6px; overflow-x: auto; overflow-y: hidden; }
+  .qitem { grid-template-columns: 64px; margin: 0; }
+  .qitem__text, .queue__foot { display: none; }
+  .empty__tips { grid-template-columns: 1fr; }
+  .bar__doc { display: none; }
+}
+
+/* ---------------------------------------------------------- phones */
+
+/* Only phones show the settings as a sheet; see below. */
+.controls__toggle { display: none; }
+
+@media (max-width: 640px) {
+  :root { --bar-h: 52px; --sheet-h: 48px; }
+
+  /* The bar: every action as an icon. The labels stay for screen readers. */
+  .bar { gap: 8px; padding: 0 8px 0 12px; }
+  .bar__mark { font-size: 15px; }
+  .bar__mark svg { width: 24px; height: 24px; }
+  .bar__actions { margin-left: auto; gap: 4px; }
+  .bar__sep { display: none; }
+  .trial { height: 28px; padding: 0 9px; font-size: 12px; }
+  .bar__actions .btn span {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .bar__actions .btn:has(svg) { width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+
+  /* Images along the top, then the picture filling the rest. */
+  .work { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .work[data-empty="true"] { grid-template-rows: minmax(0, 1fr); }
+  .queue__head { padding: 6px 8px 2px 12px; }
+  .queue__list { padding: 2px 8px 8px; }
+  .qitem__thumb { width: 56px; height: 40px; }
+  .qitem { grid-template-columns: 56px; }
+
+  .stage__tools { flex-wrap: wrap; gap: 8px; padding: 8px 10px; }
+  .stage__spacer, #zoom { display: none; }
+  .stage__size { width: 100%; order: 3; font-size: 12px; }
+  .seg button { padding: 6px 10px; }
+  .swatch { width: 28px; height: 28px; }
+  /* Room for the settings sheet's handle. */
+  .stage__viewport { padding: 12px 12px calc(var(--sheet-h) + 12px); }
+
+  .empty { justify-content: flex-start; padding: 20px 14px; }
+  .empty__drop { padding: 28px 18px 22px; }
+
+  /* The settings: a sheet over the bottom of the picture. Closed, only its
+     handle shows; open, it takes up to 60% of the screen and scrolls. */
+  .controls {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    max-height: var(--sheet-h);
+    overflow: hidden;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
+    transition: max-height 0.2s ease;
+  }
+  .controls[data-open="true"] { max-height: 60vh; overflow-y: auto; }
+  .controls__toggle {
+    position: sticky; top: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; height: var(--sheet-h);
+    border: 0; background: var(--panel);
+    color: var(--chrome-ink); font-weight: 600;
+  }
+  .controls__toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.2s; }
+  .controls[data-open="true"] .controls__toggle svg { transform: rotate(180deg); }
+  .controls form { padding: 0 16px 20px; }
+  .group input[type="range"] { height: 32px; }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+  .controls, .controls__toggle svg { transition: none; }
+}

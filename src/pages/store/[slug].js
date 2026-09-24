@@ -218,7 +218,7 @@ export default function StoreProduct({ product }) {
                   Yes. <a href={product.web}>Open {product.name} in your phone’s browser</a>. It works on Android and
                   iPhone, with nothing to install; your browser can add it to your home screen if you like. The same
                   licence key unlocks the browser version and the Windows app.{product.webNote && ` ${product.webNote}`}{' '}
-                  The key and {product.webKeeps} are kept in that browser, so clearing your browsing data deletes them.
+                  {product.webKeeps}
                 </p>
               </details>
             )}

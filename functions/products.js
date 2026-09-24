@@ -40,6 +40,8 @@ const APPS = {
     page: `${STORE}/ink-lifter`,
     download: `${DOWNLOADS}/InkLifter-setup.exe`,
     whereIsLicence: "click the Unlicensed button at the top right",
+    web: "https://yarpdevelopers.com/ink-lifter",
+    whereIsWebLicence: "tap Unlicensed at the top",
   },
 };
 
