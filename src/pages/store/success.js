@@ -15,6 +15,23 @@ import { SUPPORT_EMAIL, productBySlug, products } from '@/data/products';
 const RETRIES = 8;
 const RETRY_MS = 4000;
 
+// The apps a product unlocks: the bundle unlocks them all.
+const appsFor = (product) =>
+  product === 'yarp-bundle' ? products : [productBySlug(product)].filter(Boolean);
+
+// The browser versions of the apps live on this site too, and read their keys
+// from this list (web/license.js in each app's repo). Adding the key here
+// unlocks them in this browser straight away, even in a tab already open.
+function keepKeyForWebApps(order) {
+  if (!appsFor(order.product).some((p) => p.web)) return;
+  try {
+    const same = (k) => k.replace(/[^A-Z2-7]/gi, '').toUpperCase() === order.licenseKey.replace(/[^A-Z2-7]/gi, '').toUpperCase();
+    const keys = JSON.parse(window.localStorage.getItem('yarp.keys') || '[]');
+    const others = Array.isArray(keys) ? keys.filter((k) => typeof k === 'string' && !same(k)) : [];
+    window.localStorage.setItem('yarp.keys', JSON.stringify([order.licenseKey, ...others]));
+  } catch { /* storage blocked: the key is on screen and in the email */ }
+}
+
 export default function StoreSuccess() {
   const router = useRouter();
   const [order, setOrder] = useState(null);
@@ -42,6 +59,7 @@ export default function StoreSuccess() {
           return;
         }
         if (!res.ok) throw new Error(data.error || 'lookup failed');
+        keepKeyForWebApps(data);
         setOrder(data);
         setState('paid');
       } catch {
@@ -60,10 +78,9 @@ export default function StoreSuccess() {
     } catch { /* the key is selectable anyway */ }
   }
 
-  // A bundle gets both downloads; a single app gets its own.
-  const downloads = order
-    ? order.product === 'yarp-bundle' ? products : [productBySlug(order.product)].filter(Boolean)
-    : [];
+  // A bundle gets every download; a single app gets its own.
+  const downloads = order ? appsFor(order.product) : [];
+  const webApps = downloads.filter((p) => p.web);
 
   return (
     <>
@@ -88,6 +105,19 @@ export default function StoreSuccess() {
                 {copied ? 'Copied' : 'Copy key'}
               </button>
             </div>
+
+            {webApps.length > 0 && (
+              <p className="phone-note">
+                <strong>Already unlocked in this browser:</strong>{' '}
+                {webApps.map((p, i) => (
+                  <span key={p.slug}>
+                    {i > 0 && ', '}
+                    <a href={p.web}>open {p.name}</a>
+                  </span>
+                ))}{' '}
+                and carry on, or go back to the tab you had open. The steps below are for the Windows app.
+              </p>
+            )}
 
             <ol className="store-steps">
               <li>

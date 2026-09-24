@@ -7,6 +7,10 @@
 // Each feature is a short `title` and a sentence of `text`; the product page
 // shows them as cards, so keep titles to a few words.
 //
+// `web`, when set, is where the app also runs in a browser (built from the
+// app's own repo by web/build.py into public/). The same key unlocks both.
+// Phone visitors are sent there instead of to the Windows download.
+//
 // Downloads are the installers on the public yarp-downloads repo's latest
 // release. They're uploaded under a version-less name so these links never
 // change; the licence key, not the link, is what unlocks the app.
@@ -28,6 +32,7 @@ export const products = [
     price: '€9.99',
     version: '1.0.1',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
+    web: '/pdfsign',
     size: '21 MB',
     tryShort: 'Free to fill and sign; a key unlocks saving',
     tryLong: 'Fill in and sign as many documents as you like. Saving the finished PDF is the only thing that needs a licence key.',

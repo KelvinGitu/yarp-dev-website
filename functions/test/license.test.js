@@ -6,6 +6,7 @@ const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 
 const { issueLicense, licenseForSession } = require("../lib/license");
 
@@ -67,5 +68,44 @@ for (const app of apps) {
 }
 expect("pdfsign accepts a key from a session", verify(apps[0], a), "OK pdfsign buyer@example.com");
 
-console.log(failed ? `${failed} FAILED` : "ALL PASS");
-process.exit(failed ? 1 : 0);
+// The browser version of pdfsign (yarpdevelopers.com/pdfsign) ports the check
+// to JavaScript. It has to agree with the Python one exactly, messages and all.
+async function checkWebVerifier() {
+  const pdfsign = apps[0];
+  const web = await import(pathToFileURL(path.join(pdfsign.dir, "static", "web", "license.js")).href);
+  const verifyWeb = async (key) => {
+    try {
+      const c = await web.verify(key, pdfsign.id);
+      return `OK ${c.product} ${c.email}`;
+    } catch (e) {
+      if (!(e instanceof web.LicenseError)) throw e;
+      return `REJECTED ${e.message}`;
+    }
+  };
+  const good = issueLicense("buyer@example.com", "pdfsign", "2026-09-22", seed);
+  // Flip one character of the signature, well past the payload.
+  const tampered = good.slice(0, -3) + (good.at(-3) === "A" ? "B" : "A") + good.slice(-2);
+  const cases = {
+    "its own key": good,
+    "a bundle key": issueLicense("buyer@example.com", "yarp-bundle", "2026-09-22", seed),
+    "a resume-maker key": issueLicense("buyer@example.com", "resume-maker", "2026-09-22", seed),
+    "a key from a session": a,
+    "a key pasted in lower case with spaces": ` ${good.toLowerCase()} `,
+    "a tampered key": tampered,
+    "half a key": good.slice(0, Math.floor(good.length / 2)),
+    "a key missing its last character": good.slice(0, -1),
+    "something that isn't a key": "hello there",
+    "nothing": "",
+  };
+  for (const [label, key] of Object.entries(cases)) {
+    const python = verify(pdfsign, key);
+    const js = await verifyWeb(key);
+    const agree = js === python;
+    expect(`web pdfsign agrees on ${label}`, agree ? js : `web said "${js}", Python said "${python}"`, agree ? js : "they agree");
+  }
+}
+
+checkWebVerifier().then(() => {
+  console.log(failed ? `${failed} FAILED` : "ALL PASS");
+  process.exit(failed ? 1 : 0);
+});

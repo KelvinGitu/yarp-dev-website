@@ -57,6 +57,7 @@ function licenceEmail(product, licenseKey) {
     ...apps.flatMap((app) => [
       `${app.name}: open it, ${app.whereIsLicence}, paste the key and click Unlock.`,
       `Not installed yet? Download it from ${app.page}`,
+      ...(app.web ? [`On your phone? Open ${app.web}, ${app.whereIsWebLicence} and paste the same key.`] : []),
       "",
     ]),
     "The key is checked on your computer, so it keeps working offline, and on any computer of your own.",
@@ -79,7 +80,11 @@ function licenceEmail(product, licenseKey) {
     p("<strong>To unlock:</strong>"),
     ...apps.map((app) => p(
       `<strong>${escapeHtml(app.name)}</strong>: open it, ${escapeHtml(app.whereIsLicence)}, paste the key and click Unlock.<br>` +
-      `Not installed yet? <a href="${app.page}" style="color:#8a6a12">Download ${escapeHtml(app.name)}</a>`,
+      `Not installed yet? <a href="${app.page}" style="color:#8a6a12">Download ${escapeHtml(app.name)}</a>` +
+      (app.web
+        ? `<br>On your phone? <a href="${app.web}" style="color:#8a6a12">Open ${escapeHtml(app.name)} in your browser</a>, ` +
+          `${escapeHtml(app.whereIsWebLicence)} and paste the same key.`
+        : ""),
     )),
     p("The key is checked on your computer, so it keeps working offline, and on any computer of your own. " +
       "Keep this email: it's your copy of the key."),

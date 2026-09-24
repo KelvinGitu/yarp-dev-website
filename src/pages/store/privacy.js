@@ -11,6 +11,8 @@ const paragraphs = [
   'StoryForge profiles are a name and, if you choose, a password, stored on your computer. A password is kept only as a one-way hash.',
   'Phone Signing (pdfsign)',
   'If you choose to sign on your phone, pdfsign briefly opens a connection on your local network, the one your wifi provides, so your phone can reach your computer directly. The signature goes from your phone to your computer and nowhere else. The connection closes when the code is no longer on screen.',
+  'In Your Browser (pdfsign)',
+  'pdfsign also runs in a web browser, at yarpdevelopers.com/pdfsign. This website delivers the app to your browser, and after that everything happens on your phone or computer: the PDFs you open are read and written by your browser and are never uploaded, to us or anyone else. Your saved signatures, your profile and your licence key are kept in your browser’s own storage on that device, and clearing your browsing data deletes them. The browser version has no analytics and no trackers. If you buy in the same browser, the thank-you page saves your key there too, so the browser version is unlocked straight away.',
   'Links You Click',
   'The “Buy a licence” link in each app opens this website in your normal web browser. That happens only when you click it.',
   '2. Buying a licence',
@@ -29,5 +31,5 @@ const paragraphs = [
 ];
 
 export default function StorePrivacy() {
-  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 23, 2026" />;
+  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 24, 2026" />;
 }

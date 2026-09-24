@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en" data-mode="web" data-version="1.0.1">
+<head>
+<meta charset="utf-8">
+<base href="/pdfsign/">
+<meta name="description" content="Fill in, sign and mark up PDFs right in your browser. Draw your signature with your finger, fill in forms, and download or share the signed PDF. Your file never leaves your phone.">
+<meta name="theme-color" content="#1d2023">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-180.png">
+<script>try{var q=new URLSearchParams(location.search),t={};["source","campaign","content"].forEach(function(f){var v=q.get("utm_"+f);if(v)t[f]=v});if(t.campaign){t.at=Date.now();localStorage.setItem("yarp-campaign",JSON.stringify(t))}}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>pdfsign: fill and sign PDFs on your phone, nothing uploaded</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2325292d'/%3E%3Cpath d='M6 21c3-6 5-9 7-9s-1 8 1 8 3-5 5-5-1 5 1 5 3-2 6-3' fill='none' stroke='%238fd3ec' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__mark">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 22c3-6 5-10 7-10s-1 9 1 9 3-6 5-6-1 6 1 6 4-2 9-4"/></svg>
+    pdfsign
+  </div>
+  <button type="button" class="btn btn--icon pages-toggle" id="pages-toggle" aria-pressed="false" aria-controls="thumbs" title="Pages" aria-label="Pages" disabled>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="7" height="9" rx="1"/><rect x="13" y="3.5" width="7" height="9" rx="1"/><path d="M4 16.5h16M4 20h10"/></svg>
+  </button>
+  <p class="bar__doc" id="doc-name"></p>
+
+  <!-- For fillable PDFs: how far along you are, and a jump to the next blank. -->
+  <div class="fieldnav" id="fieldnav" role="group" aria-label="Form fields" hidden>
+    <button type="button" class="btn btn--icon" id="field-prev" aria-label="Previous empty field" title="Previous empty field">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5L9 12l5.5 5.5"/></svg>
+    </button>
+    <button type="button" class="fieldnav__count" id="field-count" title="Go to the next empty field"></button>
+    <button type="button" class="btn btn--icon" id="field-next" aria-label="Next empty field" title="Next empty field (Enter in a field)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5L15 12l-5.5 5.5"/></svg>
+    </button>
+    <button type="button" class="fieldnav__lock" id="flatten" aria-pressed="false" title="Lock the fields in the saved copy: your answers show, but can't be changed">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path class="shackle" d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg>
+      <span>Lock on save</span>
+    </button>
+  </div>
+
+  <div class="bar__actions">
+    <div class="history" role="group" aria-label="History">
+      <button type="button" class="btn btn--icon" id="undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7L4.5 11.5 9 16"/><path d="M5 11.5h9.5a5 5 0 010 10H12"/></svg>
+      </button>
+      <button type="button" class="btn btn--icon" id="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 7l4.5 4.5L15 16"/><path d="M19 11.5H9.5a5 5 0 000 10H12"/></svg>
+      </button>
+    </div>
+    <label class="btn btn--quiet" for="file">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h7l4 4v13h-11z"/><path d="M13.5 3.5v4h4"/></svg>
+      Open PDF<input id="file" type="file" accept="application/pdf,.pdf" hidden></label>
+    <div class="zoom" role="group" aria-label="Zoom">
+      <button type="button" class="btn btn--icon" id="zoom-out" aria-label="Zoom out" disabled>&minus;</button>
+      <button type="button" class="zoom__level" id="zoom-fit" title="Fit to width" disabled>100%</button>
+      <button type="button" class="btn btn--icon" id="zoom-in" aria-label="Zoom in" disabled>+</button>
+    </div>
+    <span class="bar__sep" aria-hidden="true"></span>
+    <button type="button" class="btn btn--quiet" id="save" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M12 11v5m-2.3-2.3L12 16l2.3-2.3"/></svg>
+      Save to folder
+    </button>
+    <button type="button" class="btn btn--primary" id="download" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/></svg>
+      <span id="download-label">Download</span>
+    </button>
+  </div>
+</header>
+
+<div class="work">
+  <nav class="tools" id="tools" aria-label="Tools">
+    <button type="button" class="tool" data-tool="select" aria-pressed="true">
+      <svg viewBox="0 0 24 24"><path d="M6 3l12 9-5.5 1.2L15 19l-2.4 1.1-2.4-5.8L6 18z"/></svg>
+      <span>Select</span>
+    </button>
+    <span class="tools__sep" aria-hidden="true"></span>
+    <button type="button" class="tool tool--ink" data-tool="signature">
+      <svg viewBox="0 0 24 24"><path d="M3 16c2-4 3.5-7 5-7s-1 7 1 7 2.5-4 4-4-1 4 1 4 3-1.5 7-3"/><path d="M3 20.5h18" class="thin"/></svg>
+      <span>Signature</span>
+    </button>
+    <button type="button" class="tool tool--ink" data-tool="initials">
+      <svg viewBox="0 0 24 24"><path d="M4 17l3.5-10L11 17M5.3 13.5h4.4M14 7v10h2.8a2.6 2.6 0 000-5.2H14h2.3a2.4 2.4 0 000-4.8z"/></svg>
+      <span>Initials</span>
+    </button>
+    <span class="tools__sep" aria-hidden="true"></span>
+    <button type="button" class="tool" data-tool="text">
+      <svg viewBox="0 0 24 24"><path d="M5 6.5V5h14v1.5M12 5v14M9 19h6"/></svg>
+      <span>Text</span>
+    </button>
+    <button type="button" class="tool" data-tool="date">
+      <svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>
+      <span>Date</span>
+    </button>
+    <button type="button" class="tool" data-tool="name">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.6 3.8-5.3 7-5.3s5.8 1.7 7 5.3"/></svg>
+      <span>Name</span>
+    </button>
+    <button type="button" class="tool" data-tool="snippet">
+      <svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="15" rx="2"/><path d="M8 9.5h8M8 13h8M8 16.5h4.5"/></svg>
+      <span>Snippets</span>
+    </button>
+    <span class="tools__sep" aria-hidden="true"></span>
+    <button type="button" class="tool" data-tool="check">
+      <svg viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.8L19.5 7"/></svg>
+      <span>Check</span>
+    </button>
+    <button type="button" class="tool" data-tool="cross">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <span>Cross</span>
+    </button>
+    <span class="tools__sep" aria-hidden="true"></span>
+    <button type="button" class="tool" data-tool="whiteout">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="8" rx="1"/><path d="M7 12h5" class="thin"/></svg>
+      <span>Whiteout</span>
+    </button>
+
+    <div class="tools__foot">
+      <div class="inks" role="radiogroup" aria-label="Ink colour">
+        <button type="button" class="ink" data-ink="blue" role="radio" aria-checked="true" aria-label="Blue ink" title="Blue ink"></button>
+        <button type="button" class="ink" data-ink="black" role="radio" aria-checked="false" aria-label="Black ink" title="Black ink"></button>
+      </div>
+      <span class="inks__label" id="ink-label" aria-hidden="true">Blue ink</span>
+      <button type="button" class="tool" id="profile-open">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
+        <span>Profile</span>
+      </button>
+      <button type="button" class="tool" id="license-open" data-licensed="false">
+        <svg viewBox="0 0 24 24"><circle cx="8" cy="14.5" r="4"/><path d="M11 11.5l8.5-8.5M16 6.5l2.5 2.5M13.5 9l2 2"/></svg>
+        <span id="license-label">Unlicensed</span>
+      </button>
+    </div>
+  </nav>
+
+  <aside class="thumbs" id="thumbs" aria-label="Pages" hidden>
+    <ol class="thumbs__list" id="thumb-list"></ol>
+    <div class="thumbs__foot">
+      <label class="btn btn--quiet" for="add-file" title="Add another PDF's pages to the end">Add PDF<input id="add-file" type="file" accept="application/pdf,.pdf" multiple hidden></label>
+    </div>
+  </aside>
+
+  <main class="desk" id="desk">
+    <div class="empty" id="empty">
+      <div class="empty__sheet">
+        <svg viewBox="0 0 120 40" aria-hidden="true"><path d="M4 30c8-15 13-24 18-24s-3 22 3 22 7-14 12-14-2 14 3 14 9-5 16-8 8-2 12-2c6 0 10 6 17 6s12-4 31-5"/></svg>
+        <h1>Open a PDF to sign</h1>
+        <p>Drop it anywhere on this page, or choose one. The file is read in your browser and stays on this computer. Drop more PDFs later to add their pages.</p>
+        <label class="btn btn--primary" for="file">Choose a PDF</label>
+      </div>
+    </div>
+    <div class="pages" id="pages"></div>
+  </main>
+</div>
+
+<p class="hint" id="hint" role="status" hidden></p>
+<div class="toast" id="toast" role="status" hidden><span id="toast-text"></span><button type="button" class="btn btn--quiet" id="toast-action" hidden></button></div>
+
+<!-- Saved signatures for the armed kind. -->
+<dialog class="sheet" id="picker" aria-labelledby="picker-title">
+  <h2 id="picker-title">Your signatures</h2>
+  <div class="stamps" id="stamps"></div>
+  <footer class="sheet__foot">
+    <button type="button" class="btn btn--quiet" data-close>Cancel</button>
+    <button type="button" class="btn btn--primary" id="picker-new">New signature</button>
+  </footer>
+</dialog>
+
+<!-- Make a new signature: draw it, type it, or upload a scan. -->
+<dialog class="sheet sheet--wide" id="pad" aria-labelledby="pad-title">
+  <div class="sheet__head">
+    <h2 id="pad-title">New signature</h2>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="draw" aria-selected="true">Draw</button>
+      <button type="button" role="tab" data-tab="type" aria-selected="false">Type</button>
+      <button type="button" role="tab" data-tab="upload" aria-selected="false">Upload</button>
+      <button type="button" role="tab" data-tab="phone" aria-selected="false">Phone</button>
+    </div>
+  </div>
+
+  <section class="pad__panel" data-panel="draw">
+    <div class="pad__surface" id="pad-surface">
+      <canvas id="pad-canvas" aria-label="Signature drawing area"></canvas>
+      <div class="pad__line" aria-hidden="true"><span>&times;</span></div>
+      <button type="button" class="pad__clear" id="pad-clear">Clear</button>
+    </div>
+    <p class="pad__note">Sign with your mouse, trackpad, finger or stylus. Slower strokes come out heavier, like a real pen.</p>
+  </section>
+
+  <section class="pad__panel" data-panel="type" hidden>
+    <label class="input">
+      <span>Text</span>
+      <input id="pad-text" type="text" autocomplete="name" spellcheck="false">
+    </label>
+    <div class="fonts" id="pad-fonts" role="radiogroup" aria-label="Handwriting style"></div>
+  </section>
+
+  <section class="pad__panel" data-panel="upload" hidden>
+    <label class="drop" for="pad-file" id="pad-drop">
+      <input id="pad-file" type="file" accept="image/*" hidden>
+      <canvas id="pad-preview" hidden></canvas>
+      <span id="pad-drop-text">Choose a photo or scan of your signature on white paper</span>
+    </label>
+    <div class="pad__options">
+      <label class="check"><input type="checkbox" id="pad-knockout" checked> Remove the background</label>
+      <label class="check"><input type="checkbox" id="pad-recolor"> Repaint in my ink colour</label>
+    </div>
+    <p class="pad__note">A photo taken on your phone works: shadows and grey paper are cleaned up too.</p>
+  </section>
+
+  <section class="pad__panel" data-panel="phone" hidden>
+    <div class="phone" id="phone" data-state="loading">
+      <div class="phone__qr" id="phone-qr"></div>
+      <div class="phone__side">
+        <p class="phone__status" id="phone-status" role="status"></p>
+        <p class="pad__note">Your phone needs to be on the same wifi as this computer. The code works once and expires after 10 minutes.</p>
+        <p class="pad__note">The first time, Windows asks whether pdfsign may use your network. Allow it on private networks: pdfsign opens the connection only while this code is showing, and your phone can reach nothing but this signing page.</p>
+        <p class="phone__url" id="phone-url"></p>
+        <button type="button" class="btn btn--primary" id="phone-retry" hidden>Make a new code</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="pad__error" id="pad-error" role="alert" hidden></p>
+
+  <footer class="sheet__foot">
+    <div class="inks" role="radiogroup" aria-label="Ink colour">
+      <button type="button" class="ink" data-ink="blue" role="radio" aria-checked="true" aria-label="Blue ink"></button>
+      <button type="button" class="ink" data-ink="black" role="radio" aria-checked="false" aria-label="Black ink"></button>
+    </div>
+    <label class="check"><input type="checkbox" id="pad-keep" checked> Keep for next time</label>
+    <span class="sheet__spacer"></span>
+    <button type="button" class="btn btn--quiet" data-close>Cancel</button>
+    <button type="button" class="btn btn--primary" id="pad-use">Use signature</button>
+  </footer>
+</dialog>
+
+<!-- Licence: whether exporting is unlocked, entering a key, buying one. -->
+<dialog class="sheet" id="license" aria-labelledby="license-title">
+  <form id="license-form">
+    <h2 id="license-title">Licence</h2>
+    <p class="sheet__lede license__state" id="license-state"></p>
+    <label class="input" id="license-field"><span>Licence key</span><input name="key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
+    <p class="pad__error" id="license-error" role="alert" hidden></p>
+    <p class="sheet__lede license__privacy">Your key is checked on this computer. pdfsign never sends it, or your documents, anywhere. <span id="license-version"></span></p>
+    <footer class="sheet__foot">
+      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
+      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
+      <span class="sheet__spacer"></span>
+      <button type="button" class="btn btn--quiet" data-close>Close</button>
+      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Saved snippets: pick one, then click where it goes. -->
+<dialog class="sheet" id="snippets" aria-labelledby="snippets-title">
+  <h2 id="snippets-title">Snippets</h2>
+  <p class="sheet__lede">Pick one, then click where it goes.</p>
+  <div class="snips" id="snip-list"></div>
+  <footer class="sheet__foot">
+    <button type="button" class="btn btn--quiet" id="snip-manage">Edit snippets</button>
+    <span class="sheet__spacer"></span>
+    <button type="button" class="btn btn--quiet" data-close>Cancel</button>
+  </footer>
+</dialog>
+
+<dialog class="sheet" id="profile" aria-labelledby="profile-title">
+  <form id="profile-form">
+    <h2 id="profile-title">Profile</h2>
+    <p class="sheet__lede">Used by the Name and Date tools, and to prefill typed signatures.</p>
+    <label class="input"><span>Full name</span><input name="name" autocomplete="name"></label>
+    <label class="input"><span>Initials</span><input name="initials" maxlength="8"></label>
+    <label class="input"><span>Date format</span><select name="date_format" id="date-format"></select></label>
+    <fieldset class="snip-edit" id="snip-edit">
+      <legend>Snippets</legend>
+      <p class="sheet__lede">Text you write on forms again and again: your address, email, an ID number. The Snippets tool puts them on the page.</p>
+      <div class="snip-rows" id="snip-rows"></div>
+      <button type="button" class="add" id="snip-add">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Add snippet
+      </button>
+    </fieldset>
+    <p class="sheet__lede" id="profile-dir"></p>
+    <footer class="sheet__foot">
+      <button type="button" class="btn btn--quiet" data-close>Cancel</button>
+      <button type="submit" class="btn btn--primary">Save profile</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="static/vendor/pdf-lib.min.js"></script>
+<script type="module" src="static/app.js"></script>
+<script>
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js", { scope: "/pdfsign" }).catch(() => {});
+</script>
+</body>
+</html>

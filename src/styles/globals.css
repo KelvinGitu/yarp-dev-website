@@ -1213,7 +1213,8 @@ img { max-width: 100%; display: block; }
 
 .store-shots-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-/* Shown only on phones: the apps need a Windows computer. */
+/* Under the buy buttons: on phones, how to get a Windows app; for an app with
+   a browser version, where to find it. */
 .phone-note {
   margin-top: 1rem;
   padding: 0.85rem 1rem;

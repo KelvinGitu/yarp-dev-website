@@ -1,0 +1,16 @@
+{
+  "name": "pdfsign",
+  "short_name": "pdfsign",
+  "description": "Fill, sign and mark up PDFs on your phone. Nothing is uploaded.",
+  "id": "/pdfsign",
+  "start_url": "/pdfsign",
+  "scope": "/pdfsign",
+  "display": "standalone",
+  "background_color": "#1d2023",
+  "theme_color": "#1d2023",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

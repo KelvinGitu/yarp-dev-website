@@ -5,12 +5,13 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import BuyButton from '@/components/BuyButton';
 import StorePromises from '@/components/StorePromises';
 import { RegionPicker, useRegion } from '@/components/Region';
-import { DownloadIcon } from '@/components/icons';
+import { DownloadIcon, GlobeIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
 import { REGIONS, priceFor } from '@/data/regions';
 
-// Most ad clicks come from phones, and the apps are Windows-only. The answer
-// never changes during a visit, so there's nothing to subscribe to.
+// Most ad clicks come from phones. An app with a browser version (`web`) sends
+// them there; the Windows-only ones explain how to get it onto a computer.
+// The answer never changes during a visit, so there's nothing to subscribe to.
 const noSubscribe = () => () => {};
 const isPhone = () => /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
 
@@ -33,8 +34,11 @@ export default function StoreProduct({ product }) {
   return (
     <>
       <Head>
-        <title>{`${product.name} for Windows · Yarp Developers`}</title>
-        <meta name="description" content={`${product.tagline} Runs on your computer; your files never leave it.`} />
+        <title>{`${product.name} for Windows${product.web ? ' and your browser' : ''} · Yarp Developers`}</title>
+        <meta
+          name="description"
+          content={`${product.tagline} Runs on your ${product.web ? 'computer or phone' : 'computer'}; your files never leave it.`}
+        />
       </Head>
 
       <div className="store-product">
@@ -54,22 +58,50 @@ export default function StoreProduct({ product }) {
               <p className="detail-tagline">{product.tagline}</p>
               <p className="detail-release">
                 v{product.version} · Windows 10 and 11 · {product.size}
+                {product.web && ' · or in your browser'}
               </p>
             </div>
           </div>
 
           <div className="store-actions">
-            <a className="store-btn store-btn-download" href={product.download}>
-              <DownloadIcon />
-              <span>
-                <span className="store-btn-main">Download</span>
-                <span className="store-btn-sub">{product.tryShort}</span>
-              </span>
-            </a>
+            {onPhone && product.web ? (
+              <a className="store-btn store-btn-download" href={product.web}>
+                <GlobeIcon />
+                <span>
+                  <span className="store-btn-main">Open it in your browser</span>
+                  <span className="store-btn-sub">{product.tryShort}</span>
+                </span>
+              </a>
+            ) : (
+              <a className="store-btn store-btn-download" href={product.download}>
+                <DownloadIcon />
+                <span>
+                  <span className="store-btn-main">Download</span>
+                  <span className="store-btn-sub">{product.tryShort}</span>
+                </span>
+              </a>
+            )}
             <BuyButton item={product} />
           </div>
           <RegionPicker />
-          {onPhone && (
+          {product.web && (
+            <p className="phone-note">
+              {onPhone ? (
+                <>
+                  <strong>Works on your phone.</strong> {product.name} runs right in your browser, with nothing to
+                  install, and your files stay on your phone. One key unlocks it here and in the{' '}
+                  <a href={product.download}>Windows app</a>.
+                </>
+              ) : (
+                <>
+                  <strong>No Windows computer?</strong>{' '}
+                  <a href={product.web}>Use {product.name} in your browser</a>, on any phone or computer. Your files
+                  stay on your device, and one key unlocks both.
+                </>
+              )}
+            </p>
+          )}
+          {onPhone && !product.web && (
             <p className="phone-note">
               <strong>On your phone?</strong> {product.name} runs on Windows computers. Buy now and your key
               and the download link arrive by email, or{' '}
@@ -108,7 +140,7 @@ export default function StoreProduct({ product }) {
 
         {/* The promise: the reason to buy this over a web tool. */}
         <section className="store-promise">
-          <p className="store-promise-line">Your files never leave this computer.</p>
+          <p className="store-promise-line">Your files never leave {product.web ? 'your device' : 'this computer'}.</p>
           <ul className="store-promise-list">
             {product.privacy.map((line) => <li key={line}>{line}</li>)}
           </ul>
@@ -129,7 +161,11 @@ export default function StoreProduct({ product }) {
           <h2 className="detail-section-title">How buying works</h2>
           <ol className="store-steps">
             <li>
-              <strong>Try it.</strong> Download and install — no payment needed. {product.tryLong}
+              <strong>Try it.</strong>{' '}
+              {product.web
+                ? <>Download it for Windows, or <a href={product.web}>open it in your browser</a> — no payment needed.</>
+                : <>Download and install — no payment needed.</>}{' '}
+              {product.tryLong}
             </li>
             <li>
               <strong>Buy a licence</strong>{' '}
@@ -137,7 +173,9 @@ export default function StoreProduct({ product }) {
               Your licence key arrives by email a moment later.
             </li>
             <li>
-              <strong>Paste the key</strong> into the app’s Licence window. It’s checked on your computer, so it keeps working offline, for good.
+              <strong>Paste the key</strong> into the app’s Licence window. It’s checked on your{' '}
+              {product.web ? 'device' : 'computer'}, so it keeps working offline, for good.
+              {product.web && ' Bought on this device? The browser version is unlocked for you already.'}
             </li>
           </ol>
         </section>
@@ -165,8 +203,25 @@ export default function StoreProduct({ product }) {
               <p>
                 Unplug your network cable or turn off wifi: {product.name} works exactly the same. For a closer look, open
                 Windows’ Resource Monitor while you use it. Its only connections are to 127.0.0.1, your own computer.
+                {product.web && (
+                  <>
+                    {' '}In the browser version, open it once, then turn on airplane mode: you can still open, sign and
+                    download PDFs, because it all happens on your phone or computer.
+                  </>
+                )}
               </p>
             </details>
+            {product.web && (
+              <details>
+                <summary>Can I use it on my phone?</summary>
+                <p>
+                  Yes. <a href={product.web}>Open {product.name} in your phone’s browser</a>. It works on Android and
+                  iPhone, with nothing to install; your browser can add it to your home screen if you like. The same
+                  licence key unlocks the browser version and the Windows app. The key, your saved signatures and your
+                  profile are kept in that browser, so if you clear your browsing data, paste your key again.
+                </p>
+              </details>
+            )}
             <details>
               <summary>What's free, and what needs a licence?</summary>
               <p>{product.licenseFaq}</p>
@@ -180,7 +235,10 @@ export default function StoreProduct({ product }) {
             </details>
             <details>
               <summary>Can I use my key on more than one computer?</summary>
-              <p>Yes, on your own computers: your desktop and your laptop, say. Please don’t share it beyond that.</p>
+              <p>
+                Yes, on your own {product.web ? 'devices: your laptop and your phone' : 'computers: your desktop and your laptop'},
+                say. Please don’t share it beyond that.
+              </p>
             </details>
             <details>
               <summary>I lost my key.</summary>
@@ -196,7 +254,11 @@ export default function StoreProduct({ product }) {
             </details>
             <details>
               <summary>Mac or Linux?</summary>
-              <p>Windows only for now.</p>
+              <p>
+                {product.web
+                  ? <>The app you install is for Windows, but <a href={product.web}>the browser version</a> runs on a Mac or Linux too.</>
+                  : 'Windows only for now.'}
+              </p>
             </details>
           </div>
         </section>

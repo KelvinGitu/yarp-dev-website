@@ -17,6 +17,9 @@ const APPS = {
     page: `${STORE}/pdfsign`,
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     whereIsLicence: "click the key icon at the bottom left, labelled Unlicensed",
+    // The browser version (src/data/products.js `web`); the same key unlocks it.
+    web: "https://yarpdevelopers.com/pdfsign",
+    whereIsWebLicence: "tap Unlicensed at the end of the toolbar",
   },
   "resume-maker": {
     name: "Resume Maker",
