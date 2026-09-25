@@ -1,17 +1,45 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
 import { apps } from '@/data/apps';
+import AppIcon from '@/components/AppIcon';
+import CtaBand from '@/components/CtaBand';
+import SectionHead from '@/components/SectionHead';
 import { PlayIcon, GlobeIcon } from '@/components/icons';
 
-function AppIcon({ slug, name }) {
-  const [error, setError] = useState(false);
-  if (error) return <span className="detail-icon-fallback">{name.charAt(0)}</span>;
-  return <img src={`/assets/icons/${slug}.png`} alt="" onError={() => setError(true)} />;
+// Where to get the app: Google Play when it's live, the web version when there is one.
+function GetButtons({ app }) {
+  return (
+    <>
+      {app.playUrl && app.status === 'live' && (
+        <a href={app.playUrl} target="_blank" rel="noopener noreferrer" className="store-btn store-btn-primary">
+          <PlayIcon />
+          <span className="store-btn-main">Get it on Google Play</span>
+        </a>
+      )}
+      {app.webUrl && (
+        <a href={app.webUrl} target="_blank" rel="noopener noreferrer" className="store-btn">
+          <GlobeIcon />
+          <span className="store-btn-main">Open the web app</span>
+        </a>
+      )}
+    </>
+  );
 }
 
+// The description under the headline. Some descriptions open with the tagline
+// (the headline), so that part is dropped rather than said twice.
+function lede(app) {
+  const tagline = app.tagline.replace(/\.$/, '');
+  if (!app.description.startsWith(tagline)) return app.description;
+  const rest = app.description.slice(tagline.length).replace(/^[\s.,:;—–-]+/, '');
+  return rest.charAt(0).toUpperCase() + rest.slice(1);
+}
+
+// One mobile app: what it is, its screens, what it does, the engineering story
+// behind it, and where to get it.
 export default function AppDetail({ app }) {
   if (!app) return <div className="prose"><p>App not found.</p></div>;
+  const intro = lede(app);
 
   return (
     <>
@@ -20,110 +48,58 @@ export default function AppDetail({ app }) {
         <meta name="description" content={app.tagline} />
       </Head>
 
-      <div className="app-detail">
-
-        {/* ── Header ── */}
-        <div className="detail-header">
-          <div className="detail-icon">
-            <AppIcon slug={app.slug} name={app.name} />
+      <div className="page app-detail">
+        <header className="page-hero">
+          <p className="page-eyebrow">
+            <span className="project-icon"><AppIcon slug={app.slug} name={app.name} size={36} /></span>
+            <span className="page-eyebrow-name">{app.name}</span>
+            <span className="detail-release">v{app.version} · {app.builds} builds</span>
+          </p>
+          <h1 className="page-title">{app.tagline}</h1>
+          {intro && <p className="page-lede">{intro}</p>}
+          <div className="store-actions">
+            <GetButtons app={app} />
           </div>
-          <div className="detail-header-text">
-            <h1 className="detail-title">{app.name}</h1>
-            <p className="detail-tagline">{app.tagline}</p>
-            <p className="detail-release">
-              v{app.version} · <strong>{app.builds} builds</strong> · {app.packageId}
-            </p>
-          </div>
-        </div>
+        </header>
 
-        {/* ── Description ── */}
-        <div className="detail-description">
-          <p>{app.description}</p>
-        </div>
-
-        {/* ── Screens ── */}
         {app.shots?.length > 0 && (
-          <section className="detail-section">
-            <h2 className="detail-section-title">Screens</h2>
-            <div className={`shot-strip shot-strip-${app.shots.length}`}>
-              {app.shots.map((file, i) => (
-                <div key={file} className="shot">
-                  <img
-                    src={`/assets/shots/${app.slug}/${file}`}
-                    alt={`${app.name} screen ${i + 1}`}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
+          <div className={`shot-strip shot-strip-${app.shots.length}`}>
+            {app.shots.map((file, i) => (
+              <div key={file} className="shot">
+                <img src={`/assets/shots/${app.slug}/${file}`} alt={`${app.name} screen ${i + 1}`} width={420} height={909} />
+              </div>
+            ))}
+          </div>
         )}
 
-        {/* ── Features ── */}
         <section className="detail-section">
-          <h2 className="detail-section-title">Features</h2>
-          <ul className="detail-features">
-            {app.features.map((f, i) => (
-              <li key={i} className="detail-feature-item">
-                <span className="detail-feature-dot" />
-                {f}
+          <SectionHead eyebrow="Features" title="What it does" />
+          <ul className="card-grid">
+            {app.features.map((f) => (
+              <li key={f} className="card-grid-item">
+                <h3 className="card-title">{f}</h3>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* ── Engineering note ── */}
+        {/* The one engineering story worth telling (apps.js `note`). */}
         {app.note && (
-          <section className="detail-section">
-            <h2 className="detail-section-title">{app.note.kind}</h2>
-            <p className="detail-body">{app.note.text}</p>
+          <section className="store-promise app-note">
+            <p className="detail-section-title">Behind it · {app.note.kind}</p>
+            <p className="app-note-text">{app.note.text}</p>
           </section>
         )}
 
-        {/* ── Tech Stack ── */}
         <section className="detail-section">
-          <h2 className="detail-section-title">Tech Stack</h2>
-          <ul className="project-stack">
+          <SectionHead eyebrow="Stack" title="Built with" />
+          <ul className="project-stack app-stack">
             {app.stack.map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>
         </section>
 
-        {/* ── Legal & Links ── */}
-        <section className="detail-section">
-          <h2 className="detail-section-title">Legal &amp; Links</h2>
-          <div className="detail-links">
-            {app.playUrl && app.status === 'live' && (
-              <a href={app.playUrl} target="_blank" rel="noopener noreferrer" className="detail-btn-store">
-                <span className="detail-btn-icon"><PlayIcon /></span>
-                <span>
-                  <span className="detail-btn-sub">Get it on</span>
-                  <span className="detail-btn-main">Google Play</span>
-                </span>
-              </a>
-            )}
-            {app.webUrl && (
-              <a href={app.webUrl} target="_blank" rel="noopener noreferrer" className="detail-btn-launch">
-                <span className="detail-btn-icon"><GlobeIcon /></span>
-                <span>
-                  <span className="detail-btn-sub">Open in browser</span>
-                  <span className="detail-btn-main">Web App</span>
-                </span>
-              </a>
-            )}
-            <div className="detail-legal-links">
-              <Link href={`/privacy/${app.packageId}`} className="detail-btn-legal">
-                Privacy Policy
-              </Link>
-              <Link href={`/terms/${app.packageId}`} className="detail-btn-legal">
-                Terms of Service
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Notes ── */}
         {app.webUrl && (app.hasPurchases || app.hasAds) && (
           <div className="detail-note">
             <strong>Note for web users:</strong> In-app purchases and certain features are optimised for the mobile app. To buy credits or upgrade, open the app on your phone.
@@ -135,8 +111,15 @@ export default function AppDetail({ app }) {
           </div>
         )}
 
+        <CtaBand title={`Try ${app.name}`} text={app.webUrl ? 'On Google Play, or right in your browser.' : 'On Google Play.'}>
+          <GetButtons app={app} />
+        </CtaBand>
+
         <div className="detail-back">
-          <Link href="/#projects" className="detail-back-link">← All projects</Link>
+          <Link href="/#apps" className="detail-back-link">← All apps</Link>
+          <span className="store-legal">
+            <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>
+          </span>
         </div>
       </div>
     </>

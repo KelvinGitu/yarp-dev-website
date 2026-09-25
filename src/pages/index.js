@@ -1,42 +1,49 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
+import CtaBand from '@/components/CtaBand';
 import ProjectCard from '@/components/ProjectCard';
+import SectionHead from '@/components/SectionHead';
+import StatRow from '@/components/StatRow';
+import { MailIcon } from '@/components/icons';
 import { Price } from '@/components/Region';
 import { products } from '@/data/products';
+import { SALES_EMAIL, studioStats } from '@/data/studio';
 
-const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
-
+// The studio's front door: who we are, the proof, the mobile apps, the desktop
+// apps you can buy, and a way to get in touch.
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Yarp Developers — Mobile apps, built and shipped</title>
+        <title>Yarp Developers — Mobile and desktop apps, built and kept running</title>
         <meta
           name="description"
-          content={`${apps.length} Flutter apps live on Google Play, built, shipped, and operated end to end by Yarp Developers.`}
+          content={`${apps.length} Flutter apps live on Google Play and ${products.length} private Windows apps, built, shipped, and operated end to end by Yarp Developers.`}
         />
       </Head>
 
-      <div className="home">
-        <header className="store-head">
-          <h1 className="detail-title">Mobile apps, built and shipped.</h1>
-          <p className="store-lede">
-            We&apos;re Yarp Developers. {apps.length} Flutter apps live on Google Play, each one built and kept
-            running by us — interface, backend, billing, and the store review that comes after.
+      <div className="page home">
+        <header className="page-hero">
+          <p className="detail-section-title">Yarp Developers</p>
+          <h1 className="page-title">Mobile and desktop apps, built and kept running.</h1>
+          <p className="page-lede">
+            {apps.length} Flutter apps live on Google Play and {products.length} private Windows apps, each one built
+            and kept running by us — interface, backend, billing, and the store review that comes after.
           </p>
           <div className="store-actions">
-            <a href="#projects" className="store-btn store-btn-download">
+            <a href="#apps" className="store-btn store-btn-primary">
               <span className="store-btn-main">See the apps</span>
             </a>
             <Link href="/store" className="store-btn">
               <span className="store-btn-main">Desktop apps</span>
             </Link>
           </div>
+          <StatRow stats={studioStats()} />
         </header>
 
-        <section id="projects" className="section">
-          <h2 className="section-label">Mobile apps</h2>
+        <section id="apps" className="detail-section">
+          <SectionHead eyebrow="Mobile apps" title="Live on Google Play" />
           <div className="projects">
             {apps.map((app) => (
               <ProjectCard key={app.slug} app={app} />
@@ -44,35 +51,47 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="desktop" className="section">
-          <h2 className="section-label">Desktop apps</h2>
-          <div className="lede">
-            <p>
-              Windows programs for documents you&apos;d rather not upload anywhere. They run on your own computer
-              with no account and no cloud, and they work with the internet switched off.
-            </p>
-          </div>
+        <section id="desktop" className="detail-section">
+          <SectionHead eyebrow="Desktop apps" title="Private tools for your own computer" />
+          <p className="page-text">
+            Windows programs for the documents you’d rather not upload anywhere. No account, no cloud, and they work
+            with the internet switched off.
+          </p>
           <ul className="home-desktop">
             {products.map((p) => (
               <li key={p.slug}>
                 <Link href={`/store/${p.slug}`} className="home-desktop-item">
-                  <img src={`/assets/icons/${p.slug}.png`} alt="" width={42} height={42} />
-                  <span>
-                    <span className="project-name">{p.name}</span>
-                    <span className="project-tagline">{p.tagline}</span>
+                  <span className="home-desktop-name">
+                    <img src={`/assets/icons/${p.slug}.png`} alt="" width={32} height={32} />
+                    {p.name}
                   </span>
-                  <span className="home-desktop-price"><Price product={p} /></span>
+                  <span className="home-desktop-headline">{p.headline ?? p.tagline}</span>
+                  <span className="home-desktop-price">
+                    <strong><Price product={p} /></strong> paid once · See {p.name} →
+                  </span>
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="contact-secondary">
-            Free to try, then a one-time price. <Link href="/store">See all four</Link>.
-          </p>
-          <p className="contact-secondary">
-            Want to know who&apos;s behind this? <Link href="/about">About us</Link>.
+          <p className="page-text home-desktop-more">
+            Free to try, then a one-time price. <Link href="/store">See the store →</Link>
           </p>
         </section>
+
+        <section className="detail-section">
+          <SectionHead eyebrow="About" title="A small studio, run by Kelvin Gitu" />
+          <p className="page-text">
+            We build every part of these apps ourselves, from the interface to the billing, and keep them running
+            after launch, which is where the real work is. <Link href="/about">About us →</Link>
+          </p>
+        </section>
+
+        <CtaBand title="Have an app in mind?" text="Available for mobile and web work.">
+          <a href={`mailto:${SALES_EMAIL}`} className="store-btn store-btn-primary">
+            <MailIcon />
+            <span className="store-btn-main">{SALES_EMAIL}</span>
+          </a>
+        </CtaBand>
       </div>
     </>
   );

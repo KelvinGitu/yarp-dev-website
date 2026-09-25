@@ -6,7 +6,7 @@ const logger = require("firebase-functions/logger");
 
 const { APPS, PRODUCTS } = require("../products");
 
-const SUPPORT = "yarpdevelopers@gmail.com";
+const SUPPORT = "support@yarpdevelopers.com";
 
 /**
  * @returns {Promise<"sent" | "disabled" | "failed">} "disabled" means email

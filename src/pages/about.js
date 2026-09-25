@@ -1,7 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { apps } from '@/data/apps';
-import { GitHubIcon, PlayIcon, LinkedInIcon, XIcon } from '@/components/icons';
+import CtaBand from '@/components/CtaBand';
+import SectionHead from '@/components/SectionHead';
+import StatRow from '@/components/StatRow';
+import { GitHubIcon, MailIcon, PlayIcon, LinkedInIcon, XIcon } from '@/components/icons';
+import { SALES_EMAIL, studioStats } from '@/data/studio';
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/kelvin-gitu-587696152/';
 const X_URL = 'https://x.com/GituKelvin';
@@ -25,9 +29,26 @@ const techGroups = [
   { label: 'Web & CI', items: ['Next.js', 'Firebase Hosting', 'GitHub Actions', 'Codemagic'] },
 ];
 
-const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
+// A note's first sentence, for the card; the whole story is on the app's page.
+const firstSentence = (text) => text.match(/^.*?[.!?](\s|$)/)?.[0].trim() ?? text;
+
+function Socials() {
+  return (
+    <ul className="socials">
+      {SOCIALS.map(({ href, label, Icon }) => (
+        <li key={label}>
+          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+            <Icon />
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function About() {
+  const totalBuilds = apps.reduce((sum, app) => sum + app.builds, 0);
+
   return (
     <>
       <Head>
@@ -38,56 +59,69 @@ export default function About() {
         />
       </Head>
 
-      <div className="about">
-        <header className="about-head">
-          <h1>About</h1>
-          <p>
-            Yarp Developers is a small studio run by Kelvin Gitu — {apps.length}{' '}
-            Flutter apps live on Google Play, and a handful of Windows desktop apps in the store. We build every part of them
-            ourselves: interface, Firestore schema, Cloud Functions, subscription plumbing, and the store
-            listing that gets rejected and resubmitted until it isn&apos;t.
+      <div className="page about">
+        <header className="page-hero">
+          <p className="detail-section-title">About</p>
+          <h1 className="page-title">A small studio that builds apps and keeps them running.</h1>
+          <p className="page-lede">
+            Yarp Developers is run by Kelvin Gitu: {apps.length}{' '}Flutter apps live on Google Play, and a handful of
+            Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
+            Cloud Functions, subscription plumbing, and the store listing that gets rejected and resubmitted until
+            it isn&apos;t.
           </p>
-          <p>
-            Our background is in mechatronic engineering, which taught us less about code than about the
-            distance between building something and keeping it alive. A feature is an afternoon&apos;s
-            work. Keeping it running for real users, on someone else&apos;s billing account, under someone
-            else&apos;s review policy, is the actual work — and it&apos;s what these projects are really
-            about. {totalBuilds}{' '}releases so far.
-          </p>
+          <Socials />
+          <StatRow stats={studioStats()} />
+        </header>
 
-          <ul className="socials">
-            {SOCIALS.map(({ href, label, Icon }) => (
-              <li key={label}>
-                <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
-                  <Icon />
-                </a>
+        <section className="detail-section">
+          <SectionHead eyebrow="The story" title="Building is an afternoon. Keeping it alive is the work." />
+          <div className="about-story">
+            <p>
+              Our background is in mechatronic engineering, which taught us less about code than about the
+              distance between building something and keeping it alive. A feature is an afternoon&apos;s
+              work. Keeping it running for real users, on someone else&apos;s billing account, under someone
+              else&apos;s review policy, is the actual work — and it&apos;s what these projects are really
+              about. {totalBuilds}{' '}releases so far.
+            </p>
+            <p className="about-sign">— Kelvin Gitu</p>
+          </div>
+        </section>
+
+        {/* Proof, from the apps' own engineering notes (apps.js). */}
+        <section className="detail-section">
+          <SectionHead eyebrow="How we work" title="What keeping it running looks like" />
+          <ul className="card-grid card-grid-2">
+            {apps.filter((a) => a.note).map((a) => (
+              <li key={a.slug} className="card-grid-item note-card">
+                <p className="note-card-kind">{a.note.kind} · {a.name}</p>
+                <p className="card-text">{firstSentence(a.note.text)}</p>
+                <Link href={`/apps/${a.slug}`} className="note-card-link">The whole story →</Link>
               </li>
             ))}
           </ul>
-        </header>
-
-        <section className="section">
-          <h2 className="section-label">Stack</h2>
-          <dl className="stack-groups">
-            {techGroups.map((group) => (
-              <div key={group.label} className="stack-group">
-                <dt>{group.label}</dt>
-                <dd>{group.items.join(' · ')}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <div className="contact">
-            <p>
-              Available for mobile and web work. Reach us at{' '}
-              <a href="mailto:gitukelvin01@gmail.com">gitukelvin01@gmail.com</a>.
-            </p>
-            <p className="contact-secondary">
-              Using one of the apps and something is broken? That goes to{' '}
-              <Link href="/support">support</Link> instead.
-            </p>
-          </div>
         </section>
+
+        <section className="detail-section">
+          <SectionHead eyebrow="Stack" title="What we work with" />
+          <ul className="card-grid">
+            {techGroups.map((group) => (
+              <li key={group.label} className="card-grid-item">
+                <h3 className="card-title">{group.label}</h3>
+                <p className="card-text">{group.items.join(' · ')}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CtaBand title="Work with us" text="Available for mobile and web work.">
+          <a href={`mailto:${SALES_EMAIL}`} className="store-btn store-btn-primary">
+            <MailIcon />
+            <span className="store-btn-main">{SALES_EMAIL}</span>
+          </a>
+        </CtaBand>
+        <p className="page-text about-support">
+          Using one of the apps and something is broken? That goes to <Link href="/support">support</Link> instead.
+        </p>
       </div>
     </>
   );

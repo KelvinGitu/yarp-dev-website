@@ -164,7 +164,7 @@ The store links to
 | Prices | Stripe **and** `src/data/products.js` | The page's price is display only. **If they differ, the page says one thing and Stripe charges another.** Nothing checks |
 | VAT | Stripe Tax + `STRIPE_AUTOMATIC_TAX` | Selling digital goods to EU consumers from Belgium means charging VAT at the buyer's country rate, usually via OSS registration. Turn on Stripe Tax in the dashboard (it needs your tax registrations), then set `STRIPE_AUTOMATIC_TAX=true`. **Worth confirming with an accountant before launch** |
 | Terms & privacy | `src/pages/store/terms.js`, `privacy.js` | Written as a plain-language starting point, not legal advice. The 30-day refund promise appears on the product pages too |
-| Support address | `SUPPORT_EMAIL` in `src/data/products.js`, `functions/lib/email.js` | Currently `yarpdevelopers@gmail.com` |
+| Support address | `SUPPORT_EMAIL` in `src/data/products.js`, `functions/lib/email.js` | Currently `support@yarpdevelopers.com` |
 | The bundle | `products.js`, Stripe | A `yarp-bundle` key unlocks every app, StoryForge included. No bundle has been sold yet, so there's nobody to grandfather; settle the three-app price before launch |
 | mediagrab | not in the store | Packaged (its repo builds an installer) but held back until it's ready. The apps' `license.py` already accepts `mediagrab` keys, and a `yarp-bundle` key would unlock it too: decide before listing it whether earlier bundle buyers get it |
 | Code signing | the installers | Unsigned installers show "Windows protected your PC" (the store page explains it). Azure Trusted Signing (~$10/month, if you're eligible) or an OV certificate removes most of it |

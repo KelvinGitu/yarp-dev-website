@@ -3,6 +3,7 @@ import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
 import { Price, RegionPicker } from '@/components/Region';
 import StorePromises from '@/components/StorePromises';
+import PriceCard from '@/components/store/PriceCard';
 import { bundle, products } from '@/data/products';
 
 export default function Store() {
@@ -16,17 +17,18 @@ export default function Store() {
         />
       </Head>
 
-      <div className="store">
-        <header className="store-head">
-          <h1 className="detail-title">Desktop apps</h1>
+      <div className="page store">
+        <header className="store-head page-hero">
+          <p className="detail-section-title">Desktop apps</p>
+          <h1 className="page-title">Apps that keep your files on your own computer.</h1>
           <p className="store-lede">
             Small Windows programs for the things you’d rather not hand to a website: the contract you’re signing, the
-            resume with your phone number on it, the novel you’re halfway through. They run on your computer and
-            nowhere else. No account, no cloud, and they work with the internet switched off.
+            resume with your phone number on it, the novel you’re halfway through. No account, no cloud, and they work
+            with the internet switched off.
           </p>
           <p className="store-lede store-lede-small">
             Each one is a single payment, and every download works before you buy, so you can try it on your own
-            files first — see each app's page for exactly what's free.
+            files first — see each app’s page for exactly what’s free.
           </p>
           <StorePromises />
           <RegionPicker />
@@ -34,41 +36,49 @@ export default function Store() {
 
         <ul className="store-list">
           {products.map((p) => (
-            <li key={p.slug} className="project store-item">
-              <div className="project-head">
-                <div className="project-icon">
-                  <img src={`/assets/icons/${p.slug}.png`} alt="" />
-                </div>
-                <div>
-                  <h2 className="project-name">
-                    <Link href={`/store/${p.slug}`}>{p.name}</Link>
-                  </h2>
-                  <p className="project-tagline">{p.tagline}</p>
-                </div>
-                <div className="release">
-                  <span className="release-builds"><Price product={p} /></span>
-                  <span className="release-version">v{p.version}</span>
-                </div>
-              </div>
-              <Link href={`/store/${p.slug}`} className="store-item-shot" tabIndex={-1} aria-hidden="true">
+            <li key={p.slug} className="store-card">
+              <Link href={`/store/${p.slug}`} className="store-card-shot" tabIndex={-1} aria-hidden="true">
                 <img src={`/assets/store/${p.slug}/${p.shots[0].file}`} alt="" width={1440} height={900} loading="lazy" />
               </Link>
-              <div className="store-item-links">
-                <Link href={`/store/${p.slug}`} className="detail-btn-legal">Details and download</Link>
+              <div className="store-card-body">
+                <p className="store-card-name">
+                  <img src={`/assets/icons/${p.slug}.png`} alt="" width={28} height={28} />
+                  {p.name}
+                  <span className="detail-release">v{p.version}</span>
+                </p>
+                <h2 className="store-card-headline">
+                  <Link href={`/store/${p.slug}`}>{p.headline ?? p.tagline}</Link>
+                </h2>
+                {p.headline && <p className="card-text">{p.tagline}</p>}
+                <p className="store-card-price"><strong><Price product={p} /></strong> paid once</p>
+                <div className="store-actions">
+                  <BuyButton item={p} className="store-btn-primary" />
+                  <Link href={`/store/${p.slug}`} className="store-btn">
+                    <span className="store-btn-main">See {p.name}</span>
+                  </Link>
+                </div>
               </div>
             </li>
           ))}
-
-          <li className="project store-item store-bundle">
-            <div className="store-bundle-row">
-              <div>
-                <h2 className="project-name">{bundle.name}</h2>
-                <p className="project-tagline">{bundle.tagline}</p>
-              </div>
-              <BuyButton item={bundle} label="Buy all four" />
-            </div>
-          </li>
         </ul>
+
+        <section className="detail-section store-price">
+          <p className="detail-section-title">All four apps</p>
+          <h2 className="page-h2">Or have all four, with one key</h2>
+          <PriceCard
+            item={bundle}
+            title="All four apps"
+            buyLabel="Buy all four"
+            items={[
+              ...products.map((p) => (
+                <span key={p.slug}><strong>{p.name}</strong> <span className="price-card-sub">{p.tagline}</span></span>
+              )),
+              'One licence key unlocks every one of them',
+              'Every future version of each, free',
+              '30-day refund if they don’t work for you',
+            ]}
+          />
+        </section>
 
         <div className="detail-back">
           <Link href="/" className="detail-back-link">← Home</Link>

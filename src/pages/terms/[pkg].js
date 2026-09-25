@@ -1,6 +1,7 @@
 import PolicyPage from '@/components/PolicyPage';
 import { apps } from '@/data/apps';
 import extractedData from '@/data/extracted.json';
+import { SUPPORT_EMAIL } from '@/data/products';
 
 function getFallbackTerms(app) {
   return [
@@ -17,7 +18,7 @@ function getFallbackTerms(app) {
     `6. Governing Law`,
     `These Terms shall be governed by the laws of Kenya.`,
     `7. Contact Information`,
-    `If you have any questions, contact yarpdevelopers@gmail.com.`
+    `If you have any questions, contact ${SUPPORT_EMAIL}.`
   ];
 }
 

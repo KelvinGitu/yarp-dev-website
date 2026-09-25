@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useRegion } from '@/components/Region';
 import { REGIONS, priceFor } from '@/data/regions';
 import { currentCampaign } from '@/data/campaign';
@@ -17,6 +17,8 @@ export default function BuyButton({ item, label = 'Buy a licence', className = '
   const [error, setError] = useState('');
   const [asking, setAsking] = useState(false);
   const [email, setEmail] = useState('');
+  // A page can carry more than one Buy button for the same item (hero, price card).
+  const emailId = useId();
 
   async function start(endpoint, body) {
     setBusy(true);
@@ -57,12 +59,12 @@ export default function BuyButton({ item, label = 'Buy a licence', className = '
       )}
       {local && asking && (
         <form className="buy-local" onSubmit={payLocally}>
-          <label className="buy-local-label" htmlFor={`buy-email-${item.slug}`}>
+          <label className="buy-local-label" htmlFor={emailId}>
             Your email. The licence key is sent here.
           </label>
           <div className="buy-local-row">
             <input
-              id={`buy-email-${item.slug}`}
+              id={emailId}
               type="email"
               required
               autoComplete="email"

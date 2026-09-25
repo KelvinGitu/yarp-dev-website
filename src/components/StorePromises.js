@@ -1,5 +1,6 @@
 // The five reasons to buy these apps rather than use a web tool, as separate
-// badges so each one reads on its own. Used on /store and every product page.
+// badges so each one reads on its own. Used on /store; a product page puts the
+// same promises in its trust line and price card (components/store).
 
 const icons = {
   // A crossed-out repeat arrow: no recurring charge.
@@ -56,9 +57,9 @@ const PROMISES = [
   { icon: 'privacy', title: 'Private', text: 'No account, no tracking, no ads' },
 ];
 
-export default function StorePromises({ compact = false }) {
+export default function StorePromises() {
   return (
-    <ul className={`store-promises${compact ? ' store-promises-compact' : ''}`}>
+    <ul className="store-promises">
       {PROMISES.map((p) => (
         <li key={p.icon} className="store-promises-item">
           <svg className="store-promises-icon" viewBox="0 0 24 24" aria-hidden="true">

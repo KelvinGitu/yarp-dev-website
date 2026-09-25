@@ -1,42 +1,9 @@
-import { useState } from 'react';
 import Link from 'next/link';
+import AppIcon from '@/components/AppIcon';
 
-function AppIcon({ slug, name }) {
-  const [error, setError] = useState(false);
-  if (error) return <span className="project-icon-fallback">{name.charAt(0)}</span>;
-  return <img src={`/assets/icons/${slug}.png`} alt="" onError={() => setError(true)} />;
-}
-
-// Apps with no screenshots fall back to their icon on a tinted panel rather than
-// leaving a hole in the layout.
-function ShotStrip({ app }) {
-  if (!app.shots?.length) {
-    return (
-      <div className="shot-strip shot-strip-empty" aria-hidden="true">
-        <div className="shot-empty-mark">
-          <AppIcon slug={app.slug} name={app.name} />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`shot-strip shot-strip-${app.shots.length}`}>
-      {app.shots.map((file, i) => (
-        <div key={file} className="shot">
-          <img
-            src={`/assets/shots/${app.slug}/${file}`}
-            alt={`${app.name} screen ${i + 1}`}
-            width={420}
-            height={909}
-            loading="lazy"
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
+// A mobile app on the home page, at a glance: what it is, how far it's come,
+// what it's built with, and where to get it. The screenshots and the story
+// behind it are on the app's own page.
 export default function ProjectCard({ app }) {
   return (
     <article className="project">
@@ -45,29 +12,22 @@ export default function ProjectCard({ app }) {
           <AppIcon slug={app.slug} name={app.name} />
         </div>
         <div className="project-head-text">
-          <h3 className="project-name">{app.name}</h3>
+          <h3 className="project-name">
+            <Link href={`/apps/${app.slug}`}>{app.name}</Link>
+          </h3>
           <p className="project-tagline">{app.tagline}</p>
         </div>
-        <p className="release" title={`${app.packageId} — version ${app.version}, build ${app.builds}`}>
-          <span className="release-version">v{app.version}</span>
-          <span className="release-builds">{app.builds} builds</span>
-        </p>
       </header>
 
-      <ShotStrip app={app} />
+      <p className="project-release" title={`${app.packageId} — version ${app.version}, build ${app.builds}`}>
+        v{app.version} · {app.builds} builds
+      </p>
 
       <ul className="project-stack">
         {app.stack.map((tech) => (
           <li key={tech}>{tech}</li>
         ))}
       </ul>
-
-      {app.note && (
-        <div className="project-note">
-          <span className="project-note-kind">{app.note.kind}</span>
-          <p>{app.note.text}</p>
-        </div>
-      )}
 
       <footer className="project-links">
         {app.playUrl && app.status === 'live' && (
@@ -81,7 +41,7 @@ export default function ProjectCard({ app }) {
           </a>
         )}
         <Link href={`/apps/${app.slug}`}>
-          Details <span aria-hidden="true">→</span>
+          Screens and details <span aria-hidden="true">→</span>
         </Link>
       </footer>
     </article>

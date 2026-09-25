@@ -3,9 +3,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import BuyButton from '@/components/BuyButton';
-import StorePromises from '@/components/StorePromises';
-import { RegionPicker, useRegion } from '@/components/Region';
-import { DownloadIcon, GlobeIcon } from '@/components/icons';
+import { Price, useRegion } from '@/components/Region';
+import FinalCta from '@/components/store/FinalCta';
+import Guarantee from '@/components/store/Guarantee';
+import HowItWorks from '@/components/store/HowItWorks';
+import PriceCard from '@/components/store/PriceCard';
+import ProblemCards from '@/components/store/ProblemCards';
+import ProductHero from '@/components/store/ProductHero';
+import SectionHead from '@/components/SectionHead';
+import Showcase from '@/components/store/Showcase';
+import StickyBuyBar from '@/components/store/StickyBuyBar';
 import { SUPPORT_EMAIL, bundle, products, productBySlug } from '@/data/products';
 import { REGIONS, priceFor } from '@/data/regions';
 
@@ -15,6 +22,10 @@ import { REGIONS, priceFor } from '@/data/regions';
 const noSubscribe = () => () => {};
 const isPhone = () => /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
 
+// The page is one argument, in order: what you get (hero), what's in your way,
+// how the app gets you there, the proof (screens), everything it does, the
+// privacy promise, the price, the refund, then questions and a last call.
+// Sections whose data a product doesn't have yet are skipped (products.js).
 export default function StoreProduct({ product }) {
   const router = useRouter();
   const { region } = useRegion();
@@ -29,7 +40,8 @@ export default function StoreProduct({ product }) {
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
   const others = products.filter((p) => p.slug !== product.slug);
-  const [lead, ...more] = product.shots;
+  const more = product.shots.slice(1);
+  const device = product.web ? 'device' : 'computer';
 
   return (
     <>
@@ -41,101 +53,43 @@ export default function StoreProduct({ product }) {
         />
       </Head>
 
-      <div className="store-product">
+      <div className="page store-product">
         {cancelled && (
-          <p className="detail-note" role="status">
+          <p className="detail-note store-cancelled" role="status">
             Checkout was cancelled, and nothing was charged. {product.name} is still yours to download and try.
           </p>
         )}
 
-        <header className="product-hero">
-          <div className="detail-header">
-            <div className="detail-icon">
-              <img src={`/assets/icons/${product.slug}.png`} alt="" />
-            </div>
-            <div className="detail-header-text">
-              <h1 className="detail-title">{product.name}</h1>
-              <p className="detail-tagline">{product.tagline}</p>
-              <p className="detail-release">
-                v{product.version} · Windows 10 and 11 · {product.size}
-                {product.web && ' · or in your browser'}
-              </p>
-            </div>
-          </div>
-
-          <div className="store-actions">
-            {onPhone && product.web ? (
-              <a className="store-btn store-btn-download" href={product.web}>
-                <GlobeIcon />
-                <span>
-                  <span className="store-btn-main">Open it in your browser</span>
-                  <span className="store-btn-sub">{product.tryShort}</span>
-                </span>
-              </a>
-            ) : (
-              <a className="store-btn store-btn-download" href={product.download}>
-                <DownloadIcon />
-                <span>
-                  <span className="store-btn-main">Download</span>
-                  <span className="store-btn-sub">{product.tryShort}</span>
-                </span>
-              </a>
-            )}
-            <BuyButton item={product} />
-          </div>
-          <RegionPicker />
-          {product.web && (
-            <p className="phone-note">
-              {onPhone ? (
-                <>
-                  <strong>Works on your phone.</strong> {product.name} runs right in your browser, with nothing to
-                  install, and your files stay on your phone. One key unlocks it here and in the{' '}
-                  <a href={product.download}>Windows app</a>.
-                </>
-              ) : (
-                <>
-                  <strong>No Windows computer?</strong>{' '}
-                  <a href={product.web}>Use {product.name} in your browser</a>, on any phone or computer. Your files
-                  stay on your device, and one key unlocks both.
-                </>
-              )}
-            </p>
-          )}
-          {onPhone && !product.web && (
-            <p className="phone-note">
-              <strong>On your phone?</strong> {product.name} runs on Windows computers. Buy now and your key
-              and the download link arrive by email, or{' '}
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(`${product.name} for my PC: https://yarpdevelopers.com/store/${product.slug}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                send this page to yourself on WhatsApp
-              </a>{' '}
-              and open it on your computer to try it free first.
-            </p>
-          )}
-          <StorePromises compact />
-        </header>
-
-        <figure className="product-lead-shot">
-          <img src={`/assets/store/${product.slug}/${lead.file}`} alt={lead.alt} width={1440} height={900} />
-        </figure>
+        <ProductHero product={product} onPhone={onPhone} />
 
         <p className="product-intro">{product.description}</p>
 
-        {/* The features are what people came to compare, so each gets a card. */}
+        {product.problems && <ProblemCards problems={product.problems} />}
+        {product.steps && <HowItWorks steps={product.steps} />}
+
+        {product.showcase ? (
+          <Showcase product={product} />
+        ) : more.length > 0 && (
+          <section className="detail-section">
+            <SectionHead eyebrow="A closer look" title="More screens" />
+            <div className={`store-shots${more.length > 1 ? ' store-shots-grid' : ''}`}>
+              {more.map((shot) => (
+                <img key={shot.file} src={`/assets/store/${product.slug}/${shot.file}`} alt={shot.alt} width={1440} height={900} loading="lazy" />
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="detail-section">
-          <h2 className="detail-section-title">What it does</h2>
-          <ol className="product-features">
-            {product.features.map((f, i) => (
-              <li key={f.title} className="product-feature">
-                <span className="product-feature-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="product-feature-title">{f.title}</h3>
-                <p className="product-feature-text">{f.text}</p>
+          <SectionHead eyebrow="Everything included" title={`Everything ${product.name} does`} />
+          <ul className="card-grid">
+            {product.features.map((f) => (
+              <li key={f.title} className="card-grid-item">
+                <h3 className="card-title">{f.title}</h3>
+                <p className="card-text">{f.text}</p>
               </li>
             ))}
-          </ol>
+          </ul>
         </section>
 
         {/* The promise: the reason to buy this over a web tool. */}
@@ -146,19 +100,41 @@ export default function StoreProduct({ product }) {
           </ul>
         </section>
 
-        {more.length > 0 && (
-          <section className="detail-section">
-            <h2 className="detail-section-title">More screens</h2>
-            <div className={`store-shots${more.length > 1 ? ' store-shots-grid' : ''}`}>
-              {more.map((shot) => (
-                <img key={shot.file} src={`/assets/store/${product.slug}/${shot.file}`} alt={shot.alt} width={1440} height={900} loading="lazy" />
-              ))}
+        <section className="detail-section store-price" id="buy">
+          <SectionHead eyebrow="Price" title="One price, paid once" />
+          <div className="store-price-grid">
+            <PriceCard
+              item={product}
+              title={`${product.name} licence`}
+              items={[
+                ...(product.included ?? product.features.map((f) => f.title)),
+                'Every future version, free',
+                product.web
+                  ? 'One key for the Windows app and the browser version'
+                  : 'Use it on your own computers, desktop and laptop',
+                'Works with the internet switched off',
+                '30-day refund if it doesn’t work for you',
+              ]}
+            />
+            {/* Beside the card: the two things that make saying yes easier. */}
+            <div className="store-price-side">
+              <Guarantee product={product} />
+              {others.length > 0 && (
+                <div className="store-bundle-offer">
+                  <p>
+                    <strong>Want {others.map((p) => p.name).join(', ').replace(/, ([^,]*)$/, ' and $1')} too?</strong>{' '}
+                    All four apps, with one licence key that unlocks them all:{' '}
+                    <span className="store-bundle-price"><Price product={bundle} /></span>.
+                  </p>
+                  <BuyButton item={bundle} label="Buy all four" />
+                </div>
+              )}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         <section className="detail-section">
-          <h2 className="detail-section-title">How buying works</h2>
+          <SectionHead eyebrow="Buying" title="How buying works" />
           <ol className="store-steps">
             <li>
               <strong>Try it.</strong>{' '}
@@ -173,30 +149,22 @@ export default function StoreProduct({ product }) {
               Your licence key arrives by email a moment later.
             </li>
             <li>
-              <strong>Paste the key</strong> into the app’s Licence window. It’s checked on your{' '}
-              {product.web ? 'device' : 'computer'}, so it keeps working offline, for good.
+              <strong>Paste the key</strong> into the app’s Licence window. It’s checked on your {device}, so it
+              keeps working offline, for good.
               {product.web && ' Bought on this device? The browser version is unlocked for you already.'}
             </li>
           </ol>
         </section>
 
-        <section className="detail-section">
-          <h2 className="detail-section-title">Installing on Windows</h2>
-          <div className="detail-body">
-            <p>
-              Run the file you downloaded. It installs just for you, with no administrator password.
-            </p>
-            <p>
-              Because {product.name} comes from a small independent developer, Windows may show a blue
-              <em> “Windows protected your PC”</em> box the first time. Click <strong>More info</strong>, then
-              <strong> Run anyway</strong>. Windows shows this for new programs it hasn’t seen many times before,
-              not because anything is wrong with the file.
-            </p>
-          </div>
-        </section>
+        {product.fromDev && (
+          <section className="detail-section">
+            <SectionHead eyebrow="P.S." title="From the developer" />
+            <p className="page-text">{product.fromDev}</p>
+          </section>
+        )}
 
         <section className="detail-section">
-          <h2 className="detail-section-title">Questions</h2>
+          <SectionHead eyebrow="Questions" title="Before you buy" />
           <div className="store-faq">
             <details>
               <summary>How can I check that it really doesn’t send my files anywhere?</summary>
@@ -223,8 +191,17 @@ export default function StoreProduct({ product }) {
               </details>
             )}
             <details>
-              <summary>What's free, and what needs a licence?</summary>
+              <summary>What’s free, and what needs a licence?</summary>
               <p>{product.licenseFaq}</p>
+            </details>
+            <details>
+              <summary>Windows says “Windows protected your PC”. Is it safe?</summary>
+              <p>
+                Yes. The installer sets {product.name} up just for you, with no administrator password. Because it
+                comes from a small independent developer, Windows may show that blue box the first time: click{' '}
+                <strong>More info</strong>, then <strong>Run anyway</strong>. Windows shows it for new programs it
+                hasn’t seen many times before, not because anything is wrong with the file.
+              </p>
             </details>
             <details>
               <summary>Do I get updates?</summary>
@@ -249,7 +226,7 @@ export default function StoreProduct({ product }) {
             <details>
               <summary>What if it doesn’t work for me?</summary>
               <p>
-                Email within 30 days of buying and you’ll get a full refund. It's free to try, so you can check first.
+                Email within 30 days of buying and you’ll get a full refund. It’s free to try, so you can check first.
               </p>
             </details>
             <details>
@@ -263,13 +240,7 @@ export default function StoreProduct({ product }) {
           </div>
         </section>
 
-        {others.length > 0 && (
-          <div className="detail-note">
-            <strong>Want {others.map((p) => p.name).join(', ').replace(/, ([^,]*)$/, ' or $1')} too?</strong>{' '}
-            {bundle.tagline} {priceFor(bundle, region)} for all of them.{' '}
-            <Link href="/store">See all the apps</Link>.
-          </div>
-        )}
+        <FinalCta product={product} onPhone={onPhone} />
 
         <div className="detail-back">
           <Link href="/store" className="detail-back-link">← All desktop apps</Link>
@@ -278,6 +249,8 @@ export default function StoreProduct({ product }) {
           </span>
         </div>
       </div>
+
+      <StickyBuyBar product={product} />
     </>
   );
 }
