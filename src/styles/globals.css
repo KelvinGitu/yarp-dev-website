@@ -898,64 +898,12 @@ img { max-width: 100%; display: block; }
 
 .buy-error { margin-top: 0.5rem; max-width: 22rem; font-size: 0.82rem; color: #f0a39b; }
 
-/* Local-price checkout (Paystack): the email the key goes to, asked in place. */
-.buy-local { max-width: 26rem; }
-.buy-local-label { display: block; margin-bottom: 0.4rem; font-size: 0.82rem; color: var(--text-muted); }
-.buy-local-row { display: flex; gap: 0.5rem; }
-.buy-local-row input {
-  flex: 1 1 12rem;
-  min-width: 0;
-  min-height: 3.1rem;
-  padding: 0 0.9rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  background: var(--bg-sunken);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.92rem;
-}
-.buy-local-row input:focus { outline: none; border-color: var(--gold); }
-.buy-local-row .store-btn { flex: none; }
-.buy-local-note { margin-top: 0.45rem; font-size: 0.78rem; color: var(--text-dim); }
-.buy-local-cancel {
-  border: 0;
-  background: none;
-  color: var(--text-muted);
-  font: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-.buy-local-cancel:hover { color: var(--gold-bright); }
-
-/* "Prices for [Kenya (KES)]": small, under the buttons it affects. */
-.region-picker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.85rem;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-}
-.region-picker select {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 8px;
-  background: var(--bg-raised);
-  color: var(--text-muted);
-  font: inherit;
-  cursor: pointer;
-}
-.region-picker select:hover,
-.region-picker select:focus { border-color: var(--gold); color: var(--text); outline: none; }
-.store-head .region-picker { margin-top: 1.25rem; }
-
 /* ── The product page: one argument, top to bottom. Room at the top, and at
    the bottom for the sticky buy bar. ── */
 .store-product { padding-top: 5rem; padding-bottom: 7rem; }
 .store-cancelled { margin: 0 0 2rem; }
 
-/* Primary: the one filled button in any pair (Buy, on store pages). */
+/* Primary: the one filled button in any pair (Buy or Download, on store pages). */
 .store-btn-primary { background: var(--text); border-color: var(--text); color: var(--bg); }
 .store-btn-primary:hover { background: #fff; border-color: #fff; color: var(--bg); }
 
@@ -1149,6 +1097,9 @@ img { max-width: 100%; display: block; }
   margin-top: 1.75rem;
 }
 .store-price-side { display: grid; gap: 1rem; }
+.store-price-grid-single { grid-template-columns: minmax(0, 30rem); justify-content: center; }
+.price-card-get { display: grid; gap: 0.6rem; }
+.price-card-get .store-btn { width: 100%; justify-content: center; }
 .price-card {
   max-width: 30rem;
   padding: 1.75rem 1.75rem 1.5rem;
@@ -1185,19 +1136,6 @@ img { max-width: 100%; display: block; }
 .price-card .buy,
 .price-card .store-btn-primary { width: 100%; justify-content: center; }
 .price-card-note { margin-top: 0.75rem; font-size: 0.78rem; color: var(--text-dim); text-align: center; }
-
-.store-bundle-offer {
-  display: grid;
-  gap: 0.9rem;
-  padding: 1.2rem 1.3rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-.store-bundle-offer strong,
-.store-bundle-price { color: var(--text); font-weight: 600; }
 
 /* The refund, as its own promise. */
 .store-guarantee {
@@ -1473,8 +1411,6 @@ img { max-width: 100%; display: block; }
   .store-promise { padding: 1.25rem; }
   .store-actions > * { flex: 1 1 100%; }
   .store-btn { width: 100%; justify-content: center; }
-  .buy-local-row { flex-direction: column; }
-  .buy-local-row input { flex: none; }
 
   .store-product { padding-top: 2.75rem; }
   .page-lede { font-size: 1.02rem; }

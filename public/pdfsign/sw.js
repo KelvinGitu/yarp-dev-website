@@ -6,7 +6,7 @@
    rest (pdf.js's wasm, cmaps and standard fonts, only needed by some PDFs)
    is cached the first time a PDF asks for it. */
 
-const BUILD = "1.0.1-0255888d61";
+const BUILD = "1.1.0-af4fdb3c4b";
 const CORE = [
   "icons/apple-touch-180.png",
   "icons/icon-192.png",
@@ -28,13 +28,11 @@ const CORE = [
   "static/fonts/schibsted-grotesk-latin-700-normal.woff2",
   "static/ink.js",
   "static/styles.css",
-  "static/vendor/noble-ed25519.js",
   "static/vendor/pdf-lib.LICENSE.md",
   "static/vendor/pdf-lib.min.js",
   "static/vendor/pdfjs/LICENSE",
   "static/vendor/pdfjs/pdf.min.mjs",
   "static/vendor/pdfjs/pdf.worker.min.mjs",
-  "static/web/license.js",
   "static/web/local-api.js"
 ];
 const CACHE = `pdfsign-${BUILD}`;

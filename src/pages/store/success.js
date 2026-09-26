@@ -5,70 +5,42 @@ import { useEffect, useState } from 'react';
 import { DownloadIcon } from '@/components/icons';
 import { SUPPORT_EMAIL, productBySlug, products } from '@/data/products';
 
-// Where Stripe (?session_id=) and Paystack (?reference=) return a buyer.
-// Nothing here is taken on trust: the page asks the store function, which
-// checks the order with the payment provider, whether it's really paid before
-// showing a key.
+// Where Stripe (?session_id=) returns a buyer. Nothing here is taken on
+// trust: the page asks the store function, which checks the order with Stripe,
+// whether it's really paid before showing a key.
 
-// Mobile money can take a little while to confirm after the buyer approves
-// it on their phone, so a pending order is asked about again a few times.
-const RETRIES = 8;
-const RETRY_MS = 4000;
-
-// The apps a product unlocks: the bundle unlocks them all.
+// The apps a key still unlocks. The bundle (no longer sold) covered all four;
+// of those, only the paid ones need a key now. An old receipt for an app that
+// has since gone free unlocks nothing, because nothing needs unlocking.
 const appsFor = (product) =>
-  product === 'yarp-bundle' ? products : [productBySlug(product)].filter(Boolean);
-
-// The browser versions of the apps live on this site too, and read their keys
-// from this list (web/license.js in each app's repo). Adding the key here
-// unlocks them in this browser straight away, even in a tab already open.
-function keepKeyForWebApps(order) {
-  if (!appsFor(order.product).some((p) => p.web)) return;
-  try {
-    const same = (k) => k.replace(/[^A-Z2-7]/gi, '').toUpperCase() === order.licenseKey.replace(/[^A-Z2-7]/gi, '').toUpperCase();
-    const keys = JSON.parse(window.localStorage.getItem('yarp.keys') || '[]');
-    const others = Array.isArray(keys) ? keys.filter((k) => typeof k === 'string' && !same(k)) : [];
-    window.localStorage.setItem('yarp.keys', JSON.stringify([order.licenseKey, ...others]));
-  } catch { /* storage blocked: the key is on screen and in the email */ }
-}
+  (product === 'yarp-bundle' ? products : [productBySlug(product)]).filter((p) => p && !p.free);
 
 export default function StoreSuccess() {
   const router = useRouter();
   const [order, setOrder] = useState(null);
   const [state, setState] = useState('loading'); // loading | paid | pending | error
   const [copied, setCopied] = useState(false);
-  const { session_id: sessionId, reference } = router.query;
-  const provider = reference ? 'Paystack' : 'Stripe';
+  const { session_id: sessionId } = router.query;
 
   useEffect(() => {
     if (!router.isReady) return;
-    const query = sessionId
-      ? `session_id=${encodeURIComponent(sessionId)}`
-      : reference ? `reference=${encodeURIComponent(reference)}` : null;
-    if (!query) { setState('error'); return; }
+    if (!sessionId) { setState('error'); return; }
     let cancelled = false;
-    let timer;
-    const ask = async (tries) => {
+    (async () => {
       try {
-        const res = await fetch(`/api/order?${query}`);
+        const res = await fetch(`/api/order?session_id=${encodeURIComponent(sessionId)}`);
         const data = await res.json().catch(() => ({}));
         if (cancelled) return;
-        if (res.status === 202) {
-          if (reference && tries < RETRIES) timer = setTimeout(() => ask(tries + 1), RETRY_MS);
-          else setState('pending');
-          return;
-        }
+        if (res.status === 202) { setState('pending'); return; }
         if (!res.ok) throw new Error(data.error || 'lookup failed');
-        keepKeyForWebApps(data);
         setOrder(data);
         setState('paid');
       } catch {
         if (!cancelled) setState('error');
       }
-    };
-    ask(0);
-    return () => { cancelled = true; clearTimeout(timer); };
-  }, [router.isReady, sessionId, reference]);
+    })();
+    return () => { cancelled = true; };
+  }, [router.isReady, sessionId]);
 
   async function copyKey() {
     try {
@@ -78,9 +50,8 @@ export default function StoreSuccess() {
     } catch { /* the key is selectable anyway */ }
   }
 
-  // A bundle gets every download; a single app gets its own.
+  // A bundle gets every paid app's download; a single app gets its own.
   const downloads = order ? appsFor(order.product) : [];
-  const webApps = downloads.filter((p) => p.web);
 
   return (
     <>
@@ -90,9 +61,20 @@ export default function StoreSuccess() {
       </Head>
 
       <div className="store store-success">
-        {state === 'loading' && <p className="store-lede">Checking your order with {provider}…</p>}
+        {state === 'loading' && <p className="store-lede">Checking your order with Stripe…</p>}
 
-        {state === 'paid' && order && (
+        {state === 'paid' && order && downloads.length === 0 && (
+          <>
+            <h1 className="detail-title">Thank you for your order</h1>
+            <p className="store-lede">
+              The app you bought is free now, so it doesn’t need a licence key any more: download the latest version
+              from <Link href="/store">the store</Link> and everything works. Your key was{' '}
+              <code>{order.licenseKey}</code>, if you ever need it.
+            </p>
+          </>
+        )}
+
+        {state === 'paid' && order && downloads.length > 0 && (
           <>
             <h1 className="detail-title">Thank you. You’re all set.</h1>
             <p className="store-lede">
@@ -105,19 +87,6 @@ export default function StoreSuccess() {
                 {copied ? 'Copied' : 'Copy key'}
               </button>
             </div>
-
-            {webApps.length > 0 && (
-              <p className="phone-note">
-                <strong>Already unlocked in this browser:</strong>{' '}
-                {webApps.map((p, i) => (
-                  <span key={p.slug}>
-                    {i > 0 && ', '}
-                    <a href={p.web}>open {p.name}</a>
-                  </span>
-                ))}{' '}
-                and carry on, or go back to the tab you had open. The steps below are for the Windows app.
-              </p>
-            )}
 
             <ol className="store-steps">
               <li>
@@ -152,7 +121,7 @@ export default function StoreSuccess() {
           <>
             <h1 className="detail-title">Payment received, finishing up</h1>
             <p className="store-lede">
-              {provider} is still confirming your payment. Your licence key will arrive by email within a few minutes;
+              Stripe is still confirming your payment. Your licence key will arrive by email within a few minutes;
               you can close this page.
             </p>
           </>

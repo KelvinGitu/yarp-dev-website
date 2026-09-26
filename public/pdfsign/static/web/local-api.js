@@ -3,16 +3,11 @@
    shapes and messages the server would give, so the rest of the page doesn't
    know the difference. When a route in main.py changes, change it here too.
 
-   Saved signatures go in IndexedDB, the profile in localStorage, and the
-   licence key in the shared list web/license.js keeps. Nothing leaves the
-   browser. Saving to a folder and the phone relay need the desktop app, so
+   Saved signatures go in IndexedDB and the profile in localStorage.
+   Nothing leaves the browser. Saving to a folder and the phone relay need the desktop app, so
    the page hides them and they aren't answered here. */
 
-import * as license from "./license.js";
-
-const APP_ID = "pdfsign";
 const VERSION = document.documentElement.dataset.version || "dev";
-const STORE_URL = new URL("/store/pdfsign", location.origin).href;
 
 // app/store.py's limits.
 const KINDS = new Set(["signature", "initials"]);
@@ -139,48 +134,14 @@ function saveProfile({ name = "", initials = "", date_format: fmt = DEFAULT_PROF
   return profile;
 }
 
-// ------------------------------------------------------------- licence
-
-async function licenseStatus() {
-  const found = await license.currentKey(APP_ID);
-  const claim = found?.claim;
-  return {
-    licensed: Boolean(claim),
-    email: claim?.email ?? null,
-    product: claim?.product ?? null,
-    issued: claim?.issued ?? null,
-    store_url: STORE_URL,
-    version: VERSION,
-  };
-}
-
-async function setKey({ key }) {
-  try {
-    await license.addKey(key, APP_ID);
-  } catch (err) {
-    throw fail(400, err.message);
-  }
-  return licenseStatus();
-}
-
-async function consume() {
-  const status = await licenseStatus();
-  if (!status.licensed) throw fail(402, "Enter a licence key to export. Everything else keeps working.");
-  return status;
-}
-
 // ------------------------------------------------------------- routes
 
 export default async function localApi(method, path, body = {}) {
   const route = `${method} ${path}`;
   switch (route) {
-    case "GET /api/health": return { output_dir: "", signatures: (await allRows()).length };
+    case "GET /api/health": return { output_dir: "", signatures: (await allRows()).length, version: VERSION };
     case "GET /api/profile": return getProfile();
     case "PUT /api/profile": return saveProfile(body);
-    case "GET /api/license": return licenseStatus();
-    case "POST /api/license": return setKey(body);
-    case "DELETE /api/license": await license.removeKeys(APP_ID); return licenseStatus();
-    case "POST /api/license/consume": return consume();
     case "GET /api/signatures": return listSignatures();
     case "POST /api/signatures": return addSignature(body);
   }

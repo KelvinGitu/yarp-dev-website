@@ -7,7 +7,7 @@
     "node": "22"
   },
   "scripts": {
-    "test": "node test/paystack.test.js && node test/license.test.js"
+    "test": "node test/license.test.js"
   },
   "dependencies": {
     "firebase-admin": "^14.4.0",

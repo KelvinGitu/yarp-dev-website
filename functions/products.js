@@ -4,7 +4,14 @@
 // is whatever that Stripe Price says.
 //
 // `product` ids are what licence keys carry, so they must match APP_ID in each
-// app's config.py ("pdfsign", "resume-maker", "storyforge", "ink-lifter") and license.BUNDLE.
+// app's config.py ("storyforge") and license.BUNDLE.
+//
+// Only StoryForge is sold now. pdfsign, Resume Maker and Ink Lifter went free
+// on 2026-09-26 (their licence checks are gone), and the bundle was withdrawn
+// with them. Their ids stay in PRODUCTS, not for sale, so that earlier
+// receipts (/api/order) and scripts/mint-key.js still recognise them. A bundle
+// key still unlocks StoryForge, so update emails for StoryForge reach bundle
+// buyers too.
 
 const DOWNLOADS = "https://github.com/KelvinGitu/yarp-downloads/releases/latest/download";
 // Each app's store page, which has the download and how to install it. Emails
@@ -12,47 +19,22 @@ const DOWNLOADS = "https://github.com/KelvinGitu/yarp-downloads/releases/latest/
 const STORE = "https://yarpdevelopers.com/store";
 
 const APPS = {
-  pdfsign: {
-    name: "pdfsign",
-    page: `${STORE}/pdfsign`,
-    download: `${DOWNLOADS}/pdfsign-setup.exe`,
-    whereIsLicence: "click the key icon at the bottom left, labelled Unlicensed",
-    // The browser version (src/data/products.js `web`); the same key unlocks it.
-    web: "https://yarpdevelopers.com/pdfsign",
-    whereIsWebLicence: "tap Unlicensed at the end of the toolbar",
-  },
-  "resume-maker": {
-    name: "Resume Maker",
-    page: `${STORE}/resume-maker`,
-    download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
-    whereIsLicence: "click the Unlicensed button at the top right",
-    web: "https://yarpdevelopers.com/resume-maker",
-    whereIsWebLicence: "tap Unlicensed at the top",
-  },
   storyforge: {
     name: "StoryForge",
     page: `${STORE}/storyforge`,
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
     whereIsLicence: "click the Explore button at the top right, or open Settings, then Licence & data",
   },
-  "ink-lifter": {
-    name: "Ink Lifter",
-    page: `${STORE}/ink-lifter`,
-    download: `${DOWNLOADS}/InkLifter-setup.exe`,
-    whereIsLicence: "click the Unlicensed button at the top right",
-    web: "https://yarpdevelopers.com/ink-lifter",
-    whereIsWebLicence: "tap Unlicensed at the top",
-  },
 };
 
 const PRODUCTS = {
-  pdfsign: { name: "pdfsign", apps: ["pdfsign"] },
-  "resume-maker": { name: "Resume Maker", apps: ["resume-maker"] },
-  storyforge: { name: "StoryForge", apps: ["storyforge"] },
-  "ink-lifter": { name: "Ink Lifter", apps: ["ink-lifter"] },
+  storyforge: { name: "StoryForge", apps: ["storyforge"], forSale: true },
+  pdfsign: { name: "pdfsign", apps: [] },
+  "resume-maker": { name: "Resume Maker", apps: [] },
+  "ink-lifter": { name: "Ink Lifter", apps: [] },
   "yarp-bundle": {
     name: "pdfsign, Resume Maker, StoryForge and Ink Lifter",
-    apps: ["pdfsign", "resume-maker", "storyforge", "ink-lifter"],
+    apps: ["storyforge"],
   },
 };
 

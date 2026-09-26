@@ -5,7 +5,11 @@
 //   node marketing/meta-ke-launch/build.js
 //
 // Output: marketing/meta-ke-launch/out/<product>-<feed|story>.png
-// Prices come from src/data/regions.js, so re-run after changing them.
+//
+// ARCHIVED (2026-09-26): the store no longer takes KES, and pdfsign, Resume
+// Maker and Ink Lifter are free, so these ads are out of date. Kept for the
+// record; the prices below are the KES prices as they were at launch, not
+// anything the store charges today.
 
 const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
@@ -17,12 +21,11 @@ const OUT = path.join(__dirname, "out");
 const WORK = path.join(__dirname, ".work");
 const CHROME = process.env.CHROME || "C:/Program Files/Google/Chrome/Application/chrome.exe";
 
-// regions.js is an ES module for the site; read the KES prices out of it.
-const regions = fs.readFileSync(path.join(ROOT, "src/data/regions.js"), "utf8");
+// The launch prices, from the old src/data/regions.js (removed 2026-09-26).
+const KES = { pdfsign: 350, "resume-maker": 1000, storyforge: 2500, "ink-lifter": 250, "yarp-bundle": 3500 };
 const kes = (slug) => {
-  const m = regions.match(new RegExp(`['"]?${slug}['"]?:\\s*(\\d+)`));
-  if (!m) throw new Error(`No KES price for ${slug} in regions.js`);
-  return `KES ${Number(m[1]).toLocaleString("en-US")}`;
+  if (!(slug in KES)) throw new Error(`No KES price for ${slug}`);
+  return `KES ${KES[slug].toLocaleString("en-US")}`;
 };
 
 const ADS = [

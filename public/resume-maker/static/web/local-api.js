@@ -4,16 +4,12 @@
    route in main.py or a rule in app/library.py changes, change it here too.
 
    Resumes go in IndexedDB (deleted ones in a trash store, so Undo works),
-   rendering is web/render.js, and the licence key is kept in the shared list
-   web/license.js manages. Nothing leaves the browser. There's no PDF route:
+   and rendering is web/render.js. Nothing leaves the browser. There's no PDF route:
    in a browser the resume prints itself (app.js, printPage below). */
 
-import * as license from "./license.js";
 import { createRenderer } from "./render.js";
 
-const APP_ID = "resume-maker";
 const VERSION = document.documentElement.dataset.version || "dev";
-const STORE_URL = new URL("/store/resume-maker", location.origin).href;
 
 const here = (path) => new URL(path, import.meta.url).href;
 const fetchJson = async (path) => {
@@ -187,35 +183,6 @@ if (!(await allResumes()).length) {
   await putResume({ id: "resume", data: await fetchJson("sample.json"), updated: Date.now() });
 }
 
-// ------------------------------------------------------------- licence
-
-async function licenseStatus() {
-  const claim = (await license.currentKey(APP_ID))?.claim;
-  return {
-    licensed: Boolean(claim),
-    email: claim?.email ?? null,
-    product: claim?.product ?? null,
-    issued: claim?.issued ?? null,
-    store_url: STORE_URL,
-    version: VERSION,
-  };
-}
-
-async function setKey({ key }) {
-  try {
-    await license.addKey(key, APP_ID);
-  } catch (err) {
-    throw fail(400, err.message);
-  }
-  return licenseStatus();
-}
-
-async function consume() {
-  const status = await licenseStatus();
-  if (!status.licensed) throw fail(402, "Enter a licence key to export. Everything else keeps working.");
-  return status;
-}
-
 // ------------------------------------------------------------- printing
 
 // The page app.js opens in its own tab to print: the resume at the scale
@@ -256,7 +223,7 @@ export default async function localApi(method, path, body = {}) {
   const url = new URL(path, location.origin);
   const route = `${method} ${url.pathname}`;
   switch (route) {
-    case "GET /api/health": return { resumes: (await allResumes()).length, browser: null };
+    case "GET /api/health": return { resumes: (await allResumes()).length, browser: null, version: VERSION };
     case "GET /api/templates":
       return {
         templates: Object.entries(CATALOG.TEMPLATES).map(([id, t]) => ({ id, name: t.name, blurb: t.blurb, accent: t.accent })),
@@ -272,10 +239,6 @@ export default async function localApi(method, path, body = {}) {
     case "POST /api/preview":
       return new Response(renderer.renderHtml(body.data, body.template ?? null), { headers: { "Content-Type": "text/html; charset=utf-8" } });
     case "POST /api/print": return printPage(body);
-    case "GET /api/license": return licenseStatus();
-    case "POST /api/license": return setKey(body);
-    case "DELETE /api/license": await license.removeKeys(APP_ID); return licenseStatus();
-    case "POST /api/license/consume": return consume();
   }
   let m;
   if ((m = route.match(/^(GET|PUT|DELETE) \/api\/resumes\/([^/]+)$/))) {

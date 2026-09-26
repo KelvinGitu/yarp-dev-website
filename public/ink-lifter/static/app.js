@@ -1,13 +1,13 @@
 /* Ink Lifter: open photos, lift the ink off in a worker, save the results.
 
    Images live only in this window. Nothing is uploaded; the local server is
-   asked only to check the licence and to write "Export all" into a folder. */
+   asked only to write "Export all" into a folder. */
 
 import { DEFAULTS } from "./ink.js";
 
 // The same page runs two ways: in the desktop app, behind Ink Lifter's own
 // local server, and at yarpdevelopers.com/ink-lifter (web/build.py), where
-// there is no server and web/local-api.js answers the licence requests.
+// there is no server and web/local-api.js answers the few requests left.
 const WEB = document.documentElement.dataset.mode === "web";
 const localApi = WEB ? (await import("./web/local-api.js")).default : null;
 
@@ -93,7 +93,6 @@ const state = {
   backdrop: "checker",
   actual: false,
   split: 0.5,
-  license: null,
   exporting: false,
 };
 let nextId = 1;
@@ -580,39 +579,9 @@ function blobToDataUrl(blob) {
   });
 }
 
-function canExport() {
-  const lic = state.license;
-  return !lic || lic.licensed;
-}
-
-// Check the licence before saving or copying. False (and the Licence
-// dialog) unless a key is set.
-async function spendExport() {
-  let lic;
-  try {
-    lic = await api("/api/license/consume", { method: "POST" });
-  } catch (err) {
-    if (err.status === 402) {
-      await refreshLicense();
-      openLicense({ needsLicense: true });
-    } else {
-      toast("Couldn't reach Ink Lifter's own server. Is it still running?", { tone: "error" });
-    }
-    return false;
-  }
-  noteLicense(lic);
-  return true;
-}
-
-function noteLicense(lic) {
-  state.license = lic;
-  paintLicense();
-}
-
 async function saveCurrent() {
   const item = current();
   if (item?.status !== "done") return;
-  if (!canExport()) { openLicense({ needsLicense: true }); return; }
   let blob;
   try {
     blob = await encode(item);
@@ -623,7 +592,6 @@ async function saveCurrent() {
   const name = outputName(item);
 
   if (inDesktopApp()) {
-    // The Save dialog comes first, so cancelling it doesn't cost an export.
     let saved;
     try {
       const b64 = (await blobToDataUrl(blob)).split(",")[1];
@@ -634,13 +602,11 @@ async function saveCurrent() {
     }
     if (saved.error) { toast(saved.error, { tone: "error" }); return; }
     if (!saved.saved) return;
-    try { noteLicense(await api("/api/license/consume", { method: "POST" })); } catch { refreshLicense(); }
     markSaved(item);
     toast(`Saved ${saved.name}.`, { action: "Show in folder", onAction: () => window.pywebview.api.reveal(saved.path) });
     return;
   }
 
-  if (!(await spendExport())) return;
   const url = URL.createObjectURL(blob);
   const a = el("a", { href: url, download: name });
   document.body.append(a);
@@ -653,7 +619,6 @@ async function saveCurrent() {
 async function copyCurrent() {
   const item = current();
   if (item?.status !== "done") return;
-  if (!canExport()) { openLicense({ needsLicense: true }); return; }
   let blob;
   try {
     // The clipboard only takes PNG.
@@ -662,7 +627,6 @@ async function copyCurrent() {
     toast(`Couldn't copy: ${err.message}`, { tone: "error" });
     return;
   }
-  if (!(await spendExport())) return;
   try {
     await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
   } catch (err) {
@@ -689,7 +653,6 @@ async function shareFiles(files, items) {
 async function shareCurrent() {
   const item = current();
   if (item?.status !== "done") return;
-  if (!canExport()) { openLicense({ needsLicense: true }); return; }
   let blob;
   try {
     blob = await encode(item);
@@ -697,14 +660,12 @@ async function shareCurrent() {
     toast(`Couldn't share: ${err.message}`, { tone: "error" });
     return;
   }
-  if (!(await spendExport())) return;
   await shareFiles([new File([blob], outputName(item), { type: blob.type })], [item]);
 }
 
 // Browser version of Export all: one share sheet with every image where the
 // browser can share files (phones), otherwise each one downloaded in turn.
 async function exportAllWeb(items) {
-  if (!(await spendExport())) return;
   state.exporting = true;
   updateActions();
   const files = [];
@@ -750,7 +711,6 @@ const LAST_DIR = "inklifter.exportDir";
 async function exportAll() {
   const items = finished();
   if (!items.length || state.exporting) return;
-  if (!canExport()) { openLicense({ needsLicense: true }); return; }
   if (WEB) return exportAllWeb(items);
 
   let dir = "";
@@ -776,7 +736,6 @@ async function exportAll() {
       const data = await blobToDataUrl(await encode(item));
       const res = await api("/api/export", { method: "POST", body: { name: outputName(item), data, dir } });
       lastPath = res.path;
-      state.license = res.license;
       markSaved(item);
       saved++;
     } catch (err) {
@@ -785,17 +744,13 @@ async function exportAll() {
     }
   }
   state.exporting = false;
-  paintLicense();
   updateActions();
 
   const folder = lastPath ? lastPath.replace(/[\\/][^\\/]*$/, "") : dir;
   const show = inDesktopApp() && folder
     ? { action: "Show folder", onAction: () => window.pywebview.api.reveal(folder) }
     : {};
-  if (stopped?.status === 402) {
-    toast(saved ? `Saved ${plural(saved, "image")}; a licence is needed for the rest.` : stopped.message, { tone: "error", ...show });
-    openLicense({ needsLicense: true });
-  } else if (stopped) {
+  if (stopped) {
     toast(`${saved ? `Saved ${plural(saved, "image")}, then stopped: ` : ""}${stopped.message}`, { tone: "error", ...show });
   } else {
     toast(`Saved ${plural(saved, "image")} to ${folder}.`, show);
@@ -817,78 +772,13 @@ function updateActions() {
   $("#apply-all").disabled = state.items.length < 2;
 }
 
-// ------------------------------------------------------------ licence
+// ------------------------------------------------------------ version
 
-// The licence key is checked by this computer's own server (app/license.py);
-// nothing here talks to the internet. Saving, copying or exporting needs one.
-
-async function refreshLicense() {
-  try { state.license = await api("/api/license"); } catch { return; }
-  paintLicense();
-}
-
-function paintLicense() {
-  const lic = state.license;
-  if (!lic) return;
-  const chip = $("#license-open");
-  chip.dataset.licensed = String(lic.licensed);
-  chip.textContent = lic.licensed ? "Licensed" : "Unlicensed";
-  chip.title = lic.licensed ? `Licensed to ${lic.email}` : "Enter a licence key, or buy one, to save or export";
-}
-
-function openLicense({ needsLicense = false } = {}) {
-  const lic = state.license || { licensed: false };
-  let text;
-  if (lic.licensed) {
-    text = `Licensed to ${lic.email}. Thank you for buying Ink Lifter.`;
-  } else if (needsLicense) {
-    text = "Enter the licence key from your purchase email to save, copy or export images. Opening and previewing keep working.";
-  } else {
-    text = "Opening and previewing are free. Enter the licence key from your purchase email to save, copy or export images.";
-  }
-  $("#license-state").textContent = text;
-  $("#license-version").textContent = lic.version ? `Version ${lic.version}.` : "";
-  $("#license-field").hidden = lic.licensed;
-  $("#license-unlock").hidden = lic.licensed;
-  $("#license-remove").hidden = !lic.licensed;
-  $("#license-buy").hidden = lic.licensed;
-  $("#license-buy").href = lic.store_url || "https://yarpdevelopers.com/store/ink-lifter";
-  $("#license-error").hidden = true;
-  $("#license-form").key.value = "";
-  $("#license").showModal();
-  if (!lic.licensed) $("#license-form").key.focus();
-}
-
-function wireLicense() {
-  $("#license-open").addEventListener("click", () => openLicense());
-  $("#license [data-close]").addEventListener("click", () => $("#license").close());
-  $("#license-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-      state.license = await api("/api/license", { method: "POST", body: { key: $("#license-form").key.value.trim() } });
-    } catch (err) {
-      $("#license-error").textContent = err.message;
-      $("#license-error").hidden = false;
-      return;
-    }
-    paintLicense();
-    $("#license").close();
-    toast(`Unlocked. Thank you, ${state.license.email}.`);
-  });
-  $("#license-remove").addEventListener("click", async () => {
-    state.license = await api("/api/license", { method: "DELETE" });
-    paintLicense();
-    $("#license").close();
-    toast(`Licence key removed from ${WEB ? "this browser" : "this computer"}.`);
-  });
-
-  if (WEB) {
-    $(".license__privacy").firstChild.textContent =
-      "Your key is checked and kept in this browser: enter it again if you clear your browsing data. " +
-      "Ink Lifter never sends it, or your images, anywhere. ";
-    // The store's thank-you page, open in another tab, saves a new key here.
-    window.addEventListener("storage", (e) => { if (e.key === "yarp.keys") refreshLicense(); });
-  }
+async function showVersion() {
+  try {
+    const { version } = await api("/api/health");
+    if (version) $("#version").textContent = `v${version}`;
+  } catch { /* the label just stays empty */ }
 }
 
 // ------------------------------------------------------------ toast
@@ -953,7 +843,7 @@ function wireInput() {
     const mod = e.ctrlKey || e.metaKey;
     if (mod && e.key.toLowerCase() === "o") { e.preventDefault(); openPicker(); return; }
     if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); saveCurrent(); return; }
-    if ($("#license").open || typing(e)) return;
+    if (typing(e)) return;
     if (mod && e.key.toLowerCase() === "c" && !String(window.getSelection())) { e.preventDefault(); copyCurrent(); return; }
     if (e.key === "Delete" && current()) { e.preventDefault(); remove(state.selected); return; }
     if ((e.key === "ArrowDown" || e.key === "ArrowUp") && state.items.length && !(e.target instanceof HTMLInputElement)) {
@@ -989,8 +879,7 @@ $("#controls-toggle").addEventListener("click", () => {
 
 wireStage();
 wireForm();
-wireLicense();
 wireInput();
 fillForm();
 render();
-refreshLicense();
+showVersion();

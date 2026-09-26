@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-mode="web" data-version="1.1.0">
+<html lang="en" data-mode="web" data-version="1.2.0">
 <head>
 <meta charset="utf-8">
 <base href="/resume-maker/">
@@ -47,7 +47,7 @@
 
   <div class="bar__actions">
     <p class="fit" id="fit-status" title="How much the resume was shrunk to fit its page limit"></p>
-    <button type="button" class="trial" id="license-open" data-licensed="false">Unlicensed</button>
+    <span class="bar__version" id="version"></span>
     <button type="button" class="btn btn--primary" id="export" disabled>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19.5h14"/></svg>
       <span>Download PDF</span>
@@ -135,23 +135,6 @@
     <footer class="sheet-dlg__foot">
       <button type="button" class="btn btn--quiet" value="cancel" data-close>Cancel</button>
       <button type="submit" class="btn btn--primary" id="name-submit" value="ok">Create</button>
-    </footer>
-  </form>
-</dialog>
-
-<dialog class="sheet-dlg" id="license-dlg" aria-labelledby="license-dlg-title">
-  <form id="license-form">
-    <h2 id="license-dlg-title">Licence</h2>
-    <p class="sheet-dlg__lede license__state" id="license-state"></p>
-    <label class="field" id="license-field"><span>Licence key</span><input id="license-key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
-    <p class="license__error" id="license-error" role="alert" hidden></p>
-    <p class="sheet-dlg__lede license__privacy">Your key is checked on this computer. Resume Maker never sends it, or your resumes, anywhere. <span id="license-version"></span></p>
-    <footer class="sheet-dlg__foot">
-      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
-      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
-      <span class="spacer"></span>
-      <button type="button" class="btn btn--quiet" data-close>Close</button>
-      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
     </footer>
   </form>
 </dialog>

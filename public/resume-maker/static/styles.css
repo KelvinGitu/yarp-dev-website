@@ -372,19 +372,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .radio { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 14px; }
 .radio input { accent-color: var(--pencil); width: 16px; height: 16px; }
 
-/* ---------------------------------------------------------- licence */
-
-/* Unlicensed, a quiet pencil-blue chip says so. Licensed, it steps back to plain text. */
-.trial {
-  height: 30px; padding: 0 11px; border: 1px solid rgba(143, 211, 236, 0.35); border-radius: 15px;
-  background: var(--pencil-wash); color: var(--pencil); font-size: 12.5px; font-weight: 600; white-space: nowrap;
-}
-.trial:hover { background: rgba(143, 211, 236, 0.2); }
-.trial[data-licensed="true"] { border-color: transparent; background: none; color: var(--dim); }
-.license__state { color: var(--text); font-size: 14.5px; }
-.license__privacy { margin: 12px 0 0; font-size: 12.5px; }
-.license__error { margin: 0 0 8px; color: var(--danger); font-size: 13.5px; }
-#license-key { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.bar__version { color: var(--dim); font-size: 12.5px; white-space: nowrap; }
 .sheet-dlg .spacer { flex: 1; }
 .btn { text-decoration: none; }
 
@@ -393,7 +381,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 @media (max-width: 960px) {
   :root { --editor-w: 100%; }
   .bar { gap: 10px; padding: 0 10px; }
-  .bar__mark span, .bar__status, .fit { display: none; }
+  .bar__mark span, .bar__status, .fit, .bar__version { display: none; }
   .view-toggle { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--well); }
   .view-toggle button { padding: 5px 12px; border: 0; border-radius: 8px; background: none; color: var(--dim); font-weight: 600; }
   .view-toggle button[aria-selected="true"] { background: var(--raise-hi); color: var(--text); }
@@ -406,14 +394,13 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 
 @media (max-width: 520px) {
   /* A phone's bar: the resume's name gives way (with an ellipsis) so the
-     view toggle, licence and export always fit beside it. */
+     view toggle and export always fit beside it. */
   .bar { gap: 8px; padding: 0 8px 0 10px; }
   .bar__mark { display: none; }
   .switcher { flex: 0 1 auto; }
   .switcher__btn { max-width: 100%; padding: 0 6px 0 10px; }
   .view-toggle button { padding: 5px 9px; }
   .bar__actions { gap: 6px; }
-  .trial { padding: 0 8px; }
   .grid2, .grid3, .row--lang, .add-menu { grid-template-columns: 1fr; }
   .row--link { grid-template-columns: 1fr auto; }
   .row--link > .field:first-child { grid-column: 1 / -1; }

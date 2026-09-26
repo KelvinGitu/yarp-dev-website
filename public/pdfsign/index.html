@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-mode="web" data-version="1.0.1">
+<html lang="en" data-mode="web" data-version="1.1.0">
 <head>
 <meta charset="utf-8">
 <base href="/pdfsign/">
@@ -126,10 +126,6 @@
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg>
         <span>Profile</span>
       </button>
-      <button type="button" class="tool" id="license-open" data-licensed="false">
-        <svg viewBox="0 0 24 24"><circle cx="8" cy="14.5" r="4"/><path d="M11 11.5l8.5-8.5M16 6.5l2.5 2.5M13.5 9l2 2"/></svg>
-        <span id="license-label">Unlicensed</span>
-      </button>
     </div>
   </nav>
 
@@ -233,24 +229,6 @@
     <button type="button" class="btn btn--quiet" data-close>Cancel</button>
     <button type="button" class="btn btn--primary" id="pad-use">Use signature</button>
   </footer>
-</dialog>
-
-<!-- Licence: whether exporting is unlocked, entering a key, buying one. -->
-<dialog class="sheet" id="license" aria-labelledby="license-title">
-  <form id="license-form">
-    <h2 id="license-title">Licence</h2>
-    <p class="sheet__lede license__state" id="license-state"></p>
-    <label class="input" id="license-field"><span>Licence key</span><input name="key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
-    <p class="pad__error" id="license-error" role="alert" hidden></p>
-    <p class="sheet__lede license__privacy">Your key is checked on this computer. pdfsign never sends it, or your documents, anywhere. <span id="license-version"></span></p>
-    <footer class="sheet__foot">
-      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
-      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
-      <span class="sheet__spacer"></span>
-      <button type="button" class="btn btn--quiet" data-close>Close</button>
-      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
-    </footer>
-  </form>
 </dialog>
 
 <!-- Saved snippets: pick one, then click where it goes. -->

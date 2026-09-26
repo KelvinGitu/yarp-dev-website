@@ -5,7 +5,7 @@
    deploy gets a fresh cache) and CORE (every file the app has; a few
    hundred kilobytes). Adapted from pdfsign's web/sw.js. */
 
-const BUILD = "1.0.1-08eef12aeb";
+const BUILD = "1.1.0-27bdde4024";
 const CORE = [
   "icons/apple-touch-180.png",
   "icons/icon-192.png",
@@ -20,8 +20,6 @@ const CORE = [
   "static/fonts/schibsted-grotesk-latin-700-normal.woff2",
   "static/ink.js",
   "static/styles.css",
-  "static/vendor/noble-ed25519.js",
-  "static/web/license.js",
   "static/web/local-api.js",
   "static/worker.js"
 ];

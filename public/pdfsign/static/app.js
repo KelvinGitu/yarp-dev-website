@@ -2137,7 +2137,10 @@ function openProfile(then, { snippets = false } = {}) {
   form.initials.value = state.profile.initials;
   form.date_format.value = state.profile.date_format;
   $("#snip-rows").replaceChildren(...(state.profile.snippets || []).map(snippetRow));
-  $("#profile-dir").textContent = state.outputDir ? `Save to folder writes into ${state.outputDir}` : "";
+  $("#profile-dir").textContent = [
+    state.outputDir && `Save to folder writes into ${state.outputDir}.`,
+    state.version && `pdfsign ${state.version}.`,
+  ].filter(Boolean).join(" ");
   profileDialog.showModal();
   // Came here from the Snippets tool: go straight to them, with a row ready.
   if (snippets) {
@@ -2422,9 +2425,6 @@ async function exportPdf(dest) {
   state.lockFailed = false;
   const name = outputName();
 
-  // The licence is checked only once a PDF exists, so a failed build above costs nothing.
-  if (!(await spendExport())) return;
-
   if (dest === "download" && inDesktopApp()) {
     let saved;
     try {
@@ -2493,105 +2493,13 @@ function bytesToBase64(bytes) {
   return btoa(binary);
 }
 
-// ------------------------------------------------------------- licence
-
-// The licence key is checked by this computer's own server (app/license.py),
-// or on the web by the same check ported to web/license.js; nothing here
-// talks to the internet. Exporting needs a key.
-
-const licenseDialog = $("#license");
-const here = WEB ? "this browser" : "this computer";
+// ------------------------------------------------------------- export buttons
 
 if (WEB) {
   $(".empty p").textContent =
     "Choose one, or drop it on this page. It's opened right here in your browser and never uploaded. " +
     "Add more PDFs later to join their pages.";
-  $(".license__privacy").firstChild.textContent =
-    "Your key is checked and kept in this browser: enter it again if you clear your browsing data. " +
-    "pdfsign never sends it, or your documents, anywhere. ";
-  // The store's thank-you page, open in another tab, saves a new key here.
-  window.addEventListener("storage", (e) => { if (e.key === "yarp.keys") refreshLicense(); });
 }
-
-async function refreshLicense() {
-  try {
-    state.license = await api("/api/license");
-  } catch {
-    return;
-  }
-  const lic = state.license;
-  $("#license-open").dataset.licensed = String(lic.licensed);
-  $("#license-label").textContent = lic.licensed ? "Licence" : "Unlicensed";
-  $("#license-open").title = lic.licensed
-    ? `Licensed to ${lic.email}`
-    : "Enter a licence key, or buy one, to export";
-}
-
-function openLicense({ needsLicense = false } = {}) {
-  const lic = state.license || { licensed: false };
-  let text;
-  if (lic.licensed) {
-    text = `Licensed to ${lic.email}. Thank you for buying pdfsign.`;
-  } else if (needsLicense) {
-    text = "Enter the licence key from your purchase email to export. Everything else keeps working.";
-  } else {
-    text = "Filling and editing are free. Enter the licence key from your purchase email to download or save.";
-  }
-  $("#license-state").textContent = text;
-  $("#license-version").textContent = lic.version ? `Version ${lic.version}.` : "";
-  $("#license-field").hidden = lic.licensed;
-  $("#license-unlock").hidden = lic.licensed;
-  $("#license-remove").hidden = !lic.licensed;
-  $("#license-buy").hidden = lic.licensed;
-  $("#license-buy").href = lic.store_url || "https://yarpdevelopers.com/store/pdfsign";
-  $("#license-error").hidden = true;
-  $("#license-form").key.value = "";
-  licenseDialog.showModal();
-  if (!lic.licensed) $("#license-form").key.focus();
-}
-
-// Check the licence before spending an export. False (and the Licence
-// dialog) unless a key is set.
-async function spendExport() {
-  try {
-    state.license = await api("/api/license/consume", {});
-  } catch (err) {
-    if (err.status === 402) {
-      await refreshLicense();
-      openLicense({ needsLicense: true });
-    } else {
-      toast(WEB ? `Couldn't check the licence: ${err.message}` : "Couldn't reach pdfsign's own server. Is it still running?", { tone: "error" });
-    }
-    return false;
-  }
-  refreshLicense();
-  return true;
-}
-
-$("#license-open").addEventListener("click", () => openLicense());
-
-$("#license-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const key = e.target.key.value.trim();
-  const box = $("#license-error");
-  try {
-    state.license = await api("/api/license", { key });
-  } catch (err) {
-    box.textContent = err.message;
-    box.hidden = false;
-    return;
-  }
-  await refreshLicense();
-  licenseDialog.close();
-  toast(`Unlocked. Thank you, ${state.license.email}.`);
-});
-
-$("#license-remove").addEventListener("click", async () => {
-  state.license = await api("/api/license", undefined, "DELETE");
-  await refreshLicense();
-  licenseDialog.close();
-  toast(`Licence key removed from ${here}.`);
-});
 
 $("#download").addEventListener("click", () => exportPdf("download"));
 $("#save").addEventListener("click", () => exportPdf("save"));
@@ -2642,7 +2550,7 @@ setInk(state.ink);
     state.profile = profile;
     state.signatures = signatures;
     state.outputDir = health.output_dir;
-    refreshLicense();
+    state.version = health.version;
   } catch (err) {
     toast(WEB ? `pdfsign couldn't start: ${err.message}` : "Can't reach the pdfsign server. Is run.ps1 still running?", { tone: "error", sticky: true });
   }

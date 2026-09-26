@@ -1,30 +1,33 @@
 import BuyButton from '@/components/BuyButton';
-import { Price, useRegion } from '@/components/Region';
 import { CheckIcon } from '@/components/icons';
-import { REGIONS } from '@/data/regions';
+import GetButtons from '@/components/store/GetButtons';
 
 // One price, what it buys, and the button: the page's single place to decide.
-// `item` is a products.js entry or the bundle; `items` the checklist (strings
-// or nodes). The sticky bar links here (#buy), so the Paystack email form only
-// ever opens in one spot.
-export default function PriceCard({ item, title, items, buyLabel, id }) {
-  const { region } = useRegion();
-  const local = REGIONS[region];
-
+// `item` is a products.js entry; `items` the checklist (strings or nodes). A
+// free app gets the same card, reading Free, with its download buttons.
+export default function PriceCard({ item, title, items, buyLabel, id, onPhone }) {
   return (
     <div className="price-card" id={id}>
       <p className="price-card-title">{title}</p>
-      <p className="price-card-amount"><Price product={item} /></p>
-      <p className="price-card-terms">Paid once. No subscription, and it never expires.</p>
+      <p className="price-card-amount">{item.free ? 'Free' : item.price}</p>
+      <p className="price-card-terms">
+        {item.free
+          ? 'No licence key, no account, no ads. Nothing is locked.'
+          : 'Paid once. No subscription, and it never expires.'}
+      </p>
       <ul className="price-card-list">
         {items.map((line, i) => (
           <li key={i}><CheckIcon />{line}</li>
         ))}
       </ul>
-      <BuyButton item={item} label={buyLabel} className="store-btn-primary" />
-      <p className="price-card-note">
-        Your key arrives by email a moment later · {local ? `${local.payWith} through Paystack` : 'Card payment through Stripe'}
-      </p>
+      {item.free ? (
+        <div className="price-card-get"><GetButtons product={item} onPhone={onPhone} /></div>
+      ) : (
+        <>
+          <BuyButton item={item} label={buyLabel} className="store-btn-primary" />
+          <p className="price-card-note">Your key arrives by email a moment later · Card payment through Stripe</p>
+        </>
+      )}
     </div>
   );
 }

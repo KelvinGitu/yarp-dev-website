@@ -1,10 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
-import { Price, RegionPicker } from '@/components/Region';
 import StorePromises from '@/components/StorePromises';
-import PriceCard from '@/components/store/PriceCard';
-import { bundle, products } from '@/data/products';
+import { DownloadIcon } from '@/components/icons';
+import { products } from '@/data/products';
 
 export default function Store() {
   return (
@@ -27,11 +26,10 @@ export default function Store() {
             with the internet switched off.
           </p>
           <p className="store-lede store-lede-small">
-            Each one is a single payment, and every download works before you buy, so you can try it on your own
-            files first — see each app’s page for exactly what’s free.
+            pdfsign, Resume Maker and Ink Lifter are free, with nothing locked. StoryForge is a single payment, and
+            its download works before you buy, so you can try it on your own writing first.
           </p>
           <StorePromises />
-          <RegionPicker />
         </header>
 
         <ul className="store-list">
@@ -50,9 +48,17 @@ export default function Store() {
                   <Link href={`/store/${p.slug}`}>{p.headline ?? p.tagline}</Link>
                 </h2>
                 {p.headline && <p className="card-text">{p.tagline}</p>}
-                <p className="store-card-price"><strong><Price product={p} /></strong> paid once</p>
+                {p.free
+                  ? <p className="store-card-price"><strong>Free</strong> with nothing locked</p>
+                  : <p className="store-card-price"><strong>{p.price}</strong> paid once</p>}
                 <div className="store-actions">
-                  <BuyButton item={p} className="store-btn-primary" />
+                  {p.free ? (
+                    <a className="store-btn store-btn-primary" href={p.download}>
+                      <DownloadIcon /><span className="store-btn-main">Download free</span>
+                    </a>
+                  ) : (
+                    <BuyButton item={p} className="store-btn-primary" />
+                  )}
                   <Link href={`/store/${p.slug}`} className="store-btn">
                     <span className="store-btn-main">See {p.name}</span>
                   </Link>
@@ -62,28 +68,10 @@ export default function Store() {
           ))}
         </ul>
 
-        <section className="detail-section store-price">
-          <p className="detail-section-title">All four apps</p>
-          <h2 className="page-h2">Or have all four, with one key</h2>
-          <PriceCard
-            item={bundle}
-            title="All four apps"
-            buyLabel="Buy all four"
-            items={[
-              ...products.map((p) => (
-                <span key={p.slug}><strong>{p.name}</strong> <span className="price-card-sub">{p.tagline}</span></span>
-              )),
-              'One licence key unlocks every one of them',
-              'Every future version of each, free',
-              '30-day refund if they don’t work for you',
-            ]}
-          />
-        </section>
-
         <div className="detail-back">
           <Link href="/" className="detail-back-link">← Home</Link>
           <span className="store-legal">
-            <Link href="/store/privacy">Privacy</Link> · <Link href="/store/terms">Licence terms</Link>
+            <Link href="/store/privacy">Privacy</Link> · <Link href="/store/terms">Terms</Link>
           </span>
         </div>
       </div>

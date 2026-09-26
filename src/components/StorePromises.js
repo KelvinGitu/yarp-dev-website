@@ -1,4 +1,4 @@
-// The five reasons to buy these apps rather than use a web tool, as separate
+// The five reasons to use these apps rather than a web tool, as separate
 // badges so each one reads on its own. Used on /store; a product page puts the
 // same promises in its trust line and price card (components/store).
 
@@ -13,7 +13,7 @@ const icons = {
       <path d="M4 4l16 16" />
     </>
   ),
-  // A key: bought once, yours for good.
+  // A key: nothing expires or locks.
   own: (
     <>
       <circle cx="7.5" cy="15.5" r="4.5" />
@@ -50,8 +50,8 @@ const icons = {
 };
 
 const PROMISES = [
-  { icon: 'subscription', title: 'No subscription', text: 'One price, paid once' },
-  { icon: 'own', title: 'Buy once, own forever', text: 'Your licence never expires' },
+  { icon: 'subscription', title: 'No subscription', text: 'Free, or paid once' },
+  { icon: 'own', title: 'Yours for good', text: 'Nothing expires or locks' },
   { icon: 'updates', title: 'Lifetime updates', text: 'Every new version, free' },
   { icon: 'data', title: 'Your data stays yours', text: 'Kept on your computer, never uploaded' },
   { icon: 'privacy', title: 'Private', text: 'No account, no tracking, no ads' },

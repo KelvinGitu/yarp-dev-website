@@ -1,33 +1,21 @@
-import { useId, useState } from 'react';
-import { useRegion } from '@/components/Region';
-import { REGIONS, priceFor } from '@/data/regions';
+import { useState } from 'react';
 import { currentCampaign } from '@/data/campaign';
 
-// Sends the buyer to a checkout page for `item` (a products.js entry or the
-// bundle). The session is created by the store function; payment details are
-// only ever entered on the payment provider's own page.
-//
-// Everywhere else: Stripe, at the euro price. In a local-price region
-// (regions.js): Paystack mobile money, which needs the email address the
-// licence key is sent to before the checkout starts.
+// Sends the buyer to Stripe Checkout for `item` (a paid products.js entry),
+// at the euro price. The session is created by the store function; payment
+// details are only ever entered on Stripe's own page.
 export default function BuyButton({ item, label = 'Buy a licence', className = '' }) {
-  const { region } = useRegion();
-  const local = REGIONS[region];
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [asking, setAsking] = useState(false);
-  const [email, setEmail] = useState('');
-  // A page can carry more than one Buy button for the same item (hero, price card).
-  const emailId = useId();
 
-  async function start(endpoint, body) {
+  async function buy() {
     setBusy(true);
     setError('');
     try {
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ product: item.slug, campaign: currentCampaign() }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.url) throw new Error(data.error || 'Checkout isn’t available right now.');
@@ -38,53 +26,11 @@ export default function BuyButton({ item, label = 'Buy a licence', className = '
     }
   }
 
-  function buy() {
-    if (local) setAsking(true);
-    else start('/api/checkout', { product: item.slug, campaign: currentCampaign() });
-  }
-
-  function payLocally(e) {
-    e.preventDefault();
-    start('/api/paystack/checkout', { product: item.slug, region, email, campaign: currentCampaign() });
-  }
-
-  const price = priceFor(item, region);
-
   return (
     <div className="buy">
-      {!(local && asking) && (
-        <button type="button" className={`store-btn store-btn-buy ${className}`} onClick={buy} disabled={busy}>
-          {busy ? 'Opening checkout…' : `${label} · ${price}`}
-        </button>
-      )}
-      {local && asking && (
-        <form className="buy-local" onSubmit={payLocally}>
-          <label className="buy-local-label" htmlFor={emailId}>
-            Your email. The licence key is sent here.
-          </label>
-          <div className="buy-local-row">
-            <input
-              id={emailId}
-              type="email"
-              required
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-            />
-            <button type="submit" className={`store-btn store-btn-buy ${className}`} disabled={busy}>
-              {busy ? 'Opening…' : `Pay ${price}`}
-            </button>
-          </div>
-          <p className="buy-local-note">
-            Paid with {local.payWith} through Paystack.{' '}
-            <button type="button" className="buy-local-cancel" onClick={() => { setAsking(false); setError(''); }} disabled={busy}>
-              Cancel
-            </button>
-          </p>
-        </form>
-      )}
+      <button type="button" className={`store-btn store-btn-buy ${className}`} onClick={buy} disabled={busy}>
+        {busy ? 'Opening checkout…' : `${label} · ${item.price}`}
+      </button>
       {error && <p className="buy-error" role="alert">{error}</p>}
     </div>
   );

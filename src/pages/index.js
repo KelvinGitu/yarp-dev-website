@@ -6,7 +6,6 @@ import ProjectCard from '@/components/ProjectCard';
 import SectionHead from '@/components/SectionHead';
 import StatRow from '@/components/StatRow';
 import { MailIcon } from '@/components/icons';
-import { Price } from '@/components/Region';
 import { products } from '@/data/products';
 import { SALES_EMAIL, studioStats } from '@/data/studio';
 
@@ -67,14 +66,14 @@ export default function Home() {
                   </span>
                   <span className="home-desktop-headline">{p.headline ?? p.tagline}</span>
                   <span className="home-desktop-price">
-                    <strong><Price product={p} /></strong> paid once · See {p.name} →
+                    {p.free ? <strong>Free</strong> : <><strong>{p.price}</strong> paid once</>} · See {p.name} →
                   </span>
                 </Link>
               </li>
             ))}
           </ul>
           <p className="page-text home-desktop-more">
-            Free to try, then a one-time price. <Link href="/store">See the store →</Link>
+            Three are free; StoryForge is free to try, then a one-time price. <Link href="/store">See the store →</Link>
           </p>
         </section>
 

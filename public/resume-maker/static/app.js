@@ -1010,10 +1010,6 @@ const ACTIONS = {
 // print window then saves it as a PDF, real text and all. The tab has to open
 // right here, in the click, or the browser blocks it as a pop-up.
 async function printPdf() {
-  if (!LICENSE?.licensed) {
-    await refreshLicense();
-    if (!LICENSE?.licensed) { openLicense({ needsLicense: true }); return; }
-  }
   const tab = window.open("", "_blank");
   if (!tab) {
     toast("Your browser blocked the page to print. Allow pop-ups for this site, then try again.", { kind: "error" });
@@ -1021,7 +1017,6 @@ async function printPdf() {
   }
   try {
     await flushSave();
-    await api("/api/license/consume", { method: "POST" });
     const res = await api("/api/print", { method: "POST", body: { data: cleaned(S.data), scale: S.scale }, raw: true });
     const url = URL.createObjectURL(await res.blob());
     tab.location.href = url;
@@ -1032,12 +1027,7 @@ async function printPdf() {
     }
   } catch (err) {
     tab.close();
-    if (err.status === 402) {
-      await refreshLicense();
-      openLicense({ needsLicense: true });
-    } else {
-      toast(`Couldn't make the PDF: ${err.message}`, { kind: "error" });
-    }
+    toast(`Couldn't make the PDF: ${err.message}`, { kind: "error" });
   }
 }
 
@@ -1063,7 +1053,6 @@ async function exportPdf() {
     const pi = S.data.personal_info;
     const person = [pi.first_name, pi.last_name].filter(Boolean).join(" ");
     const filename = person ? `${person} Resume.pdf` : `${S.id}.pdf`;
-    refreshLicense();
 
     const limit = Number(S.data.design.max_pages) || 0;
     const tooLong = limit && pages > limit
@@ -1098,12 +1087,7 @@ async function exportPdf() {
       });
     }
   } catch (err) {
-    if (err.status === 402) {
-      await refreshLicense();
-      openLicense({ needsLicense: true });
-    } else {
-      toast(`Couldn't make the PDF: ${err.message}`, { kind: "error" });
-    }
+    toast(`Couldn't make the PDF: ${err.message}`, { kind: "error" });
   } finally {
     btn.disabled = false;
     btn.removeAttribute("aria-busy");
@@ -1120,73 +1104,13 @@ function blobToBase64(blob) {
   });
 }
 
-// ------------------------------------------------------------ licence
+// ------------------------------------------------------------ version
 
-// The licence key is checked by this computer's own server (app/license.py);
-// nothing here talks to the internet. Exporting a PDF needs a key.
-
-let LICENSE = null;
-
-async function refreshLicense() {
-  try { LICENSE = await api("/api/license"); } catch { return; }
-  const chip = $("#license-open");
-  chip.dataset.licensed = String(LICENSE.licensed);
-  chip.textContent = LICENSE.licensed ? "Licensed" : "Unlicensed";
-  chip.title = LICENSE.licensed ? `Licensed to ${LICENSE.email}` : "Enter a licence key, or buy one, to export";
-}
-
-function openLicense({ needsLicense = false } = {}) {
-  const lic = LICENSE || { licensed: false };
-  let text;
-  if (lic.licensed) {
-    text = `Licensed to ${lic.email}. Thank you for buying Resume Maker.`;
-  } else if (needsLicense) {
-    text = "Enter the licence key from your purchase email to export a PDF. Editing and previewing keep working.";
-  } else {
-    text = "Editing and previewing are free. Enter the licence key from your purchase email to export a PDF.";
-  }
-  $("#license-state").textContent = text;
-  $("#license-version").textContent = lic.version ? `Version ${lic.version}.` : "";
-  $("#license-field").hidden = lic.licensed;
-  $("#license-unlock").hidden = lic.licensed;
-  $("#license-remove").hidden = !lic.licensed;
-  $("#license-buy").hidden = lic.licensed;
-  $("#license-buy").href = lic.store_url || "https://yarpdevelopers.com/store/resume-maker";
-  $("#license-error").hidden = true;
-  $("#license-key").value = "";
-  $("#license-dlg").showModal();
-  if (!lic.licensed) $("#license-key").focus();
-}
-
-function wireLicense() {
-  $("#license-open").addEventListener("click", () => openLicense());
-  $("#license-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-      LICENSE = await api("/api/license", { method: "POST", body: { key: $("#license-key").value.trim() } });
-    } catch (err) {
-      $("#license-error").textContent = err.message;
-      $("#license-error").hidden = false;
-      return;
-    }
-    await refreshLicense();
-    $("#license-dlg").close();
-    toast(`Unlocked. Thank you, ${LICENSE.email}.`);
-  });
-  $("#license-remove").addEventListener("click", async () => {
-    LICENSE = await api("/api/license", { method: "DELETE" });
-    await refreshLicense();
-    $("#license-dlg").close();
-    toast(`Licence key removed from ${WEB ? "this browser" : "this computer"}.`);
-  });
-
-  if (WEB) {
-    $(".license__privacy").firstChild.textContent =
-      "Your key is checked and kept in this browser: enter it again if you clear your browsing data. " +
-      "Resume Maker never sends it, or your resumes, anywhere. ";
-    // The store's thank-you page, open in another tab, saves a new key here.
-    window.addEventListener("storage", (e) => { if (e.key === "yarp.keys") refreshLicense(); });
-  }
+async function showVersion() {
+  try {
+    const { version } = await api("/api/health");
+    if (version) $("#version").textContent = `v${version}`;
+  } catch { /* the label just stays empty */ }
 }
 
 // ------------------------------------------------------------ toast
@@ -1274,8 +1198,7 @@ function wire() {
 
 async function boot() {
   wire();
-  wireLicense();
-  refreshLicense();
+  showVersion();
   S.meta = await api("/api/templates");
   buildDesign();
   S.list = await api("/api/resumes");

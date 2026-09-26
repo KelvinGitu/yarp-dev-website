@@ -1132,15 +1132,6 @@ select.field { padding: 0; }
 
 .stamps__empty { grid-column: 1 / -1; margin: 0; color: var(--chrome-dim); font-size: 14px; }
 
-/* ---------------------------------------------------------- licence */
-
-/* Unlicensed, the rail's key reads "Unlicensed" in pencil blue: findable,
-   not nagging. Licensed, it goes quiet like the other tools. */
-#license-open[data-licensed="false"] { color: var(--pencil); }
-.license__state { color: var(--chrome-ink); font-size: 15px; }
-.license__privacy { margin: 4px 0 0; font-size: 13px; }
-#license-form input[name="key"] { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; letter-spacing: 0.02em; }
-
 /* ---------------------------------------------------------- history */
 
 .history { display: flex; gap: 2px; }

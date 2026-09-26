@@ -7,6 +7,12 @@ account, a dashboard, or a decision only you can make.
 It's ordered so you can stop after **Part 1** with a working local test, and be
 selling after **Part 5**.
 
+**What's for sale (since 2026-09-26):** StoryForge only, in euros, through
+Stripe. pdfsign, Resume Maker and Ink Lifter are free (no licence code left in
+them), and the bundle is withdrawn. Their product ids stay in
+`functions/products.js`, not for sale, so earlier receipts still resolve. The
+Kenyan-shilling prices (Paystack, M-Pesa) were removed the same day.
+
 **One rule throughout:** never commit a secret. `.gitignore` covers `.env*`,
 `*.secret.local` and `functions/node_modules`, but it can't stop you pasting a
 key into a source file.
@@ -57,27 +63,19 @@ half (`private_key_b64`) mints licences.
 
 In the Stripe dashboard, stay in **test mode** for all of Part 1.
 
-1. **Product catalogue → Add product**, four times, each with a **one-time** price in EUR:
-   - `pdfsign`: €19 (or your price)
-   - `Resume Maker`: €15
-   - `StoryForge`: €25
-   - `All three apps` (the bundle): €39
-
-   The StoryForge and bundle prices in `src/data/products.js` are placeholders
-   until you settle them; change the page and Stripe together.
-2. Copy each **Price ID** (`price_...`, from the price row's ⋯ menu, *not* the
+1. **Product catalogue → Add product**: `StoryForge`, with a **one-time**
+   price in EUR matching `src/data/products.js` (€24.99). Change the page and
+   Stripe together.
+2. Copy the **Price ID** (`price_...`, from the price row's ⋯ menu, *not* the
    `prod_...` product ID).
 3. **Developers → API keys**: copy the secret key (`sk_test_...`).
 
 ### 1.3 Local settings
 
-`functions/.env.local` (emulator only, already exists) gets the price IDs:
+`functions/.env.local` (emulator only, already exists) gets the price ID:
 
 ```
-STRIPE_PRICE_PDFSIGN=price_...
-STRIPE_PRICE_RESUME_MAKER=price_...
 STRIPE_PRICE_STORYFORGE=price_...
-STRIPE_PRICE_BUNDLE=price_...
 SITE_URL=http://127.0.0.1:5000
 FIRESTORE_EMULATOR_HOST=127.0.0.1:1   # keeps local tests out of your real Firestore
 ```
@@ -89,7 +87,6 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...        # from `stripe listen`, next step
 YARP_SIGNING_KEY=<private_key_b64 from yarp-signing-key.json>
 RESEND_API_KEY=                        # leave empty for now
-PAYSTACK_SECRET_KEY=sk_test_...        # Paystack test key; see Part 6
 ```
 
 ### 1.4 Run it
@@ -109,11 +106,12 @@ result until Part 2.
 
 ### 1.5 Prove the key unlocks the app
 
-Paste the key into pdfsign's Licence window (the key icon, bottom left) and
-click Unlock. **That is the whole loop.** Everything after this is plumbing.
+Paste the key into StoryForge (the Explore button at the top right, or
+Settings → Licence & data). **That is the whole loop.** Everything after this
+is plumbing.
 
 `cd functions; npm test` re-checks that keys minted by the store verify in
-both apps, whenever you change either side.
+StoryForge, whenever you change either side.
 
 ---
 
@@ -165,8 +163,8 @@ The store links to
 | VAT | Stripe Tax + `STRIPE_AUTOMATIC_TAX` | Selling digital goods to EU consumers from Belgium means charging VAT at the buyer's country rate, usually via OSS registration. Turn on Stripe Tax in the dashboard (it needs your tax registrations), then set `STRIPE_AUTOMATIC_TAX=true`. **Worth confirming with an accountant before launch** |
 | Terms & privacy | `src/pages/store/terms.js`, `privacy.js` | Written as a plain-language starting point, not legal advice. The 30-day refund promise appears on the product pages too |
 | Support address | `SUPPORT_EMAIL` in `src/data/products.js`, `functions/lib/email.js` | Currently `support@yarpdevelopers.com` |
-| The bundle | `products.js`, Stripe | A `yarp-bundle` key unlocks every app, StoryForge included. No bundle has been sold yet, so there's nobody to grandfather; settle the three-app price before launch |
-| mediagrab | not in the store | Packaged (its repo builds an installer) but held back until it's ready. The apps' `license.py` already accepts `mediagrab` keys, and a `yarp-bundle` key would unlock it too: decide before listing it whether earlier bundle buyers get it |
+| The bundle | withdrawn 2026-09-26 | Bundle keys already sold still unlock StoryForge (its verifier accepts `yarp-bundle`). Archive the bundle's Stripe product |
+| mediagrab | not in the store | Packaged (its repo builds an installer) but held back until it's ready. StoryForge's `license.py` still lists `mediagrab`; decide whether it's sold or free before listing it |
 | Code signing | the installers | Unsigned installers show "Windows protected your PC" (the store page explains it). Azure Trusted Signing (~$10/month, if you're eligible) or an OV certificate removes most of it |
 
 ---
@@ -186,10 +184,7 @@ log. The store works without it; lookups time out after 2.5 s and are skipped.
 Non-secret settings go in `functions/.env.yarp-dev-website` (gitignored, read at deploy):
 
 ```
-STRIPE_PRICE_PDFSIGN=price_...     # LIVE-mode price IDs
-STRIPE_PRICE_RESUME_MAKER=price_...
-STRIPE_PRICE_STORYFORGE=price_...
-STRIPE_PRICE_BUNDLE=price_...
+STRIPE_PRICE_STORYFORGE=price_...  # the LIVE-mode price ID
 RESEND_FROM=Yarp Developers <licences@yarpdevelopers.com>
 SITE_URL=https://yarpdevelopers.com
 STRIPE_AUTOMATIC_TAX=false         # true once Stripe Tax is set up
@@ -203,11 +198,12 @@ firebase functions:secrets:set STRIPE_WEBHOOK_SECRET   # from 5.3
 firebase functions:secrets:set YARP_SIGNING_KEY        # private_key_b64
 firebase functions:secrets:set RESEND_API_KEY
 firebase functions:secrets:set ADMIN_NOTIFY_KEY        # any long random string; kept only on your machine
-firebase functions:secrets:set PAYSTACK_SECRET_KEY     # sk_live_... from Paystack (Part 6)
 ```
 
 The function declares every one of these, so **a deploy fails until all of
-them exist**, PAYSTACK_SECRET_KEY included.
+them exist**. (`PAYSTACK_SECRET_KEY` is no longer used; delete it with
+`firebase functions:secrets:destroy PAYSTACK_SECRET_KEY` once the function
+without it is deployed.)
 
 Each of those pauses for you to paste the value and press enter. To set one
 without the prompt (e.g. from a script, or a terminal that can't do
@@ -242,7 +238,7 @@ firebase deploy --only functions:store,hosting
 
 ### 5.5 Buy it yourself
 
-With a real card, at the real price, for each product. Check the key email
+With a real card, at the real price. Check the key email
 arrives, the key unlocks the installed app, and then refund yourself in the
 Stripe dashboard. This is the only test that exercises live keys, the live
 webhook, real DNS and real email at once. **Do it before you tell anyone the
@@ -270,102 +266,40 @@ email would tell buyers about a download that isn't actually there yet.
 3. **Update the listing.** Bump that product's `version` field in
    `src/data/products.js` (display only, but should match what's in the
    release) and redeploy (5.4).
-4. **Notify.** Email everyone who owns that app — bought directly or via the
-   bundle — that it's out:
+4. **Notify** (StoryForge only; the free apps have no buyers to tell). Email
+   everyone who owns it — bought directly or via the old bundle — that it's out:
    ```powershell
    $env:ADMIN_NOTIFY_KEY = "..."   # the value you set in Secret Manager
    node scripts/push-update.js --app storyforge --version 1.1.0 --notes "Faster autosave, fixed text selection."
    ```
    Safe to re-run: buyers already emailed for that exact version are skipped
    (`store_orders/<session id>.notifiedVersions`), so a retry after a partial
-   failure only reaches whoever didn't get it the first time. Works for any
-   app in `functions/products.js` — swap `--app`.
+   failure only reaches whoever didn't get it the first time.
 
 ---
 
-## Part 6: Kenyan prices (Paystack, M-Pesa)
+## Part 6: Kenyan prices (removed)
 
-Visitors in Kenya see prices in shillings and pay with M-Pesa or Airtel Money
-through Paystack; everyone else sees euros and pays through Stripe. The site
-guesses from the browser's time zone (`Africa/Nairobi`), and the "Prices for"
-picker on /store and every product page lets anyone switch.
-
-```
- Buy (Kenya) ── asks for an email ──> /api/paystack/checkout ──> Paystack page (mobile money only)
-                                                                      |
- /store/success?reference=yds_... <── Paystack sends the buyer back ──┘
-        |  /api/order asks Paystack: paid? right amount? right currency?
-        |  then mints the key, records the order, emails it (once)
-        v
- paystackReconcile, every 15 min: the same for any paid order whose buyer closed the tab
-```
-
-**Why no webhook.** Paystack allows one webhook URL per business, and this
-business's belongs to small_biz_tool. That app's webhook ignores anything
-without `metadata.subscriptionId`, so store payments pass through it harmlessly.
-Instead, the site asks Paystack's API directly: when the buyer comes back, and
-on the 15-minute schedule. A key can therefore arrive up to ~20 minutes late
-for someone who closes the tab mid-payment; everyone else gets it at once.
-
-**Why mobile money only.** Anyone can pick "Kenya" in the picker. Mobile money
-needs a Kenyan phone line, so the lower price stays with people in Kenya; a
-card from anywhere would not. A Kenya-registered Paystack business can only
-charge KES (and USD), so other countries' currencies aren't possible from this
-account.
-
-**Prices** live in two files that must agree: `functions/pricing.js` (what's
-charged and checked) and `src/data/regions.js` (what's shown). A payment whose
-amount or currency doesn't match `pricing.js` exactly gets no key; it's logged
-as `[paystack] paid but not a valid store order`.
-
-**Every store payment's reference starts with `yds_`**, which is how the
-reconcile tells them apart from small_biz_tool's payments in the same account.
-
-### 6.1 Test it
-
-1. Paystack dashboard → **Settings → API Keys & Webhooks**, test mode: copy the
-   secret key into `functions/.secret.local` as `PAYSTACK_SECRET_KEY`.
-2. Run the emulators (1.4). Open <http://127.0.0.1:5000/store/resume-maker>,
-   pick **Kenya (KES)**, click **Buy**, enter your email and pay with Paystack's
-   test mobile money.
-3. You should land on the success page with a key. Reload it: same key, and no
-   second email.
-4. For the closed-tab case: pay, close the tab, wait 5 minutes (it skips newer
-   payments so they don't race the success page), then run the schedule by
-   hand with `cd functions; firebase functions:shell` and `paystackReconcile()`.
-
-### 6.2 Go live
-
-```powershell
-firebase functions:secrets:set PAYSTACK_SECRET_KEY    # sk_live_...
-npm run build
-firebase deploy --only functions:store,hosting
-```
-
-The first deploy of `paystackReconcile` creates a Cloud Scheduler job (the
-project is already on Blaze). Then buy the cheapest app (Ink Lifter, KES 250)
-with your own M-Pesa, check the key arrives and unlocks the app, and refund
-yourself from the Paystack dashboard.
-
-**Tax.** With Stripe Managed Payments, Stripe is the merchant of record and
-handles VAT. Paystack isn't: for shilling sales, you're the seller, so any tax
-due on them is yours to handle. The licence terms still name the seller as
-Yarp Developers, Belgium; check that's right for these sales.
+Until 2026-09-26, visitors in Kenya saw prices in KES and paid with M-Pesa or
+Airtel Money through Paystack. That's gone: `src/data/regions.js`,
+`functions/pricing.js`, `functions/lib/paystack.js`, the
+`/api/paystack/checkout` route and the `paystackReconcile` schedule were all
+deleted, and every price is in euros through Stripe. The Kenya ad material in
+`marketing/meta-ke-launch/` is kept as an archive, with its old KES prices
+written into `build.js`.
 
 ---
 
 ## Pre-launch checklist
 
 - [ ] `yarp-signing-key.json` backed up somewhere safe, and in no repo
-- [ ] Test purchase → key → unlocks each of the three apps (Part 1)
+- [ ] Test purchase → key → unlocks StoryForge (Part 1)
 - [ ] A real licence email arrives, not in spam (Part 2)
-- [ ] All three download links work, and the downloaded installers install and run (Part 3)
-- [ ] Prices for StoryForge and the bundle decided (they're placeholders)
+- [ ] All four download links work, and the downloaded installers install and run (Part 3)
 - [ ] Prices in `products.js` match the Stripe prices (Part 4)
 - [ ] VAT handled (Part 4)
 - [ ] Live price IDs, live secret key, live webhook secret deployed (Part 5)
-- [ ] You bought each product with a real card, got the key, and refunded (5.5)
-- [ ] PAYSTACK_SECRET_KEY set, and one real M-Pesa purchase made and refunded (Part 6)
+- [ ] You bought StoryForge with a real card, got the key, and refunded (5.5)
 
 ## When something goes wrong after a sale
 
@@ -375,7 +309,9 @@ Yarp Developers, Belgium; check that's right for these sales.
   `/store/success?session_id=<cs_...>` yourself: it shows the same key.
 - **Webhook failed:** it returned 500, and Stripe retries for three days.
   Retries send the same key, never a second one.
-- **"The key doesn't work":** almost always a partial copy. The apps accept
+- **"The key doesn't work":** first, which app? pdfsign, Resume Maker and Ink
+  Lifter are free since 2026-09-26 and need no key: point them at the latest
+  download. For StoryForge, it's almost always a partial copy. The apps accept
   lower case, missing dashes and stray spaces, so a failing key is usually
   incomplete. Ask them to copy the whole key again.
 - **Refunds:** refund in Stripe. The key keeps working (it's checked offline),

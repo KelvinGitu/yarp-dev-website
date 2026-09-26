@@ -57,17 +57,17 @@ export default function Support() {
           <SectionHead eyebrow="Quick answers" title="Before you write" />
           <div className="store-faq">
             <details>
-              <summary>I lost my licence key.</summary>
+              <summary>I lost my StoryForge licence key.</summary>
               <p>
-                Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address you bought with, and
+                pdfsign, Resume Maker and Ink Lifter are free now and don’t need one. For StoryForge, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address you bought with, and
                 we’ll send it again.
               </p>
             </details>
             <details>
-              <summary>Can I get a refund on a desktop app?</summary>
+              <summary>Can I get a refund on StoryForge?</summary>
               <p>
                 Yes. If it doesn’t work for you, email us within 30 days of buying and we’ll refund you in full. See
-                the <Link href="/store/terms">licence terms</Link>.
+                the <Link href="/store/terms">terms</Link>.
               </p>
             </details>
             <details>
@@ -112,7 +112,7 @@ export default function Support() {
               <SupportCard key={p.slug} slug={p.slug} name={p.name} sub={`v${p.version}`}>
                 <Link href={`/store/${p.slug}`}>Download and questions</Link>
                 <Link href="/store/privacy">Privacy</Link>
-                <Link href="/store/terms">Licence terms</Link>
+                <Link href="/store/terms">Terms</Link>
               </SupportCard>
             ))}
           </ul>

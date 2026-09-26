@@ -1,5 +1,5 @@
 import BuyButton from '@/components/BuyButton';
-import { Price, RegionPicker } from '@/components/Region';
+import GetButtons from '@/components/store/GetButtons';
 import TryButton from '@/components/store/TryButton';
 
 // The first screen answers the whole question: what you get, what it costs,
@@ -20,36 +20,46 @@ export default function ProductHero({ product, onPhone }) {
       <h1 className="page-title">{product.headline ?? product.name}</h1>
       {product.headline && <p className="page-lede">{product.tagline}</p>}
 
-      <p className="store-hero-price">
-        <strong><Price product={product} /></strong> paid once, yours for good, with every update
-      </p>
+      {product.free ? (
+        <p className="store-hero-price">
+          <strong>Free</strong>, with every update. No licence key, no account, no ads.
+        </p>
+      ) : (
+        <p className="store-hero-price">
+          <strong>{product.price}</strong> paid once, yours for good, with every update
+        </p>
+      )}
 
       <div className="store-actions" id="store-hero-actions">
-        <BuyButton item={product} className="store-btn-primary" />
-        <TryButton product={product} onPhone={onPhone} />
+        {product.free ? (
+          <GetButtons product={product} onPhone={onPhone} />
+        ) : (
+          <>
+            <BuyButton item={product} className="store-btn-primary" />
+            <TryButton product={product} onPhone={onPhone} />
+          </>
+        )}
       </div>
 
       <p className="store-trust">
-        <span>30-day refund</span>
+        {product.free ? <span>Free, nothing locked</span> : <span>30-day refund</span>}
         <span>No subscription</span>
         <span>No account</span>
         <span>Works offline</span>
       </p>
-      <RegionPicker />
 
       {product.web && (
         <p className="phone-note">
           {onPhone ? (
             <>
               <strong>Works on your phone.</strong> {product.name} runs right in your browser, with nothing to
-              install, and your files stay on your phone. One key unlocks it here and in the{' '}
-              <a href={product.download}>Windows app</a>.
+              install, and your files stay on your phone. There’s a <a href={product.download}>Windows app</a> too.
             </>
           ) : (
             <>
               <strong>No Windows computer?</strong>{' '}
               <a href={product.web}>Use {product.name} in your browser</a>, on any phone or computer. Your files
-              stay on your device, and one key unlocks both.
+              stay on your device.
             </>
           )}
         </p>

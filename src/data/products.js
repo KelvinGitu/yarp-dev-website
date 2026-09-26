@@ -1,14 +1,16 @@
-// The desktop apps sold in /store. One entry per product, plus the bundle.
+// The desktop apps in /store, one entry per product.
 //
-// `price` is display only: Stripe charges whatever the Price behind
+// Most are `free: true`: no price, no licence key, and the page offers the
+// download (and the browser version) instead of a Buy button. The others have
+// a `price`, which is display only: Stripe charges whatever the Price behind
 // STRIPE_PRICE_<PRODUCT> says (see functions/products.js and STORE_SETUP.md).
-// Change one, change the other. Local prices (Kenya) are in regions.js.
+// Change one, change the other. Prices are in euros only.
 //
 // Each feature is a short `title` and a sentence of `text`; the product page
 // shows them as cards, so keep titles to a few words.
 //
 // `web`, when set, is where the app also runs in a browser (built from the
-// app's own repo by web/build.py into public/). The same key unlocks both.
+// app's own repo by web/build.py into public/).
 // Phone visitors are sent there instead of to the Windows download. With it
 // come `webKeeps` (a sentence: what the browser stores), `webOffline` (what still works
 // in airplane mode) and, optionally, `webNote` (anything that works
@@ -16,7 +18,7 @@
 //
 // Downloads are the installers on the public yarp-downloads repo's latest
 // release. They're uploaded under a version-less name so these links never
-// change; the licence key, not the link, is what unlocks the app.
+// change.
 //
 // The product page reads as one argument, top to bottom, and each of these
 // optional fields is one section of it (a section with no data isn't shown):
@@ -34,27 +36,23 @@ export const DOWNLOADS = 'https://github.com/KelvinGitu/yarp-downloads/releases/
 
 export const SUPPORT_EMAIL = 'support@yarpdevelopers.com';
 
-// Each app's free-to-licensed line, as the store describes it: `tryShort`
-// under the Download button, `tryLong` in "How it works", `licenseFaq` in
-// Questions. Keep in step with each app (app/license.py, or StoryForge's
-// core/explore.py and desktop/config.py's EXPLORE_DAYS).
+// A paid app's free-to-licensed line, as the store describes it: `tryShort`
+// under the Download button, `tryLong` in "How buying works", `licenseFaq` in
+// Questions. Keep in step with the app (StoryForge's core/explore.py and
+// desktop/config.py's EXPLORE_DAYS).
 
 export const products = [
   {
     slug: 'pdfsign',
     name: 'pdfsign',
     tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
-    price: '€9.99',
-    version: '1.0.1',
+    free: true,
+    version: '1.1.0',
     download: `${DOWNLOADS}/pdfsign-setup.exe`,
     web: '/pdfsign',
-    webKeeps: 'Your key, saved signatures and profile are kept in that browser, so clearing your browsing data deletes them.',
+    webKeeps: 'Your saved signatures and profile are kept in that browser, so clearing your browsing data deletes them.',
     webOffline: 'open, sign and download PDFs',
     size: '21 MB',
-    tryShort: 'Free to fill and sign; a key unlocks saving',
-    tryLong: 'Fill in and sign as many documents as you like. Saving the finished PDF is the only thing that needs a licence key.',
-    licenseFaq: 'You can open, fill in and sign documents for as long as you like. Saving a finished PDF needs a licence key.',
-    whereIsLicence: 'the key icon at the bottom left, labelled Unlicensed',
     headline: 'Sign contracts and fill in forms without uploading them anywhere.',
     problems: {
       title: 'The trouble with signing a PDF',
@@ -98,18 +96,14 @@ export const products = [
     slug: 'resume-maker',
     name: 'Resume Maker',
     tagline: 'Write your resume once, set it in eleven styles, and export a clean PDF.',
-    price: '€9.99',
-    version: '1.1.0',
+    free: true,
+    version: '1.2.0',
     download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
     web: '/resume-maker',
-    webKeeps: 'Your key and your resumes are kept in that browser, so clearing your browsing data deletes them.',
+    webKeeps: 'Your resumes are kept in that browser, so clearing your browsing data deletes them.',
     webOffline: 'edit your resumes and save them as PDFs',
     webNote: 'On a phone, Save PDF opens its print window: choose Save as PDF, check the paper size, and save.',
     size: '20 MB',
-    tryShort: 'Free to edit and preview; a key unlocks exporting',
-    tryLong: 'Edit and preview as many resumes as you like. Exporting a PDF is the only thing that needs a licence key.',
-    licenseFaq: 'You can edit and preview for as long as you like. Exporting a PDF needs a licence key.',
-    whereIsLicence: 'the Unlicensed button at the top right',
     headline: 'A resume that looks the part, made on your own computer.',
     problems: {
       title: 'Why a resume is harder than it should be',
@@ -280,18 +274,14 @@ export const products = [
     slug: 'ink-lifter',
     name: 'Ink Lifter',
     tagline: 'Lift signatures, stamps and handwriting off a photo of paper, onto a transparent background.',
-    price: '€4.99',
-    version: '1.0.1',
+    free: true,
+    version: '1.1.0',
     download: `${DOWNLOADS}/InkLifter-setup.exe`,
     web: '/ink-lifter',
-    webKeeps: 'Only your key is kept in that browser; your photos never are. If you clear your browsing data, paste the key again.',
+    webKeeps: 'Nothing is kept in that browser: your photos exist only until you close the page or save them.',
     webOffline: 'open photos, clean them up and save them',
     webNote: 'On a phone, Share sends the result straight to WhatsApp, email or anywhere else.',
     size: '19 MB',
-    tryShort: 'Free to open and preview; a key unlocks saving',
-    tryLong: 'Open, clean up and preview as many photos as you like. Saving, copying or exporting an image is the only thing that needs a licence key.',
-    licenseFaq: 'You can open, clean up and preview images for as long as you like. Saving, copying or exporting one needs a licence key.',
-    whereIsLicence: 'the Unlicensed button at the top right',
     headline: 'Turn a phone photo of your signature into a clean, transparent PNG.',
     problems: {
       title: 'Why a photo of ink never looks right',
@@ -334,13 +324,5 @@ export const products = [
     ],
   },
 ];
-
-// Every app for less. A bundle key unlocks all of them.
-export const bundle = {
-  slug: 'yarp-bundle',
-  name: 'All four apps',
-  tagline: 'pdfsign, Resume Maker, StoryForge and Ink Lifter, with one licence key that unlocks them all.',
-  price: '€39.99',
-};
 
 export const productBySlug = (slug) => products.find((p) => p.slug === slug) ?? null;

@@ -168,22 +168,7 @@ button { cursor: pointer; }
 
 .bar__sep { width: 1px; height: 24px; margin: 0 4px; background: var(--rule); }
 
-/* Unlicensed, the chip reads in pencil blue: findable, not nagging.
-   Licensed, it goes quiet. */
-.trial {
-  height: 30px;
-  padding: 0 12px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: none;
-  color: var(--chrome-dim);
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.trial:hover { background: var(--raise); }
-.trial[data-licensed="false"] { color: var(--pencil); border-color: rgba(143, 211, 236, 0.35); }
+.bar__version { color: var(--chrome-dim); font-size: 12.5px; white-space: nowrap; }
 
 /* ---------------------------------------------------------- layout */
 
@@ -560,7 +545,7 @@ input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--pencil);
 
 .select > span { color: var(--chrome-dim); }
 
-.select select, .input input {
+.select select {
   height: 36px;
   padding: 0 10px;
   border: 1px solid var(--rule);
@@ -570,7 +555,7 @@ input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--pencil);
   min-width: 0;
 }
 
-.select select:focus, .input input:focus {
+.select select:focus {
   border-color: var(--pencil);
   outline: none;
   box-shadow: 0 0 0 3px var(--select);
@@ -656,45 +641,6 @@ input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--pencil);
 .toast .btn { min-height: 32px; padding: 0 11px; border: 0; border-radius: 7px; background: rgba(0, 0, 0, 0.08); color: inherit; font-weight: 700; }
 .toast .btn:not(:disabled):hover { background: rgba(0, 0, 0, 0.14); }
 
-/* ---------------------------------------------------------- dialogs */
-
-.sheet {
-  width: min(460px, calc(100vw - 32px));
-  max-height: calc(100dvh - 32px);
-  padding: 24px;
-  border: 1px solid var(--rule-hi);
-  border-radius: 14px;
-  background: var(--blotter);
-  color: var(--chrome-ink);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-}
-
-.sheet::backdrop { background: rgba(10, 12, 14, 0.55); }
-.sheet h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
-.sheet__lede { margin: 6px 0 16px; color: var(--chrome-dim); font-size: 14px; overflow-wrap: anywhere; }
-
-.sheet__foot {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.sheet__spacer { flex: 1; }
-
-.input { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.input > span { font-size: 13px; font-weight: 500; color: var(--chrome-dim); }
-.input input { height: 40px; padding: 0 12px; }
-
-/* ---------------------------------------------------------- licence */
-
-.license__state { color: var(--chrome-ink); font-size: 15px; }
-.license__privacy { margin: 4px 0 0; font-size: 13px; }
-.license__error { margin: -6px 0 10px; color: var(--fail-hi); font-size: 13.5px; }
-#license-form input[name="key"] { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; letter-spacing: 0.02em; }
-
 /* ---------------------------------------------------------- narrow windows */
 
 @media (max-width: 1080px) {
@@ -729,7 +675,7 @@ input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--pencil);
   .bar__mark svg { width: 24px; height: 24px; }
   .bar__actions { margin-left: auto; gap: 4px; }
   .bar__sep { display: none; }
-  .trial { height: 28px; padding: 0 9px; font-size: 12px; }
+  .bar__version { display: none; }
   .bar__actions .btn span {
     position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }

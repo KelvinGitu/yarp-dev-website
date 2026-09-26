@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-mode="web" data-version="1.0.1">
+<html lang="en" data-mode="web" data-version="1.1.0">
 <head>
 <meta charset="utf-8">
 <base href="/ink-lifter/">
@@ -23,7 +23,7 @@
   <p class="bar__doc" id="doc-name"></p>
 
   <div class="bar__actions">
-    <button type="button" class="trial" id="license-open" data-licensed="false">Unlicensed</button>
+    <span class="bar__version" id="version"></span>
     <span class="bar__sep"></span>
     <button type="button" class="btn btn--quiet" id="copy" disabled title="Copy the cleaned-up image (Ctrl+C)">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6.5a2 2 0 00-2-2h-7a2 2 0 00-2 2v7a2 2 0 002 2h2"/></svg>
@@ -189,23 +189,6 @@
 <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/gif" multiple hidden>
 
 <div class="toast" id="toast" role="status" hidden><span id="toast-text"></span><button type="button" class="btn" id="toast-action" hidden></button></div>
-
-<dialog class="sheet" id="license" aria-labelledby="license-title">
-  <form id="license-form">
-    <h2 id="license-title">Licence</h2>
-    <p class="sheet__lede license__state" id="license-state"></p>
-    <label class="input" id="license-field"><span>Licence key</span><input name="key" autocomplete="off" spellcheck="false" placeholder="YD1-…"></label>
-    <p class="license__error" id="license-error" role="alert" hidden></p>
-    <p class="sheet__lede license__privacy">Your key is checked on this computer. Ink Lifter never sends it, or your images, anywhere. <span id="license-version"></span></p>
-    <footer class="sheet__foot">
-      <a class="btn btn--quiet" id="license-buy" target="_blank" rel="noopener">Buy a licence</a>
-      <button type="button" class="btn btn--quiet" id="license-remove" hidden>Remove key</button>
-      <span class="sheet__spacer"></span>
-      <button type="button" class="btn btn--quiet" data-close>Close</button>
-      <button type="submit" class="btn btn--primary" id="license-unlock">Unlock</button>
-    </footer>
-  </form>
-</dialog>
 
 <script type="module" src="static/app.js"></script>
 <script>

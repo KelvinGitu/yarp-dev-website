@@ -1,7 +1,6 @@
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Layout from "@/components/Layout";
-import { RegionProvider } from "@/components/Region";
 import { rememberCampaign } from "@/data/campaign";
 import { useEffect } from "react";
 
@@ -30,10 +29,8 @@ export default function App({ Component, pageProps }) {
   useEffect(() => { rememberCampaign(); }, []);
 
   return (
-    <RegionProvider>
-      <Layout className={`${display.variable} ${body.variable} ${mono.variable}`}>
-        <Component {...pageProps} />
-      </Layout>
-    </RegionProvider>
+    <Layout className={`${display.variable} ${body.variable} ${mono.variable}`}>
+      <Component {...pageProps} />
+    </Layout>
   );
 }
