@@ -37,7 +37,7 @@ export default function ProjectCard({ app }) {
         )}
         {app.webUrl && (
           <a href={app.webUrl} target="_blank" rel="noopener noreferrer">
-            Web app <span aria-hidden="true">↗</span>
+            {app.client ? 'Dashboard' : 'Web app'} <span aria-hidden="true">↗</span>
           </a>
         )}
         <Link href={`/apps/${app.slug}`}>

@@ -20,7 +20,7 @@ function GetButtons({ app }) {
       {app.webUrl && (
         <a href={app.webUrl} target="_blank" rel="noopener noreferrer" className="store-btn">
           <GlobeIcon />
-          <span className="store-btn-main">Open the web app</span>
+          <span className="store-btn-main">{app.client ? 'Sign in to the dashboard' : 'Open the web app'}</span>
         </a>
       )}
     </>
@@ -119,6 +119,11 @@ export default function AppDetail({ app }) {
         {app.webUrl && (app.hasPurchases || app.hasAds) && (
           <div className="detail-note">
             <strong>Note for web users:</strong> In-app purchases and certain features are optimised for the mobile app. To buy credits or upgrade, open the app on your phone.
+          </div>
+        )}
+        {app.client && app.webUrl && (
+          <div className="detail-note">
+            <strong>Note:</strong> The dashboard is for {app.client}&apos;s managers, and {app.client} issues the accounts. Guards use the phone app.
           </div>
         )}
         {app.hasMic && (

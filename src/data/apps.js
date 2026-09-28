@@ -108,7 +108,7 @@ export const apps = [
     version: '1.0.0',
     builds: 1,
     playUrl: null,
-    webUrl: null, // the manager dashboard is behind a login
+    webUrl: 'https://lisabem-security.web.app', // the manager dashboard; accounts are issued by LISABEM
     description: "Built for LISABEM, a Kenyan security company. Guards sign in to a shift on their phone at the site, and managers watch who is on duty, late or absent from a phone or the browser. One Flutter app serves both.",
     features: ['Geofenced shift sign-in, checked on the server', 'Live location, only while on shift', 'One-tap panic button', 'QR check-in from a poster or a rotating code', 'Incident reports with photos', 'Weekly and monthly reports, as PDF or CSV'],
     stack: ['Flutter', 'Firebase', 'Cloud Functions', 'Realtime Database', 'Riverpod', 'Google Maps'],
