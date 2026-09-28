@@ -43,18 +43,9 @@ export default function Home() {
         </header>
 
         <section id="apps" className="detail-section">
-          <SectionHead eyebrow="Mobile apps" title="Live on Google Play" />
+          <SectionHead eyebrow="Mobile apps" title="Live on Google Play, and built for clients" />
           <div className="projects">
-            {storeApps.map((app) => (
-              <ProjectCard key={app.slug} app={app} />
-            ))}
-          </div>
-        </section>
-
-        <section id="clients" className="detail-section">
-          <SectionHead eyebrow="Client work" title="Built for a business, run on their phones" />
-          <div className="projects">
-            {clientApps.map((app) => (
+            {[...storeApps, ...clientApps].map((app) => (
               <ProjectCard key={app.slug} app={app} />
             ))}
           </div>

@@ -146,7 +146,7 @@ export default function AppDetail({ app }) {
         )}
 
         <div className="detail-back">
-          <Link href={app.client ? '/#clients' : '/#apps'} className="detail-back-link">← All apps</Link>
+          <Link href="/#apps" className="detail-back-link">← All apps</Link>
           {!app.client && (
             <span className="store-legal">
               <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>
