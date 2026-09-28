@@ -20,7 +20,7 @@ export default function ProjectCard({ app }) {
       </header>
 
       <p className="project-release" title={`${app.packageId} — version ${app.version}, build ${app.builds}`}>
-        v{app.version} · {app.builds} builds
+        {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} builds`}
       </p>
 
       <ul className="project-stack">

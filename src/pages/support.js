@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { apps } from '@/data/apps';
+import { storeApps } from '@/data/apps';
 import AppIcon from '@/components/AppIcon';
 import SectionHead from '@/components/SectionHead';
 import { MailIcon, PlayIcon } from '@/components/icons';
@@ -90,7 +90,7 @@ export default function Support() {
         <section className="detail-section">
           <SectionHead eyebrow="Mobile apps" title="Help with an app from Google Play" />
           <ul className="support-list">
-            {apps.map((app) => (
+            {storeApps.map((app) => (
               <SupportCard key={app.slug} slug={app.slug} name={app.name} sub={app.packageId}>
                 <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link>
                 <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>

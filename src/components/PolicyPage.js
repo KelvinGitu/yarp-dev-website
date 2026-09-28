@@ -106,7 +106,7 @@ export default function PolicyPage({ title, paragraphs, lastUpdated }) {
   return (
     <>
       <Head>
-        <title>{title} - Yarp Developers</title>
+        <title>{`${title} - Yarp Developers`}</title>
       </Head>
       <div className="prose">
         <h1>{title}</h1>

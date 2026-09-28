@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { apps } from '@/data/apps';
+import { clientApps, storeApps } from '@/data/apps';
 import CtaBand from '@/components/CtaBand';
 import ProjectCard from '@/components/ProjectCard';
 import SectionHead from '@/components/SectionHead';
@@ -18,7 +18,7 @@ export default function Home() {
         <title>Yarp Developers — Mobile and desktop apps, built and kept running</title>
         <meta
           name="description"
-          content={`${apps.length} Flutter apps live on Google Play and ${products.length} private Windows apps, built, shipped, and operated end to end by Yarp Developers.`}
+          content={`${storeApps.length} Flutter apps live on Google Play and ${products.length} private Windows apps, built, shipped, and operated end to end by Yarp Developers.`}
         />
       </Head>
 
@@ -27,8 +27,9 @@ export default function Home() {
           <p className="detail-section-title">Yarp Developers</p>
           <h1 className="page-title">Mobile and desktop apps, built and kept running.</h1>
           <p className="page-lede">
-            {apps.length} Flutter apps live on Google Play and {products.length} private Windows apps, each one built
-            and kept running by us — interface, backend, billing, and the store review that comes after.
+            {storeApps.length} Flutter apps live on Google Play, a guard-monitoring app for a security company, and{' '}
+            {products.length} private Windows apps, each one built and kept running by us — interface, backend, billing, and the store review
+            that comes after.
           </p>
           <div className="store-actions">
             <a href="#apps" className="store-btn store-btn-primary">
@@ -44,7 +45,16 @@ export default function Home() {
         <section id="apps" className="detail-section">
           <SectionHead eyebrow="Mobile apps" title="Live on Google Play" />
           <div className="projects">
-            {apps.map((app) => (
+            {storeApps.map((app) => (
+              <ProjectCard key={app.slug} app={app} />
+            ))}
+          </div>
+        </section>
+
+        <section id="clients" className="detail-section">
+          <SectionHead eyebrow="Client work" title="Built for a business, run on their phones" />
+          <div className="projects">
+            {clientApps.map((app) => (
               <ProjectCard key={app.slug} app={app} />
             ))}
           </div>

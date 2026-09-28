@@ -4,7 +4,8 @@ import { apps } from '@/data/apps';
 import AppIcon from '@/components/AppIcon';
 import CtaBand from '@/components/CtaBand';
 import SectionHead from '@/components/SectionHead';
-import { PlayIcon, GlobeIcon } from '@/components/icons';
+import { PlayIcon, GlobeIcon, MailIcon } from '@/components/icons';
+import { SALES_EMAIL } from '@/data/studio';
 
 // Where to get the app: Google Play when it's live, the web version when there is one.
 function GetButtons({ app }) {
@@ -44,7 +45,7 @@ export default function AppDetail({ app }) {
   return (
     <>
       <Head>
-        <title>{app.name} · Yarp Developers</title>
+        <title>{`${app.name} · Yarp Developers`}</title>
         <meta name="description" content={app.tagline} />
       </Head>
 
@@ -53,13 +54,17 @@ export default function AppDetail({ app }) {
           <p className="page-eyebrow">
             <span className="project-icon"><AppIcon slug={app.slug} name={app.name} size={36} /></span>
             <span className="page-eyebrow-name">{app.name}</span>
-            <span className="detail-release">v{app.version} · {app.builds} builds</span>
+            <span className="detail-release">
+              {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} builds`}
+            </span>
           </p>
           <h1 className="page-title">{app.tagline}</h1>
           {intro && <p className="page-lede">{intro}</p>}
-          <div className="store-actions">
-            <GetButtons app={app} />
-          </div>
+          {(app.playUrl || app.webUrl) && (
+            <div className="store-actions">
+              <GetButtons app={app} />
+            </div>
+          )}
         </header>
 
         {app.shots?.length > 0 && (
@@ -70,6 +75,17 @@ export default function AppDetail({ app }) {
               </div>
             ))}
           </div>
+        )}
+
+        {app.webShots?.length > 0 && (
+          <section className="detail-section">
+            <SectionHead eyebrow="On the web" title="The same app, in a browser" />
+            <div className="web-shots">
+              {app.webShots.map((shot) => (
+                <img key={shot.file} src={`/assets/shots/${app.slug}/${shot.file}`} alt={shot.alt} width={1440} height={764} loading="lazy" />
+              ))}
+            </div>
+          </section>
         )}
 
         <section className="detail-section">
@@ -111,15 +127,26 @@ export default function AppDetail({ app }) {
           </div>
         )}
 
-        <CtaBand title={`Try ${app.name}`} text={app.webUrl ? 'On Google Play, or right in your browser.' : 'On Google Play.'}>
-          <GetButtons app={app} />
-        </CtaBand>
+        {app.client ? (
+          <CtaBand title="Need something like it?" text="We build and run apps for businesses, on phones and in the browser.">
+            <a href={`mailto:${SALES_EMAIL}`} className="store-btn store-btn-primary">
+              <MailIcon />
+              <span className="store-btn-main">{SALES_EMAIL}</span>
+            </a>
+          </CtaBand>
+        ) : (
+          <CtaBand title={`Try ${app.name}`} text={app.webUrl ? 'On Google Play, or right in your browser.' : 'On Google Play.'}>
+            <GetButtons app={app} />
+          </CtaBand>
+        )}
 
         <div className="detail-back">
-          <Link href="/#apps" className="detail-back-link">← All apps</Link>
-          <span className="store-legal">
-            <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>
-          </span>
+          <Link href={app.client ? '/#clients' : '/#apps'} className="detail-back-link">← All apps</Link>
+          {!app.client && (
+            <span className="store-legal">
+              <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>
+            </span>
+          )}
         </div>
       </div>
     </>

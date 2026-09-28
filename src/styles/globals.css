@@ -190,6 +190,17 @@ img { max-width: 100%; display: block; }
   height: auto;
 }
 
+/* Browser screenshots (apps.js `webShots`), full width, one under another. */
+.web-shots { display: grid; gap: 1.25rem; margin-top: 1.75rem; }
+.web-shots img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+}
+
 /* ── Stack pills ── */
 .project-stack {
   display: flex;

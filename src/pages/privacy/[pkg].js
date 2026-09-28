@@ -1,5 +1,5 @@
 import PolicyPage from '@/components/PolicyPage';
-import { apps } from '@/data/apps';
+import { storeApps as apps } from '@/data/apps';
 import extractedData from '@/data/extracted.json';
 import { SUPPORT_EMAIL } from '@/data/products';
 

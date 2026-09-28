@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { apps } from '@/data/apps';
+import { apps, storeApps } from '@/data/apps';
 import CtaBand from '@/components/CtaBand';
 import SectionHead from '@/components/SectionHead';
 import StatRow from '@/components/StatRow';
@@ -64,8 +64,8 @@ export default function About() {
           <p className="detail-section-title">About</p>
           <h1 className="page-title">A small studio that builds apps and keeps them running.</h1>
           <p className="page-lede">
-            Yarp Developers is run by Kelvin Gitu: {apps.length}{' '}Flutter apps live on Google Play, and a handful of
-            Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
+            Yarp Developers is run by Kelvin Gitu: {storeApps.length}{' '}Flutter apps live on Google Play, client work
+            like LISABEM Security, and a handful of Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
             Cloud Functions, subscription plumbing, and the store listing that gets rejected and resubmitted until
             it isn&apos;t.
           </p>
