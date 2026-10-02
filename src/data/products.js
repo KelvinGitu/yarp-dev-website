@@ -175,7 +175,7 @@ export const products = [
     steps: {
       title: 'From first idea to finished manuscript',
       items: [
-        { title: 'Plan', text: 'Sketch the plot with outlines, brainstorm maps and sticky notes, or start from a story-structure template.' },
+        { title: 'Plan', text: 'Sketch scenes and reveals on a sticky-note board, and give every chapter a status and a colour.' },
         { title: 'Write', text: 'Chapter by chapter, in a quiet editor that saves as you type and keeps every version.' },
         { title: 'Keep it straight', text: 'Characters, places, world rules and the timeline go in the story bible, ready whenever you need to check.' },
         { title: 'Export', text: 'Send it out as a Word document, a typeset PDF, an EPUB or in standard manuscript format.' },
@@ -197,7 +197,7 @@ export const products = [
       {
         label: 'Plan',
         title: 'Plan it your way',
-        text: 'Outlines, brainstorm maps and colour-coded sticky-note boards, and a chapter list that tracks the manuscript toward its word target.',
+        text: 'Colour-coded sticky-note boards, chapter colour labels and statuses, and a chapter list that tracks the manuscript toward its word target.',
         shots: ['5.webp', '18.webp', '3.webp'],
       },
       {
@@ -222,7 +222,7 @@ export const products = [
     included: [
       'A chapter editor with autosave, version history and spell check',
       'A story bible for characters, places and world rules',
-      'Outlines, brainstorm maps and sticky-note boards',
+      'Sticky-note boards, chapter colour labels and statuses',
       'Daily word goals, streaks and progress charts',
       'Export to Word, PDF, EPUB and Markdown',
       'A profile for each writer on the computer',
@@ -232,7 +232,7 @@ export const products = [
     description:
       'Your draft is the most personal thing you own. StoryForge keeps it on your computer: write chapter by ' +
       'chapter with version history, keep characters, places and the rules of your world in a story bible, plan ' +
-      'with outlines and sticky notes, and export a manuscript as Word, PDF, EPUB or Markdown. Several people can ' +
+      'with sticky notes, and export a manuscript as Word, PDF, EPUB or Markdown. Several people can ' +
       'share one computer, each with their own profile.',
     shots: [
       { file: '1.webp', alt: 'StoryForge’s chapter editor with a draft open, the word count and save status in the top bar' },
@@ -258,7 +258,7 @@ export const products = [
       { title: 'A focused chapter editor', text: 'Autosave, focus mode, split view and version history.' },
       { title: 'Spell check that knows your world', text: 'In English, French or Dutch, offline. Your characters and places are never flagged.' },
       { title: 'A story bible', text: 'Characters, locations, plot points, world rules, terminology and a timeline.' },
-      { title: 'Plan it your way', text: 'Outlines, brainstorm maps, sticky-note boards and story-structure templates.' },
+      { title: 'Plan it your way', text: 'Sticky-note boards, chapter colour labels and statuses, and an outline beside the chapter you’re writing.' },
       { title: 'Keep the habit', text: 'Daily word goals, streaks and progress charts.' },
       { title: 'Export anywhere', text: 'Word, PDF, EPUB and Markdown, typeset and ready to send.' },
       { title: 'One computer, several writers', text: 'A profile for each person, with an optional password.' },
