@@ -156,9 +156,9 @@ export const products = [
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
-    version: '1.4.0',
+    version: '1.5.0',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
-    size: '37 MB',
+    size: '38 MB',
     tryShort: 'Free to explore, no licence needed at first',
     tryLong: "Creating your first project starts a short window to try every feature and write a little. After that your writing stays yours to read, edit and export; a licence key lets you keep adding.",
     licenseFaq: "Creating your first project starts a short window (about 15 minutes) to explore every feature, across every profile on the computer. After that, your writing stays exactly as it is — readable, editable and exportable — but a licence key is needed to start a new project or add to what you have.",
@@ -185,7 +185,7 @@ export const products = [
       {
         label: 'Write',
         title: 'A page built for writing',
-        text: 'Autosave, version history, focus mode, and a split view with the outline beside your chapter. Write on a light, dark or sepia page.',
+        text: 'Autosave, version history, focus mode, and a split view with the outline beside your chapter. Spell check in your book’s language that knows your characters’ names. Write on a light, dark or sepia page.',
         shots: ['6.webp', '12.webp', '13.webp'],
       },
       {
@@ -220,7 +220,7 @@ export const products = [
       },
     ],
     included: [
-      'A chapter editor with autosave and version history',
+      'A chapter editor with autosave, version history and spell check',
       'A story bible for characters, places and world rules',
       'Outlines, brainstorm maps and sticky-note boards',
       'Daily word goals, streaks and progress charts',
@@ -256,6 +256,7 @@ export const products = [
     ],
     features: [
       { title: 'A focused chapter editor', text: 'Autosave, focus mode, split view and version history.' },
+      { title: 'Spell check that knows your world', text: 'In English, French or Dutch, offline. Your characters and places are never flagged.' },
       { title: 'A story bible', text: 'Characters, locations, plot points, world rules, terminology and a timeline.' },
       { title: 'Plan it your way', text: 'Outlines, brainstorm maps, sticky-note boards and story-structure templates.' },
       { title: 'Keep the habit', text: 'Daily word goals, streaks and progress charts.' },
