@@ -10,11 +10,14 @@
 // shows them as cards, so keep titles to a few words.
 //
 // `web`, when set, is where the app also runs in a browser (built from the
-// app's own repo by web/build.py into public/).
-// Phone visitors are sent there instead of to the Windows download. With it
-// come `webKeeps` (a sentence: what the browser stores), `webOffline` (what still works
-// in airplane mode) and, optionally, `webNote` (anything that works
-// differently there), for the store's Questions.
+// app's own repo by web/build.py: into public/ for most, or its own site, as
+// StoryForge's https://storyfrge.com).
+// Phone visitors are sent there instead of to the Windows download, unless
+// `webPhones: false` says the browser version is made for computers only
+// (webOnPhones() below). With it come `webKeeps` (a sentence: what the
+// browser stores), `webOffline` (what still works in airplane mode) and,
+// optionally, `webNote` (anything that works differently there), for the
+// store's Questions.
 //
 // Downloads are the installers on the public yarp-downloads repo's latest
 // release. They're uploaded under a version-less name so these links never
@@ -158,6 +161,11 @@ export const products = [
     price: '€24.99',
     version: '1.5.2',
     download: `${DOWNLOADS}/StoryForge-setup.exe`,
+    web: 'https://storyfrge.com',
+    webPhones: false,
+    webKeeps: 'Your writing is kept in that browser, on that computer, so clearing its browsing data deletes it: download a backup now and then from Settings. A backup opens in the Windows app too, and the other way round.',
+    webOffline: 'write, plan and export your manuscript',
+    webNote: 'The first visit downloads about 30 MB; after that it opens without downloading anything, even offline.',
     size: '38 MB',
     tryShort: 'Free to explore, no licence needed at first',
     tryLong: "Creating your first project starts a short window to try every feature and write a little. After that your writing stays yours to read, edit and export; a licence key lets you keep adding.",
@@ -327,3 +335,6 @@ export const products = [
 ];
 
 export const productBySlug = (slug) => products.find((p) => p.slug === slug) ?? null;
+
+// Whether the browser version is one to send a phone to (see `webPhones`).
+export const webOnPhones = (product) => Boolean(product.web) && product.webPhones !== false;

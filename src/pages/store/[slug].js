@@ -11,10 +11,11 @@ import ProductHero from '@/components/store/ProductHero';
 import SectionHead from '@/components/SectionHead';
 import Showcase from '@/components/store/Showcase';
 import StickyBuyBar from '@/components/store/StickyBuyBar';
-import { SUPPORT_EMAIL, products, productBySlug } from '@/data/products';
+import { SUPPORT_EMAIL, products, productBySlug, webOnPhones } from '@/data/products';
 
-// Most ad clicks come from phones. An app with a browser version (`web`) sends
-// them there; the Windows-only ones explain how to get it onto a computer.
+// Most ad clicks come from phones. An app with a browser version for phones
+// (webOnPhones) sends them there; the others explain how to get it onto a
+// computer.
 // The answer never changes during a visit, so there's nothing to subscribe to.
 const noSubscribe = () => () => {};
 const isPhone = () => /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
@@ -36,7 +37,8 @@ export default function StoreProduct({ product }) {
 
   if (!product) return <div className="prose"><p>Product not found.</p></div>;
   const more = product.shots.slice(1);
-  const device = product.web ? 'device' : 'computer';
+  const phones = webOnPhones(product);
+  const device = phones ? 'device' : 'computer';
 
   return (
     <>
@@ -44,7 +46,7 @@ export default function StoreProduct({ product }) {
         <title>{`${product.name} for Windows${product.web ? ' and your browser' : ''} · Yarp Developers`}</title>
         <meta
           name="description"
-          content={`${product.tagline} Runs on your ${product.web ? 'computer or phone' : 'computer'}; your files never leave it.`}
+          content={`${product.tagline} Runs on your ${phones ? 'computer or phone' : 'computer'}; your files never leave it.`}
         />
       </Head>
 
@@ -89,7 +91,7 @@ export default function StoreProduct({ product }) {
 
         {/* The promise: the reason to buy this over a web tool. */}
         <section className="store-promise">
-          <p className="store-promise-line">Your files never leave {product.web ? 'your device' : 'this computer'}.</p>
+          <p className="store-promise-line">Your files never leave {phones ? 'your device' : product.web ? 'your computer' : 'this computer'}.</p>
           <ul className="store-promise-list">
             {product.privacy.map((line) => <li key={line}>{line}</li>)}
           </ul>
@@ -124,6 +126,7 @@ export default function StoreProduct({ product }) {
                     ...(product.included ?? product.features.map((f) => f.title)),
                     'Every future version, free',
                     'Use it on your own computers, desktop and laptop',
+                    ...(product.web ? ['In the Windows app and in your browser'] : []),
                     'Works with the internet switched off',
                     '30-day refund if it doesn’t work for you',
                   ]}
@@ -138,7 +141,11 @@ export default function StoreProduct({ product }) {
               <SectionHead eyebrow="Buying" title="How buying works" />
               <ol className="store-steps">
                 <li>
-                  <strong>Try it.</strong> Download and install — no payment needed. {product.tryLong}
+                  <strong>Try it.</strong>{' '}
+                  {product.web
+                    ? <>Download and install, or <a href={product.web}>open it in your browser</a> — no payment needed.</>
+                    : 'Download and install — no payment needed.'}{' '}
+                  {product.tryLong}
                 </li>
                 <li>
                   <strong>Buy a licence</strong> ({product.price}, paid through Stripe). Your licence key arrives by
@@ -171,12 +178,24 @@ export default function StoreProduct({ product }) {
                 {product.web && (
                   <>
                     {' '}In the browser version, open it once, then turn on airplane mode: you can still{' '}
-                    {product.webOffline}, because it all happens on your phone or computer.
+                    {product.webOffline}, because it all happens on your {phones ? 'phone or computer' : 'computer'}.
                   </>
                 )}
               </p>
             </details>
-            {product.web && (
+            {product.web && !phones && (
+              <details>
+                <summary>Can I use it in my browser?</summary>
+                <p>
+                  Yes, on a computer: <a href={product.web}>open {product.name} in your browser</a> on Windows, a Mac
+                  or Linux, in a recent Chrome, Edge, Firefox or Safari, with nothing to install. It’s made for a
+                  computer’s screen and keyboard, so it isn’t for phones yet.
+                  {product.webNote && ` ${product.webNote}`}{' '}
+                  {product.webKeeps}
+                </p>
+              </details>
+            )}
+            {phones && (
               <details>
                 <summary>Can I use it on my phone?</summary>
                 <p>
@@ -225,7 +244,7 @@ export default function StoreProduct({ product }) {
                   <p>
                     Yes, for life. Every new version of {product.name} is free for anyone with a key, and you’ll get an
                     email when one comes out. Download it from this page and install it over the old one; your key and
-                    your files carry on.
+                    your files carry on.{product.web && ' The browser version updates itself.'}
                   </p>
                 </details>
                 <details>

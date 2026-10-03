@@ -1,11 +1,13 @@
 import BuyButton from '@/components/BuyButton';
 import GetButtons from '@/components/store/GetButtons';
 import TryButton from '@/components/store/TryButton';
+import { webOnPhones } from '@/data/products';
 
 // The first screen answers the whole question: what you get, what it costs,
 // how to have it, and why it's safe to try. Everything below makes the case.
 export default function ProductHero({ product, onPhone }) {
   const [lead] = product.shots;
+  const phones = webOnPhones(product);
 
   return (
     <header className="product-hero page-hero">
@@ -48,7 +50,7 @@ export default function ProductHero({ product, onPhone }) {
         <span>Works offline</span>
       </p>
 
-      {product.web && (
+      {product.web && (onPhone ? phones : true) && (
         <p className="phone-note">
           {onPhone ? (
             <>
@@ -58,10 +60,16 @@ export default function ProductHero({ product, onPhone }) {
           ) : (
             <>
               <strong>No Windows computer?</strong>{' '}
-              <a href={product.web}>Use {product.name} in your browser</a>, on any phone or computer. Your files
-              stay on your device.
+              <a href={product.web}>Use {product.name} in your browser</a>, on any {phones ? 'phone or computer' : 'Mac, Linux or Windows computer'}.
+              Your files stay on your {phones ? 'device' : 'computer'}.
             </>
           )}
+        </p>
+      )}
+      {onPhone && product.web && !phones && (
+        <p className="phone-note">
+          <strong>On your phone?</strong> {product.name} is made for a computer: the Windows app, or the browser
+          version on any Mac, Linux or Windows computer. Send this page to your computer and try it free there.
         </p>
       )}
       {onPhone && !product.web && (

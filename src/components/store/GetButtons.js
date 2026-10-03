@@ -1,8 +1,10 @@
 import { DownloadIcon, GlobeIcon, SendIcon } from '@/components/icons';
+import { webOnPhones } from '@/data/products';
 
 // A free app's pair of buttons, in place of Buy and Try. On a computer: the
-// Windows download first, then the browser version. On a phone, the other way
-// round, with an offer to send the page to the visitor's computer.
+// Windows download first, then the browser version. On a phone, the browser
+// version if it's made for phones (webOnPhones), with an offer to send the
+// page to the visitor's computer.
 export default function GetButtons({ product, onPhone }) {
   const download = (
     <a key="download" className={`store-btn${onPhone ? '' : ' store-btn-primary'}`} href={product.download}>
@@ -35,5 +37,5 @@ export default function GetButtons({ product, onPhone }) {
       </span>
     </a>
   );
-  return <>{browser || null}{send}</>;
+  return <>{webOnPhones(product) ? browser : null}{send}</>;
 }

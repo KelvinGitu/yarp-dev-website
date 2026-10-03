@@ -1,10 +1,12 @@
 import { DownloadIcon, GlobeIcon, SendIcon } from '@/components/icons';
+import { webOnPhones } from '@/data/products';
 
 // The second button next to Buy: whatever lets this visitor try the app free.
-// On a phone, an app with a browser version (`web`) opens there; a Windows-only
-// one offers to send the page to the visitor's computer over WhatsApp.
+// On a phone, an app with a browser version for phones (webOnPhones) opens
+// there; any other offers to send the page to the visitor's computer over
+// WhatsApp.
 export default function TryButton({ product, onPhone }) {
-  if (onPhone && product.web) {
+  if (onPhone && webOnPhones(product)) {
     return (
       <a className="store-btn" href={product.web}>
         <GlobeIcon />
