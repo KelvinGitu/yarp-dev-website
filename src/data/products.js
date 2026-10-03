@@ -46,115 +46,6 @@ export const SUPPORT_EMAIL = 'support@yarpdevelopers.com';
 
 export const products = [
   {
-    slug: 'pdfsign',
-    name: 'pdfsign',
-    tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
-    free: true,
-    version: '1.1.0',
-    download: `${DOWNLOADS}/pdfsign-setup.exe`,
-    web: '/pdfsign',
-    webKeeps: 'Your saved signatures and profile are kept in that browser, so clearing your browsing data deletes them.',
-    webOffline: 'open, sign and download PDFs',
-    size: '21 MB',
-    headline: 'Sign contracts and fill in forms without uploading them anywhere.',
-    problems: {
-      title: 'The trouble with signing a PDF',
-      items: [
-        { title: 'Your papers on a stranger’s server', text: 'Most signing websites upload the document to sign it: your contract, your address, your ID number.' },
-        { title: 'The print, sign and scan shuffle', text: 'The alternative is a printer, a pen and a scanner, and a crooked grey copy at the end.' },
-      ],
-    },
-    steps: {
-      title: 'Signed in three steps',
-      items: [
-        { title: 'Open the PDF', text: 'Drag it in. It opens on your computer, not on a website.' },
-        { title: 'Fill in and sign', text: 'Type into the form, place your signature, add the date and your initials.' },
-        { title: 'Save it', text: 'The signed copy is saved next to the original, ready to send.' },
-      ],
-    },
-    finalCta: 'Ready to sign your next document?',
-    description:
-      'Contracts, forms, rental agreements, tax papers: the documents you sign are the ones you least want on ' +
-      "someone else's server. pdfsign opens them on your own computer, lets you sign, fill in and tidy them up, and " +
-      'saves the result next to the original. Nothing is uploaded, because there is nowhere for it to go.',
-    shots: [
-      { file: '1.webp', alt: 'pdfsign with a rental agreement open: form fields filled in, a signature placed on the line, and the date beside it' },
-    ],
-    features: [
-      { title: 'Sign any way you like', text: 'Draw it, type it in a handwriting style, upload a photo of your signature, or sign on your phone.' },
-      { title: 'Forms, filled fast', text: 'Fill in fillable forms, with a counter that jumps you to the next empty field.' },
-      { title: 'Write on any page', text: 'Add text, dates, your name, ticks and crosses, and white out what needs covering.' },
-      { title: 'Initial every page', text: 'Put your initials on every page in one click.' },
-      { title: 'Rearrange pages', text: 'Reorder, turn, delete and merge pages.' },
-      { title: 'Undo and snippets', text: 'Undo for everything, and saved snippets for your address, email and ID number.' },
-      { title: 'Lock the answers', text: 'Lock form fields in the saved copy so answers can’t be changed afterwards.' },
-    ],
-    privacy: [
-      'Your PDFs are opened and written on your computer. They are never uploaded.',
-      'No account, no sign-in, no cloud. It works with the internet unplugged.',
-      'Signing on your phone goes over your own wifi, straight to your computer.',
-    ],
-  },
-  {
-    slug: 'resume-maker',
-    name: 'Resume Maker',
-    tagline: 'Write your resume once, set it in eleven styles, and export a clean PDF.',
-    free: true,
-    version: '1.2.0',
-    download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
-    web: '/resume-maker',
-    webKeeps: 'Your resumes are kept in that browser, so clearing your browsing data deletes them.',
-    webOffline: 'edit your resumes and save them as PDFs',
-    webNote: 'On a phone, Save PDF opens its print window: choose Save as PDF, check the paper size, and save.',
-    size: '20 MB',
-    headline: 'A resume that looks the part, made on your own computer.',
-    problems: {
-      title: 'Why a resume is harder than it should be',
-      items: [
-        { title: 'Fighting the word processor', text: 'Nudge one line and the whole layout slides onto a second page.' },
-        { title: 'Your details, uploaded', text: 'Most online builders keep your address, phone number and whole work history on their servers.' },
-      ],
-    },
-    steps: {
-      title: 'From blank page to PDF',
-      items: [
-        { title: 'Type it once', text: 'Fill in your experience, education and skills on the left; the page updates on the right.' },
-        { title: 'Pick a design', text: 'Switch between eleven templates any time. Your words stay put.' },
-        { title: 'Export a PDF', text: 'Fitted to one page, with real text recruiters can search.' },
-      ],
-    },
-    showcase: [
-      {
-        label: 'Design',
-        title: 'Eleven designs, one click apart',
-        text: 'From a plain layout that applicant tracking systems read cleanly to a bold colour sidebar, in your own colour, text size and paper size.',
-        shots: ['2.webp'],
-      },
-    ],
-    finalCta: 'Ready for your next application?',
-    description:
-      "A resume holds your address, your phone number and your whole work history. Resume Maker keeps it on your " +
-      'computer: edit on the left, watch the page update on the right, switch between eleven designs, and export a ' +
-      'PDF that fits on one page. Keep a version per kind of job you apply for.',
-    shots: [
-      { file: '1.webp', alt: 'Resume Maker editing a resume, shown in the Column template with a teal sidebar' },
-      { file: '2.webp', alt: 'Resume Maker’s Design tab, showing the same resume in Classic, Modern, Column and Timeline templates' },
-    ],
-    features: [
-      { title: 'Eleven templates', text: 'From a plain one that applicant tracking systems read cleanly to a bold colour sidebar.' },
-      { title: 'Live preview', text: 'The page updates as you type, in your own colour, text size and paper size (A4 or US Letter).' },
-      { title: 'Fit to one page', text: 'Type and spacing shrink together until it fits.' },
-      { title: 'A version per job', text: 'Keep several versions and duplicate one to tailor it for a new application.' },
-      { title: 'Your sections, your order', text: 'Add certifications, volunteering, awards or a section of your own; rename, reorder or hide any of them, with undo for every change.' },
-      { title: 'PDFs recruiters can search', text: 'Real text, not a picture of it, so it can be searched and copied.' },
-    ],
-    privacy: [
-      'Your resumes are saved on your computer, and the PDF is made there too.',
-      'No account, no sign-in, no cloud. It works with the internet unplugged.',
-      'Nothing about you or what you write is sent anywhere, ever.',
-    ],
-  },
-  {
     slug: 'storyforge',
     name: 'StoryForge',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
@@ -276,6 +167,115 @@ export const products = [
     privacy: [
       'Everything you write is stored in one file on your computer, backed up daily.',
       'No account, no cloud. It works with the internet unplugged.',
+      'Nothing about you or what you write is sent anywhere, ever.',
+    ],
+  },
+  {
+    slug: 'pdfsign',
+    name: 'pdfsign',
+    tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
+    free: true,
+    version: '1.1.0',
+    download: `${DOWNLOADS}/pdfsign-setup.exe`,
+    web: '/pdfsign',
+    webKeeps: 'Your saved signatures and profile are kept in that browser, so clearing your browsing data deletes them.',
+    webOffline: 'open, sign and download PDFs',
+    size: '21 MB',
+    headline: 'Sign contracts and fill in forms without uploading them anywhere.',
+    problems: {
+      title: 'The trouble with signing a PDF',
+      items: [
+        { title: 'Your papers on a stranger’s server', text: 'Most signing websites upload the document to sign it: your contract, your address, your ID number.' },
+        { title: 'The print, sign and scan shuffle', text: 'The alternative is a printer, a pen and a scanner, and a crooked grey copy at the end.' },
+      ],
+    },
+    steps: {
+      title: 'Signed in three steps',
+      items: [
+        { title: 'Open the PDF', text: 'Drag it in. It opens on your computer, not on a website.' },
+        { title: 'Fill in and sign', text: 'Type into the form, place your signature, add the date and your initials.' },
+        { title: 'Save it', text: 'The signed copy is saved next to the original, ready to send.' },
+      ],
+    },
+    finalCta: 'Ready to sign your next document?',
+    description:
+      'Contracts, forms, rental agreements, tax papers: the documents you sign are the ones you least want on ' +
+      "someone else's server. pdfsign opens them on your own computer, lets you sign, fill in and tidy them up, and " +
+      'saves the result next to the original. Nothing is uploaded, because there is nowhere for it to go.',
+    shots: [
+      { file: '1.webp', alt: 'pdfsign with a rental agreement open: form fields filled in, a signature placed on the line, and the date beside it' },
+    ],
+    features: [
+      { title: 'Sign any way you like', text: 'Draw it, type it in a handwriting style, upload a photo of your signature, or sign on your phone.' },
+      { title: 'Forms, filled fast', text: 'Fill in fillable forms, with a counter that jumps you to the next empty field.' },
+      { title: 'Write on any page', text: 'Add text, dates, your name, ticks and crosses, and white out what needs covering.' },
+      { title: 'Initial every page', text: 'Put your initials on every page in one click.' },
+      { title: 'Rearrange pages', text: 'Reorder, turn, delete and merge pages.' },
+      { title: 'Undo and snippets', text: 'Undo for everything, and saved snippets for your address, email and ID number.' },
+      { title: 'Lock the answers', text: 'Lock form fields in the saved copy so answers can’t be changed afterwards.' },
+    ],
+    privacy: [
+      'Your PDFs are opened and written on your computer. They are never uploaded.',
+      'No account, no sign-in, no cloud. It works with the internet unplugged.',
+      'Signing on your phone goes over your own wifi, straight to your computer.',
+    ],
+  },
+  {
+    slug: 'resume-maker',
+    name: 'Resume Maker',
+    tagline: 'Write your resume once, set it in eleven styles, and export a clean PDF.',
+    free: true,
+    version: '1.2.0',
+    download: `${DOWNLOADS}/ResumeMaker-setup.exe`,
+    web: '/resume-maker',
+    webKeeps: 'Your resumes are kept in that browser, so clearing your browsing data deletes them.',
+    webOffline: 'edit your resumes and save them as PDFs',
+    webNote: 'On a phone, Save PDF opens its print window: choose Save as PDF, check the paper size, and save.',
+    size: '20 MB',
+    headline: 'A resume that looks the part, made on your own computer.',
+    problems: {
+      title: 'Why a resume is harder than it should be',
+      items: [
+        { title: 'Fighting the word processor', text: 'Nudge one line and the whole layout slides onto a second page.' },
+        { title: 'Your details, uploaded', text: 'Most online builders keep your address, phone number and whole work history on their servers.' },
+      ],
+    },
+    steps: {
+      title: 'From blank page to PDF',
+      items: [
+        { title: 'Type it once', text: 'Fill in your experience, education and skills on the left; the page updates on the right.' },
+        { title: 'Pick a design', text: 'Switch between eleven templates any time. Your words stay put.' },
+        { title: 'Export a PDF', text: 'Fitted to one page, with real text recruiters can search.' },
+      ],
+    },
+    showcase: [
+      {
+        label: 'Design',
+        title: 'Eleven designs, one click apart',
+        text: 'From a plain layout that applicant tracking systems read cleanly to a bold colour sidebar, in your own colour, text size and paper size.',
+        shots: ['2.webp'],
+      },
+    ],
+    finalCta: 'Ready for your next application?',
+    description:
+      "A resume holds your address, your phone number and your whole work history. Resume Maker keeps it on your " +
+      'computer: edit on the left, watch the page update on the right, switch between eleven designs, and export a ' +
+      'PDF that fits on one page. Keep a version per kind of job you apply for.',
+    shots: [
+      { file: '1.webp', alt: 'Resume Maker editing a resume, shown in the Column template with a teal sidebar' },
+      { file: '2.webp', alt: 'Resume Maker’s Design tab, showing the same resume in Classic, Modern, Column and Timeline templates' },
+    ],
+    features: [
+      { title: 'Eleven templates', text: 'From a plain one that applicant tracking systems read cleanly to a bold colour sidebar.' },
+      { title: 'Live preview', text: 'The page updates as you type, in your own colour, text size and paper size (A4 or US Letter).' },
+      { title: 'Fit to one page', text: 'Type and spacing shrink together until it fits.' },
+      { title: 'A version per job', text: 'Keep several versions and duplicate one to tailor it for a new application.' },
+      { title: 'Your sections, your order', text: 'Add certifications, volunteering, awards or a section of your own; rename, reorder or hide any of them, with undo for every change.' },
+      { title: 'PDFs recruiters can search', text: 'Real text, not a picture of it, so it can be searched and copied.' },
+    ],
+    privacy: [
+      'Your resumes are saved on your computer, and the PDF is made there too.',
+      'No account, no sign-in, no cloud. It works with the internet unplugged.',
       'Nothing about you or what you write is sent anywhere, ever.',
     ],
   },

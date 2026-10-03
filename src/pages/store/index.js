@@ -26,8 +26,9 @@ export default function Store() {
             with the internet switched off.
           </p>
           <p className="store-lede store-lede-small">
-            pdfsign, Resume Maker and Ink Lifter are free, with nothing locked. StoryForge is a single payment, and
-            its download works before you buy, so you can try it on your own writing first.
+            StoryForge is a single payment, and you can try it on your own writing before you buy, from the download
+            or <a href="https://storyfrge.com">in your browser</a>. pdfsign, Resume Maker and Ink Lifter are free,
+            with nothing locked.
           </p>
           <StorePromises />
         </header>
