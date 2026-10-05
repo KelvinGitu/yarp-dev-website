@@ -1,5 +1,5 @@
 // Round trip: mint a key here with the real signing key, then check it with
-// StoryForge's Python verifier, the only app that still checks keys (pdfsign,
+// StoryForger's Python verifier, the only app that still checks keys (pdfsign,
 // Resume Maker and Ink Lifter went free on 2026-09-26 and dropped theirs, and
 // with them the browser versions' web/license.js). Needs
 // ~/Documents/yarp-signing-key.json and the story_forge repo next to this one.
@@ -21,7 +21,7 @@ const apps = [
   { dir: path.join(projects, "story_forge"), id: "storyforge", module: "desktop" },
 ];
 
-// The apps' virtualenvs: .venv, or StoryForge's older venv.
+// The apps' virtualenvs: .venv, or StoryForger's older venv.
 function pythonFor(app) {
   for (const name of [".venv", "venv"]) {
     const exe = path.join(app.dir, name, "Scripts", "python.exe");

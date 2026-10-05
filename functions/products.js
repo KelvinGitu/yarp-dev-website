@@ -6,11 +6,11 @@
 // `product` ids are what licence keys carry, so they must match APP_ID in each
 // app's config.py ("storyforge") and license.BUNDLE.
 //
-// Only StoryForge is sold now. pdfsign, Resume Maker and Ink Lifter went free
+// Only StoryForger is sold now. pdfsign, Resume Maker and Ink Lifter went free
 // on 2026-09-26 (their licence checks are gone), and the bundle was withdrawn
 // with them. Their ids stay in PRODUCTS, not for sale, so that earlier
 // receipts (/api/order) and scripts/mint-key.js still recognise them. A bundle
-// key still unlocks StoryForge, so update emails for StoryForge reach bundle
+// key still unlocks StoryForger, so update emails for StoryForger reach bundle
 // buyers too.
 
 const DOWNLOADS = "https://github.com/KelvinGitu/yarp-downloads/releases/latest/download";
@@ -20,20 +20,20 @@ const STORE = "https://yarpdevelopers.com/store";
 
 const APPS = {
   storyforge: {
-    name: "StoryForge",
-    page: `${STORE}/storyforge`,
-    download: `${DOWNLOADS}/StoryForge-setup.exe`,
+    name: "StoryForger",
+    page: `${STORE}/storyforger`,
+    download: `${DOWNLOADS}/StoryForger-setup.exe`,
     whereIsLicence: "click the Explore button at the top right, or open Settings, then Licence & data",
   },
 };
 
 const PRODUCTS = {
-  storyforge: { name: "StoryForge", apps: ["storyforge"], forSale: true },
+  storyforge: { name: "StoryForger", apps: ["storyforge"], forSale: true },
   pdfsign: { name: "pdfsign", apps: [] },
   "resume-maker": { name: "Resume Maker", apps: [] },
   "ink-lifter": { name: "Ink Lifter", apps: [] },
   "yarp-bundle": {
-    name: "pdfsign, Resume Maker, StoryForge and Ink Lifter",
+    name: "pdfsign, Resume Maker, StoryForger and Ink Lifter",
     apps: ["storyforge"],
   },
 };

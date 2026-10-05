@@ -7,7 +7,7 @@ account, a dashboard, or a decision only you can make.
 It's ordered so you can stop after **Part 1** with a working local test, and be
 selling after **Part 5**.
 
-**What's for sale (since 2026-09-26):** StoryForge only, in euros, through
+**What's for sale (since 2026-09-26):** StoryForger only, in euros, through
 Stripe. pdfsign, Resume Maker and Ink Lifter are free (no licence code left in
 them), and the bundle is withdrawn. Their product ids stay in
 `functions/products.js`, not for sale, so earlier receipts still resolve. The
@@ -63,7 +63,7 @@ half (`private_key_b64`) mints licences.
 
 In the Stripe dashboard, stay in **test mode** for all of Part 1.
 
-1. **Product catalogue → Add product**: `StoryForge`, with a **one-time**
+1. **Product catalogue → Add product**: `StoryForger`, with a **one-time**
    price in EUR matching `src/data/products.js` (€24.99). Change the page and
    Stripe together.
 2. Copy the **Price ID** (`price_...`, from the price row's ⋯ menu, *not* the
@@ -106,12 +106,12 @@ result until Part 2.
 
 ### 1.5 Prove the key unlocks the app
 
-Paste the key into StoryForge (the Explore button at the top right, or
+Paste the key into StoryForger (the Explore button at the top right, or
 Settings → Licence & data). **That is the whole loop.** Everything after this
 is plumbing.
 
 `cd functions; npm test` re-checks that keys minted by the store verify in
-StoryForge, whenever you change either side.
+StoryForger, whenever you change either side.
 
 ---
 
@@ -145,9 +145,9 @@ The store links to
    **every** installer the store links to, because `latest/download/<file>`
    only looks in the latest release:
    ```powershell
-   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: StoryForge" `
+   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: StoryForger" `
      ..\..\pdfsign\dist\pdfsign-setup.exe ..\..\resume_maker\dist\ResumeMaker-setup.exe `
-     ..\..\story_forge\dist\StoryForge-setup.exe
+     ..\..\story_forge\dist\StoryForger-setup.exe
    ```
    The links then always serve the latest release.
 4. Download each from the store page on a machine where it isn't installed,
@@ -163,8 +163,8 @@ The store links to
 | VAT | Stripe Tax + `STRIPE_AUTOMATIC_TAX` | Selling digital goods to EU consumers from Belgium means charging VAT at the buyer's country rate, usually via OSS registration. Turn on Stripe Tax in the dashboard (it needs your tax registrations), then set `STRIPE_AUTOMATIC_TAX=true`. **Worth confirming with an accountant before launch** |
 | Terms & privacy | `src/pages/store/terms.js`, `privacy.js` | Written as a plain-language starting point, not legal advice. The 30-day refund promise appears on the product pages too |
 | Support address | `SUPPORT_EMAIL` in `src/data/products.js`, `functions/lib/email.js` | Currently `support@yarpdevelopers.com` |
-| The bundle | withdrawn 2026-09-26 | Bundle keys already sold still unlock StoryForge (its verifier accepts `yarp-bundle`). Archive the bundle's Stripe product |
-| mediagrab | not in the store | Packaged (its repo builds an installer) but held back until it's ready. StoryForge's `license.py` still lists `mediagrab`; decide whether it's sold or free before listing it |
+| The bundle | withdrawn 2026-09-26 | Bundle keys already sold still unlock StoryForger (its verifier accepts `yarp-bundle`). Archive the bundle's Stripe product |
+| mediagrab | not in the store | Packaged (its repo builds an installer) but held back until it's ready. StoryForger's `license.py` still lists `mediagrab`; decide whether it's sold or free before listing it |
 | Code signing | the installers | Unsigned installers show "Windows protected your PC" (the store page explains it). Azure Trusted Signing (~$10/month, if you're eligible) or an OV certificate removes most of it |
 
 ---
@@ -250,7 +250,7 @@ Four steps, in order — skipping the release step and going straight to the
 email would tell buyers about a download that isn't actually there yet.
 
 1. **Build.** Bump that app's version (e.g. `desktop/__init__.py` for
-   StoryForge — also update `frontend/src/config.js`'s display version if it
+   StoryForger — also update `frontend/src/config.js`'s display version if it
    has one), then `.\packaging\build.ps1` in its repo. Writes
    `dist\<App>-setup-<version>.exe` and a version-less copy.
 2. **Release.** A new `yarp-downloads` release must carry **every** app's
@@ -260,13 +260,13 @@ email would tell buyers about a download that isn't actually there yet.
    gh release download v1.0.0 --repo KelvinGitu/yarp-downloads --dir dist\others `
      --pattern "*-setup.exe" --clobber
    # remove the one(s) you did rebuild from dist\others, then:
-   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: StoryForge" `
-     dist\others\*.exe ..\..\story_forge\dist\StoryForge-setup.exe
+   gh release create v1.1.0 --repo KelvinGitu/yarp-downloads --title "1.1.0: StoryForger" `
+     dist\others\*.exe ..\..\story_forge\dist\StoryForger-setup.exe
    ```
 3. **Update the listing.** Bump that product's `version` field in
    `src/data/products.js` (display only, but should match what's in the
    release) and redeploy (5.4).
-4. **Notify** (StoryForge only; the free apps have no buyers to tell). Email
+4. **Notify** (StoryForger only; the free apps have no buyers to tell). Email
    everyone who owns it — bought directly or via the old bundle — that it's out:
    ```powershell
    $env:ADMIN_NOTIFY_KEY = "..."   # the value you set in Secret Manager
@@ -293,13 +293,13 @@ written into `build.js`.
 ## Pre-launch checklist
 
 - [ ] `yarp-signing-key.json` backed up somewhere safe, and in no repo
-- [ ] Test purchase → key → unlocks StoryForge (Part 1)
+- [ ] Test purchase → key → unlocks StoryForger (Part 1)
 - [ ] A real licence email arrives, not in spam (Part 2)
 - [ ] All four download links work, and the downloaded installers install and run (Part 3)
 - [ ] Prices in `products.js` match the Stripe prices (Part 4)
 - [ ] VAT handled (Part 4)
 - [ ] Live price IDs, live secret key, live webhook secret deployed (Part 5)
-- [ ] You bought StoryForge with a real card, got the key, and refunded (5.5)
+- [ ] You bought StoryForger with a real card, got the key, and refunded (5.5)
 
 ## When something goes wrong after a sale
 
@@ -311,7 +311,7 @@ written into `build.js`.
   Retries send the same key, never a second one.
 - **"The key doesn't work":** first, which app? pdfsign, Resume Maker and Ink
   Lifter are free since 2026-09-26 and need no key: point them at the latest
-  download. For StoryForge, it's almost always a partial copy. The apps accept
+  download. For StoryForger, it's almost always a partial copy. The apps accept
   lower case, missing dashes and stray spaces, so a failing key is usually
   incomplete. Ask them to copy the whole key again.
 - **Refunds:** refund in Stripe. The key keeps working (it's checked offline),

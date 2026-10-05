@@ -92,7 +92,7 @@ async function checkout(req, res) {
     payment_intent_data: { metadata: { product } },
     // No custom_text on the Pay button either: Managed Payments doesn't allow it.
     success_url: `${origin}/store/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/store/${product}?checkout=cancelled`,
+    cancel_url: `${origin}${new URL(APPS[product]?.page || `${origin}/store/${product}`).pathname}?checkout=cancelled`,
   });
   res.json({ url: session.url });
 }

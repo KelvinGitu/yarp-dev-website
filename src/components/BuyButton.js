@@ -15,7 +15,7 @@ export default function BuyButton({ item, label = 'Buy a licence', className = '
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: item.slug, campaign: currentCampaign() }),
+        body: JSON.stringify({ product: item.productId ?? item.slug, campaign: currentCampaign() }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.url) throw new Error(data.error || 'Checkout isn’t available right now.');

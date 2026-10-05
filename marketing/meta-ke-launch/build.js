@@ -22,7 +22,7 @@ const WORK = path.join(__dirname, ".work");
 const CHROME = process.env.CHROME || "C:/Program Files/Google/Chrome/Application/chrome.exe";
 
 // The launch prices, from the old src/data/regions.js (removed 2026-09-26).
-const KES = { pdfsign: 350, "resume-maker": 1000, storyforge: 2500, "ink-lifter": 250, "yarp-bundle": 3500 };
+const KES = { pdfsign: 350, "resume-maker": 1000, storyforger: 2500, "ink-lifter": 250, "yarp-bundle": 3500 };
 const kes = (slug) => {
   if (!(slug in KES)) throw new Error(`No KES price for ${slug}`);
   return `KES ${KES[slug].toLocaleString("en-US")}`;
@@ -44,9 +44,9 @@ const ADS = [
     lines: ["Fill in forms, add your signature, save.", "Your documents never leave your computer."],
   },
   {
-    slug: "storyforge",
-    name: "StoryForge",
-    shot: "storyforge/7.webp",
+    slug: "storyforger",
+    name: "StoryForger",
+    shot: "storyforger/7.webp",
     // Its free use is a short window to explore, not open-ended.
     trial: "Free to explore",
     headline: "Write the book. Keep it yours.",

@@ -11,7 +11,7 @@
 //
 // `web`, when set, is where the app also runs in a browser (built from the
 // app's own repo by web/build.py: into public/ for most, or its own site, as
-// StoryForge's https://storyfrge.com).
+// StoryForger's https://storyfrge.com).
 // Phone visitors are sent there instead of to the Windows download, unless
 // `webPhones: false` says the browser version is made for computers only
 // (webOnPhones() below). With it come `webKeeps` (a sentence: what the
@@ -41,17 +41,18 @@ export const SUPPORT_EMAIL = 'support@yarpdevelopers.com';
 
 // A paid app's free-to-licensed line, as the store describes it: `tryShort`
 // under the Download button, `tryLong` in "How buying works", `licenseFaq` in
-// Questions. Keep in step with the app (StoryForge's core/explore.py and
+// Questions. Keep in step with the app (StoryForger's core/explore.py and
 // desktop/config.py's EXPLORE_DAYS).
 
 export const products = [
   {
-    slug: 'storyforge',
-    name: 'StoryForge',
+    slug: 'storyforger',
+    productId: 'storyforge', // what checkout, Stripe and licence keys call it; never rename
+    name: 'StoryForger',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
-    version: '1.6.1',
-    download: `${DOWNLOADS}/StoryForge-setup.exe`,
+    version: '1.6.2',
+    download: `${DOWNLOADS}/StoryForger-setup.exe`,
     web: 'https://storyfrge.com',
     webPhones: false,
     webKeeps: 'Your writing is kept in that browser, on that computer, so clearing its browsing data deletes it: download a backup now and then from Settings. A backup opens in the Windows app too, and the other way round.',
@@ -129,12 +130,12 @@ export const products = [
     ],
     finalCta: 'Ready to start your novel?',
     description:
-      'Your draft is the most personal thing you own. StoryForge keeps it on your computer: write chapter by ' +
+      'Your draft is the most personal thing you own. StoryForger keeps it on your computer: write chapter by ' +
       'chapter with version history, keep characters, places and the rules of your world in a story bible, plan ' +
       'with sticky notes and chapter summaries, and export a manuscript as Word, PDF, EPUB or Markdown. Several people can ' +
       'share one computer, each with their own profile.',
     shots: [
-      { file: '1.webp', alt: 'StoryForge’s chapter editor with a draft open, the word count and save status in the top bar' },
+      { file: '1.webp', alt: 'StoryForger’s chapter editor with a draft open, the word count and save status in the top bar' },
       { file: '2.webp', alt: 'The dashboard: today’s word goal met, a 28-day writing streak and five projects' },
       { file: '3.webp', alt: 'A project’s chapter list with manuscript progress toward a word-count target' },
       { file: '4.webp', alt: 'The story bible, with character cards for a novel’s cast' },
@@ -143,7 +144,7 @@ export const products = [
       { file: '7.webp', alt: 'A novel exported as a typeset PDF: a chapter opener with its label and title beside a justified page with a running header' },
       { file: '8.webp', alt: 'A short story exported in standard manuscript format: double-spaced Courier, word count and a name, title and page header' },
       { file: '9.webp', alt: 'An essay and a novel exported in the Clean style, with a title block, headings, references and page numbers' },
-      { file: '10.webp', alt: 'EPUB covers StoryForge generates for a novel, a short story and an essay' },
+      { file: '10.webp', alt: 'EPUB covers StoryForger generates for a novel, a short story and an essay' },
       { file: '11.webp', alt: 'The dashboard in the dark theme: a 28-day writing streak, a year of writing on the calendar and five projects' },
       { file: '12.webp', alt: 'A novel chapter open in the chapter editor, in the dark theme' },
       { file: '13.webp', alt: 'The same chapter on the sepia writing page: warm, paper-coloured and easy on the eyes' },

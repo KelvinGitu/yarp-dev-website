@@ -74,7 +74,7 @@ export default function Home() {
             ))}
           </ul>
           <p className="page-text home-desktop-more">
-            Three are free; StoryForge is free to try, then a one-time price. <Link href="/store">See the store →</Link>
+            Three are free; StoryForger is free to try, then a one-time price. <Link href="/store">See the store →</Link>
           </p>
         </section>
 

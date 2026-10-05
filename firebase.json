@@ -3,6 +3,13 @@
     "public": "out",
     "cleanUrls": true,
     "trailingSlash": false,
+    "redirects": [
+      {
+        "source": "/store/storyforge",
+        "destination": "/store/storyforger",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "/api/**",
