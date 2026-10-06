@@ -176,6 +176,7 @@ export const products = [
   {
     slug: 'pdfsign',
     name: 'pdfsign',
+    pitch: 'fill and sign PDFs, privately',
     tagline: 'Fill, sign and mark up PDFs without uploading them anywhere.',
     free: true,
     version: '1.1.0',
@@ -226,6 +227,7 @@ export const products = [
   {
     slug: 'resume-maker',
     name: 'Resume Maker',
+    pitch: 'polished resumes, made on your own computer',
     tagline: 'Write your resume once, set it in eleven styles, and export a clean PDF.',
     free: true,
     version: '1.2.0',
@@ -285,6 +287,7 @@ export const products = [
   {
     slug: 'ink-lifter',
     name: 'Ink Lifter',
+    pitch: 'lift your signature off paper',
     tagline: 'Lift signatures, stamps and handwriting off a photo of paper, onto a transparent background.',
     free: true,
     version: '1.1.0',
