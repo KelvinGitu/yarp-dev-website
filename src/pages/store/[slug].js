@@ -43,7 +43,9 @@ export default function StoreProduct({ product }) {
   return (
     <>
       <Head>
-        <title>{`${product.name} for Windows${product.web ? ' and your browser' : ''} · Yarp Developers`}</title>
+        <title>{product.pitch
+          ? `${product.name}: ${product.pitch} · Yarp Developers`
+          : `${product.name} for Windows${product.web ? ' and your browser' : ''} · Yarp Developers`}</title>
         <meta
           name="description"
           content={`${product.tagline} Runs on your ${phones ? 'computer or phone' : 'computer'}; your files never leave it.`}

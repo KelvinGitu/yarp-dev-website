@@ -49,6 +49,8 @@ export const products = [
     slug: 'storyforger',
     productId: 'storyforge', // what checkout, Stripe and licence keys call it; never rename
     name: 'StoryForger',
+    // The page title, which is also what a shared link's card shows.
+    pitch: 'the writing studio for indie writers',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
     version: '1.6.2',
