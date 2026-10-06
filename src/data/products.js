@@ -53,7 +53,7 @@ export const products = [
     pitch: 'the writing studio for indie writers',
     tagline: 'A writing studio for novels and stories, with a story bible that keeps it all straight.',
     price: '€24.99',
-    version: '1.6.3',
+    version: '1.6.4',
     download: `${DOWNLOADS}/StoryForger-setup.exe`,
     web: 'https://storyfrge.com',
     webPhones: false,
