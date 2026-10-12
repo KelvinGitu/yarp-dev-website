@@ -1,9 +1,33 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+// The site's own sections, in nav order. `match` says which routes count as
+// being in that section, so its link is marked as the current page.
+const SECTIONS = [
+  { href: '/', label: 'Home', className: 'nav-home', match: (p) => p === '/' || p.startsWith('/apps/') },
+  { href: '/store', label: 'Store', match: (p) => p.startsWith('/store') },
+  { href: '/guides', label: 'Guides', match: (p) => p.startsWith('/guides') },
+];
 
 // One shell for every page, homepage included: a fixed navbar (Home, Store,
 // Guides, Blog, About) over a single scrolling column, so the site reads as a studio
 // with a product front and center rather than a personal portfolio with a sidebar bio.
 export default function Layout({ children, className = '' }) {
+  const { pathname } = useRouter();
+  const navLink = ({ href, label, className: linkClass = '', match = (p) => p === href }) => {
+    const current = match(pathname);
+    return (
+      <Link
+        key={href}
+        href={href}
+        className={`${linkClass} ${current ? 'nav-current' : ''}`.trim() || undefined}
+        aria-current={current ? 'page' : undefined}
+      >
+        {label}
+      </Link>
+    );
+  };
+
   return (
     <div className={`layout-container ${className}`}>
       <header className="navbar">
@@ -16,12 +40,10 @@ export default function Layout({ children, className = '' }) {
             </div>
           </Link>
           <nav className="nav-links">
-            <Link href="/" className="nav-home">Home</Link>
-            <Link href="/store" className="nav-cta">Store</Link>
-            <Link href="/guides">Guides</Link>
+            {SECTIONS.map(navLink)}
             {/* The Sleevr Trails blog lives on Blogger, not on this site. */}
             <a href="https://trails.yarpdevelopers.com">Blog</a>
-            <Link href="/about">About</Link>
+            {navLink({ href: '/about', label: 'About' })}
           </nav>
         </div>
       </header>
