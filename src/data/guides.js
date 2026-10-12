@@ -2,8 +2,9 @@
 //
 // `body` is a list of blocks, rendered in order: { h2 }, { p }, { ul: [...] }
 // or { ol: [...] }. Text is plain; no markup inside the strings.
-// `product` is the slug of the store app the guide relates to (products.js);
-// the article ends with a short pointer to it. Each guide has to be useful to
+// `product` is the slug of the store app the guide relates to (products.js),
+// or `app` the slug of a mobile app (apps.js); the article ends with a short
+// pointer to it. Each guide has to be useful to
 // someone who never installs that app: the advice first, the app as one option.
 // `date` is ISO (YYYY-MM-DD), the day it was published.
 
@@ -172,6 +173,240 @@ export const guides = [
 
       { h2: 'Making one' },
       { p: 'Any word processor can produce an ATS-friendly resume if you stick to a single column, real headings and no text boxes. If you’d rather not fight the layout, a resume builder does it for you; just check that it exports real text and doesn’t keep your details on its servers. Our free Resume Maker, for Windows and the browser, has eleven designs including a plain one that applicant tracking systems read cleanly, fits your resume to one page, keeps a version per job, and exports a PDF with real, searchable text, all on your own device.' },
+    ],
+  },
+  {
+    slug: 'story-bible-for-your-novel',
+    title: 'How to keep track of characters and worldbuilding in a long novel',
+    description:
+      'By chapter twenty it’s easy to forget a character’s eye colour or the year the war ended. How to build a story bible that keeps your novel consistent without turning into a second book.',
+    date: '2026-10-12',
+    product: 'storyforger',
+    body: [
+      { p: 'Somewhere around the middle of a first draft, most novelists hit the same wall. A character’s eyes were green in chapter three and brown in chapter nineteen. The journey that took two days now takes five. A minor character has two different surnames. None of these is hard to fix on its own, but each one pulls a reader out of the story, and finding them all in a 90,000-word manuscript is miserable work.' },
+      { p: 'The tool writers use to prevent this is a story bible: a single reference that holds the facts of your book. Television writers’ rooms have used them for decades, and they work just as well for one person writing a novel. This guide covers what to put in one, how to keep it useful, and how not to let it swallow your writing time.' },
+
+      { h2: 'What a story bible is (and isn’t)' },
+      { p: 'A story bible is a record of facts you have already decided, so you can check them instead of remembering them. It is not your outline, and it is not a place to write backstory for its own sake. The test for anything you put in it: will I need to look this up while writing or revising? If not, it can stay in your head or in a separate notes file.' },
+
+      { h2: 'The sections most novels need' },
+      { ul: [
+        'Characters. Name and any nicknames, age, appearance, where they live, what they want, what they’re hiding, how they speak, and the chapter they first appear in. Keep the physical details short and specific: “grey streak over left eyebrow” is more useful than a paragraph.',
+        'Places. Every location that appears more than once: what it looks like, how far it is from the others, and who lives or works there. Distances and travel times cause more continuity errors than almost anything else.',
+        'Timeline. The order of events, with dates or at least days, including things that happened before the book begins. Ages, seasons and pregnancies all depend on it.',
+        'World rules. For fantasy and science fiction especially: how the magic or technology works, what it costs, and what it cannot do. Readers forgive almost anything except a rule broken to get the plot out of a corner.',
+        'Terminology. Invented words, titles, place names and their spelling, plus any real-world jargon your characters use. This is where you settle “Lord Commander” versus “Lord-Commander” once.',
+        'Plot threads. Each promise you make the reader, such as a mystery, a debt or a prophecy, and the chapter where it is set up and paid off.',
+      ] },
+
+      { h2: 'Build it as you write, not before' },
+      { p: 'It is tempting to spend weeks building a world before writing a word. Some writers love that, and for them it’s part of the fun. But if the goal is a finished book, the most reliable approach is to add facts to the bible the moment you invent them in the draft. Give a character a scar on page 40? Spend thirty seconds noting it. Over a whole draft those thirty seconds add up to a complete reference, built from what is actually on the page rather than what you once planned.' },
+      { p: 'A useful habit is a short “bible pass” at the end of each writing session: skim what you wrote today and add any new names, places or rules. It takes five minutes and doubles as a reminder of where you left off.' },
+
+      { h2: 'Keep entries short and easy to find' },
+      { ul: [
+        'One entry per character, place or rule, with the name as the heading, so you can find it in seconds.',
+        'Facts, not prose. Bullet points beat paragraphs when you are checking a detail mid-sentence.',
+        'Note the chapter where each fact first appears. When something changes in revision, you know where to look.',
+        'Mark undecided details as undecided, for example “age: 30s?”, rather than inventing them too early.',
+      ] },
+
+      { h2: 'Use it when you revise' },
+      { p: 'A story bible pays off most in revision. Before each revision pass, read the entries for the characters and places in the chapters you are working on. When you change a fact, such as moving the wedding from spring to autumn, update the bible first, then search the manuscript for every mention. A timeline is especially valuable here: lay out the events in order and the impossible gaps and overlaps become obvious.' },
+      { p: 'If you work with an editor or beta readers, the bible also answers their questions. “How old is she here?” becomes a ten-second lookup instead of an evening of rereading.' },
+
+      { h2: 'Where to keep it' },
+      { p: 'The best tool is the one you will actually open while writing. Some writers use a notebook, a spreadsheet with one tab per section, or a document with headings. The important things are that it is quick to search and lives close to the manuscript, because a bible you have to go looking for is a bible you stop updating.' },
+      { p: 'Writing software can keep the two together. StoryForger, our writing studio for Windows and the browser, has a story bible built in, with characters, locations, plot points, world rules, terminology and a timeline kept with the book they belong to, next to a chapter editor and sticky-note planning boards. Whatever you use, keep a backup: a story bible represents months of decisions.' },
+
+      { h2: 'The short version' },
+      { p: 'Write facts down the moment you invent them, keep each entry short, organise it so you can find anything in seconds, and read the relevant entries before you revise. A story bible won’t write the book for you, but it will stop the book contradicting itself.' },
+    ],
+  },
+  {
+    slug: 'track-customer-credit-small-shop',
+    title: 'How to track customer credit and debts in a small shop',
+    description:
+      'Selling on credit keeps regular customers coming back, but unrecorded debts quietly eat a shop’s profit. A simple system for recording who owes what, collecting it, and knowing your real numbers.',
+    date: '2026-10-12',
+    app: 'shopflow',
+    body: [
+      { p: 'In many neighbourhood shops, credit is part of everyday business. A regular customer takes bread and milk on Monday and pays on Friday when wages come in. A supplier drops off stock and is paid at the end of the month. It builds loyalty, and it is often the only way customers can buy at all. But it is also where small shops lose the most money without noticing: a debt that wasn’t written down, a balance nobody remembers, or stock counted as sold when the cash never arrived.' },
+      { p: 'This guide covers a simple system for recording credit, collecting it politely, and understanding what it does to your real profit, whether you use a notebook or an app.' },
+
+      { h2: 'Why credit sales need their own record' },
+      { p: 'If you only record cash in the till, a credit sale disappears twice: the stock leaves the shelf, and no money arrives. Your stock count says you sold it; your cash says you didn’t. Over a month those gaps make it impossible to tell whether the business is actually making money or just moving stock.' },
+      { p: 'Treat each credit sale as two facts: a sale, which happened today, and a debt, which stays open until it is paid. Supplier credit is the mirror image: stock you received today, and money you owe until you pay it.' },
+
+      { h2: 'What to record for every credit sale' },
+      { ul: [
+        'The customer’s name and a phone number, so there is never a question of which “Mama John” it was.',
+        'The date.',
+        'What they took, and the total. Item-level detail settles arguments later.',
+        'Any amount paid now, and the balance remaining.',
+        'When they promised to pay.',
+      ] },
+      { p: 'When a payment comes in, record it against that customer with the date and amount, and update the balance. Many shops let a customer pay part of a debt at a time, so the running balance matters more than any single entry.' },
+
+      { h2: 'Set limits before you need them' },
+      { p: 'Decide in advance how much credit each customer can have, and for how long. A simple rule, such as no new credit while an old balance is more than two weeks overdue, is easier to apply than a decision made at the counter with the customer waiting. New customers can start with a small limit that rises as they pay reliably. Write the rule down, so staff apply it the same way you would.' },
+
+      { h2: 'Collecting without losing the customer' },
+      { ol: [
+        'Review the list of open debts every week, oldest first.',
+        'Remind customers before a debt is late, not after. A friendly message the day before payday works better than a demand a month later.',
+        'Be specific: “Your balance is 1,250 for the items on the 3rd” is easier to act on than “you owe money”.',
+        'Offer a way to pay part now if the full amount is hard.',
+        'Pause credit, rather than ending the relationship, for customers who fall far behind, and say clearly what will restore it.',
+      ] },
+
+      { h2: 'Don’t forget what you owe' },
+      { p: 'Supplier credit needs the same care. Record each delivery you haven’t paid for, the amount and the due date. Paying suppliers on time protects your price and your access to stock; paying early when you don’t need to can leave you short of cash for the week. A list of what you owe, sorted by due date, makes that decision easy.' },
+
+      { h2: 'Know your real numbers' },
+      { p: 'At the end of each month, look at three figures together: what you sold (cash and credit), the cash you actually collected, and the total customers still owe you. If the amount owed keeps growing month after month, the shop is lending more than it is earning, however busy it feels. Compare your profit with and without the uncollected debts, and you will see how much credit is really costing you.' },
+
+      { h2: 'Notebook or app?' },
+      { p: 'A dedicated credit book works if you are disciplined about it: one page per customer, every sale and payment, and a weekly review. Its weaknesses are that it can’t add up totals for you, it can be lost or damaged, and it doesn’t connect to your stock.' },
+      { p: 'An app removes the arithmetic. ShopFlow, our business management app for Android, was built for small shops that sell on credit: customer debts and supplier credits are records in their own right, alongside inventory, sales, purchases and analytics, so stock, revenue and profit are counted with credit in mind. Whichever you use, the habit matters more than the tool: record every credit sale at the moment it happens.' },
+    ],
+  },
+  {
+    slug: 'get-better-at-word-puzzles',
+    title: 'How to get better at crossword-style word puzzles',
+    description:
+      'Solving word clues is a skill you can practise. The techniques experienced solvers use, from reading clues for their part of speech to using letter patterns and coming back later.',
+    date: '2026-10-12',
+    app: 'three-clues',
+    body: [
+      { p: 'Crosswords and other clue-based word puzzles can seem like a test of vocabulary, but most of what makes a good solver is technique. Experienced solvers don’t know vastly more words than everyone else; they read clues more carefully, use every letter they already have, and know when to move on. Here are the habits that make the biggest difference.' },
+
+      { h2: 'Read the clue for its grammar' },
+      { p: 'A clue and its answer can usually swap places in a sentence. If the clue is a plural, the answer is almost always plural. If it’s a verb in the past tense, so is the answer. “Ran quickly” suggests DASHED or RACED, not DASH. Checking tense, number and part of speech rules out many wrong guesses before you write anything in.' },
+
+      { h2: 'Use the letter count and the letters you have' },
+      { p: 'The length of the answer is a clue in itself. Before guessing, count the squares and note any letters already filled in from crossing words. English has strong patterns: a word ending in a blank followed by G is often -ING, a Q is almost always followed by U, and many answers end in -ED, -ER, -LY or -S. Write in the parts you’re sure of, even a single suffix, and the crossing answers often fall into place.' },
+
+      { h2: 'Start with what’s easy' },
+      { p: 'Don’t solve in order. Scan all the clues first and fill in the ones you know immediately, especially short answers and fill-in-the-blank clues. Each answer gives you letters for its neighbours, so the puzzle gets easier as it fills. Getting stuck on clue one while easier clues sit unsolved is the most common beginner mistake.' },
+
+      { h2: 'When several clues point at one answer' },
+      { p: 'Some puzzles give you more than one clue for the same answer. Treat each clue as a filter rather than a separate question. List what the first clue might mean, then check each candidate against the second and third. The answer is the word that fits all of them. Often one clue is general, “a kind of tree”, and another is specific, “it gives syrup”, and together they leave only one possibility: MAPLE.' },
+
+      { h2: 'Learn the regulars' },
+      { p: 'Puzzle makers reuse words that fit grids well: short words with many vowels, and common letters. After a few weeks of regular solving you start recognising them. Keep a short list of answers that surprised you; reviewing it now and then builds the vocabulary that puzzles actually use, rather than the dictionary as a whole.' },
+
+      { h2: 'Walk away and come back' },
+      { p: 'When you are stuck, a break genuinely helps. Your brain keeps working on the problem, and when you return, an answer that seemed impossible is often obvious. If the puzzle is timed, skip the clue and come back to it after you’ve filled in more letters.' },
+
+      { h2: 'Use hints to learn, not to finish' },
+      { p: 'Revealing a letter isn’t cheating if it teaches you something. When you reveal an answer, go back and work out why it fits each clue. That’s how you learn the way puzzle makers think, and it is the fastest route to needing fewer hints next time.' },
+
+      { h2: 'Practise a little, often' },
+      { ul: [
+        'Ten minutes a day beats an hour once a week. Pattern recognition improves with frequent, short practice.',
+        'Choose puzzles slightly above your comfort level, and step back down when you stop enjoying them.',
+        'Solve with someone else sometimes. You’ll pick up their way of reading clues.',
+        'Read widely. Puzzles reward general knowledge across many subjects, a little at a time.',
+      ] },
+
+      { h2: 'Somewhere to practise' },
+      { p: 'Any daily crossword in a newspaper or app is good practice. Our own game, Three Clues for Android, is built around the multiple-clue idea above: three clues, one answer to find, across 100 levels in five difficulty zones. It starts gently and ramps up, which suits the “slightly above your comfort level” approach, and it has timed challenges once you’re ready to work on speed.' },
+    ],
+  },
+  {
+    slug: 'host-a-trivia-night',
+    title: 'How to host a trivia night your friends will actually enjoy',
+    description:
+      'Good trivia is about pacing, fair questions and a bit of drama, not just hard facts. How to plan rounds, write questions, keep score and run a quiz in person or online.',
+    date: '2026-10-12',
+    app: 'sleevr',
+    body: [
+      { p: 'A trivia night is one of the easiest ways to get a group of people laughing and arguing in the best way. It also goes wrong in predictable ways: questions so hard nobody scores, one know-it-all team running away with it, or a host lost in their own notes while the room gets bored. With a bit of planning, all of that is avoidable. Here’s how to run one, whether it’s five friends at home or a room full of colleagues.' },
+
+      { h2: 'Plan the shape of the evening' },
+      { p: 'Most good quizzes run between 60 and 90 minutes, including breaks. A reliable structure is five or six rounds of eight to ten questions each, with a short break in the middle for drinks and score updates. Teams of three to five people work best: big enough to pool knowledge, small enough that everyone gets a say.' },
+      { ul: [
+        'Mix general knowledge rounds with themed ones, such as music, geography, film or local history.',
+        'Include at least one round that isn’t pure recall: a picture round, a music intro round, or “name the flag”.',
+        'Save a fun or chaotic round for the end, when energy dips.',
+      ] },
+
+      { h2: 'Write questions people can get right' },
+      { p: 'The best trivia questions feel gettable. Aim for most teams to get about half to two-thirds of the questions right. If nobody knows the answer, the question just creates silence; if everyone knows it, it creates no tension.' },
+      { ul: [
+        'Make answers unambiguous. “What is the largest desert?” causes an argument about Antarctica; “What is the largest hot desert?” doesn’t.',
+        'Check every fact against two reliable sources. Popular trivia “facts” are often wrong.',
+        'Avoid questions that need an exact number unless you accept a range.',
+        'Spread topics so no single person or interest dominates.',
+        'Write a few “groaners”: questions where the answer is obvious once you hear it. They get the best reactions.',
+      ] },
+
+      { h2: 'Multiple choice or open answers?' },
+      { p: 'Multiple-choice questions are faster, friendlier for newcomers and easier to mark, which makes them good for mixed groups and online play. Open answers are harder and more satisfying for experienced players, but you need to decide in advance how strict to be with spelling and partial answers. Many quizzes mix the two: multiple choice early on, open answers in later rounds.' },
+
+      { h2: 'Keep score fairly and visibly' },
+      { p: 'Swap answer sheets between teams for marking, or mark them yourself during the next round. Announce scores between rounds; a visible scoreboard keeps everyone invested even when they are behind. A joker, where each team chooses one round to score double, gives trailing teams a way back and adds strategy.' },
+      { p: 'Have a tiebreaker ready: a single question with a numeric answer, where the closest guess wins, ends ties quickly and fairly.' },
+
+      { h2: 'Running it on the night' },
+      { ol: [
+        'Explain the rules once, clearly: no phones, how answers are marked, and what the prizes are.',
+        'Read each question twice, and keep a steady pace. Long pauses kill the energy.',
+        'Repeat all the questions at the end of each round before collecting answers.',
+        'Read the answers out with a bit of theatre. The reveal is half the fun.',
+        'Keep your own notes in one place, with the answers next to the questions.',
+      ] },
+
+      { h2: 'Running it online' },
+      { p: 'For remote groups, a video call works if you share the questions on screen and collect answers through a shared form or the chat. Expect everything to take longer than in person, so cut a round. Trivia apps with live multiplayer remove the admin entirely: everyone answers on their own phone, timing is automatic, and the scoreboard updates itself.' },
+      { p: 'Our own trivia game, Sleevr, is one option for that. It runs on Android and in the browser, with timed multiple-choice questions across categories, modes like Trivia Trails and Guess the Country, and real-time leaderboards, so a group can play against each other without anyone marking answer sheets.' },
+
+      { h2: 'The short version' },
+      { p: 'Keep it to about 90 minutes, write questions most teams can get, check every answer, mix up the rounds, and keep the scoreboard visible. The aim isn’t to prove who knows the most; it’s an evening everyone wants to repeat.' },
+    ],
+  },
+  {
+    slug: 'one-line-a-day-journal',
+    title: 'How to keep a daily journal you’ll actually stick to',
+    description:
+      'Most journals are abandoned within weeks because they ask too much. How a one-line-a-day habit, small prompts and noticing ordinary moments make journaling easy to keep up.',
+    date: '2026-10-12',
+    app: 'days-end',
+    body: [
+      { p: 'Lots of people start a journal in January and stop by February. The usual reason isn’t lack of interest; it’s that the journal asks too much. A blank page every night, with the feeling that each entry should be thoughtful and complete, turns a pleasant habit into homework. The fix is to make each entry so small that skipping it feels silly.' },
+      { p: 'This guide covers how to build a journaling habit that lasts, starting with one line a day.' },
+
+      { h2: 'Start with one line' },
+      { p: 'Commit to writing a single sentence about your day. Not the most important thing, not a reflection on your goals: just something that happened. “Made coffee and burned my tongue.” “Saw a double rainbow from the bus.” “Skipped the gym and didn’t feel guilty.” On a good day you can write more, but the promise is only one line.' },
+      { p: 'One line takes under a minute, so there is never a reason to skip it. And after a year you have 365 small snapshots of your life, which is more than most people ever record.' },
+
+      { h2: 'Attach it to something you already do' },
+      { p: 'Habits stick best when they are linked to an existing routine. Write your line right after brushing your teeth at night, while the kettle boils in the morning, or as soon as you sit down on the bus home. Keep the journal, or the app, exactly where that moment happens.' },
+
+      { h2: 'Notice the ordinary' },
+      { p: 'A common worry is “nothing happened today”. Something always did; it just wasn’t dramatic. Ordinary moments are the ones you forget fastest and the ones that are most interesting to read back: what you ate, who you talked to, what the weather was like, a song stuck in your head. A good journal is mostly ordinary days.' },
+      { p: 'If you are stuck, use a prompt:' },
+      { ul: [
+        'What made you smile today?',
+        'What did you eat that you’d eat again?',
+        'Who did you talk to that you don’t usually?',
+        'What did you do for the first time, or the last time?',
+        'What would you tell a friend about today in one sentence?',
+      ] },
+
+      { h2: 'Don’t break the chain, but don’t panic if you do' },
+      { p: 'A visible streak, such as crosses on a calendar or a counter in an app, is a surprisingly strong motivator. But missing a day isn’t failure. The rule many people find helpful is “never miss twice”: if you skip a day, make sure you write the next one, even if it’s just “busy day, slept well”. You can also fill in yesterday’s line from memory; that still counts.' },
+
+      { h2: 'Read it back' },
+      { p: 'Part of what keeps people journaling is the reward of reading old entries. Once a month, scroll back through what you wrote. Patterns appear: the weeks you were happiest, the people who show up most, the things that consistently ruin your mood. Some people use a five-year journal, which puts the same date from each year on one page, so every entry comes with a reminder of where you were a year ago.' },
+
+      { h2: 'Paper or phone?' },
+      { p: 'Paper is calm, private and pleasant to hold, and handwriting slows you down in a good way. Your phone is always with you, which makes the one-line habit almost frictionless, and it can remind you at the same time each day. Choose the one you will actually have to hand at your journaling moment.' },
+      { p: 'If you like the idea of logging small moments but want something lighter and more social than a private diary, our app Day’s End takes a different angle. You log everyday moments, like making coffee, skipping the gym or seeing a rainbow, and see how many people around the world did the same thing today. It’s a reminder that your ordinary day is shared with a lot of other people, and it can be a gentle way into the daily-noticing habit.' },
+
+      { h2: 'The short version' },
+      { p: 'Make the daily commitment tiny, tie it to a routine you already have, write about ordinary things, never miss twice, and read it back now and then. A journal you keep for a year in one-line entries beats a beautiful one you abandon in a month.' },
     ],
   },
 ];

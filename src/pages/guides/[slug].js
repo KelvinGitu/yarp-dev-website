@@ -2,8 +2,29 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Script from 'next/script';
 import { formatDate, guideBySlug, guides, readingMinutes } from '@/data/guides';
+import { apps } from '@/data/apps';
 import { productBySlug } from '@/data/products';
 import { ADSENSE_CLIENT } from '@/data/studio';
+
+// What the closing box points at: a desktop app in the store (`product`), or
+// a mobile app's page (`app`).
+function relatedApp(guide) {
+  const product = guide.product && productBySlug(guide.product);
+  if (product) {
+    return {
+      slug: product.slug,
+      name: product.name,
+      text: product.headline ?? product.tagline,
+      href: `/store/${product.slug}`,
+      cta: product.free ? `See ${product.name}, free →` : `See ${product.name} →`,
+    };
+  }
+  const app = guide.app && apps.find((a) => a.slug === guide.app);
+  if (app) {
+    return { slug: app.slug, name: app.name, text: app.tagline, href: `/apps/${app.slug}`, cta: `See ${app.name} →` };
+  }
+  return null;
+}
 
 function Block({ block }) {
   if (block.h2) return <h2>{block.h2}</h2>;
@@ -14,7 +35,7 @@ function Block({ block }) {
 
 export default function Guide({ slug }) {
   const guide = guideBySlug(slug);
-  const product = productBySlug(guide.product);
+  const related = relatedApp(guide);
   const url = `https://yarpdevelopers.com/guides/${guide.slug}`;
 
   return (
@@ -46,15 +67,13 @@ export default function Guide({ slug }) {
 
         {guide.body.map((block, i) => <Block key={i} block={block} />)}
 
-        {product && (
+        {related && (
           <aside className="guide-product">
-            <img src={`/assets/icons/${product.slug}.png`} alt="" width={40} height={40} />
+            <img src={`/assets/icons/${related.slug}.png`} alt="" width={40} height={40} />
             <div>
-              <p className="guide-product-name">{product.name}</p>
-              <p className="guide-product-text">{product.headline ?? product.tagline}</p>
-              <Link href={`/store/${product.slug}`}>
-                {product.free ? `See ${product.name}, free →` : `See ${product.name} →`}
-              </Link>
+              <p className="guide-product-name">{related.name}</p>
+              <p className="guide-product-text">{related.text}</p>
+              <Link href={related.href}>{related.cta}</Link>
             </div>
           </aside>
         )}

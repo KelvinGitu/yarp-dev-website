@@ -9,7 +9,7 @@ export default function Guides() {
         <title>Guides · Yarp Developers</title>
         <meta
           name="description"
-          content="Practical guides to signing PDFs, cleaning up signatures, writing resumes and keeping your documents private, from the people who build pdfsign, Ink Lifter and Resume Maker."
+          content="Practical guides to signing PDFs, writing resumes and novels, running a small shop, word puzzles, trivia nights and journaling, from the people who build the Yarp apps."
         />
         <link rel="canonical" href="https://yarpdevelopers.com/guides" />
       </Head>
@@ -17,10 +17,10 @@ export default function Guides() {
       <div className="page guides">
         <header className="page-hero">
           <p className="detail-section-title">Guides</p>
-          <h1 className="page-title">Getting everyday documents done, privately.</h1>
+          <h1 className="page-title">Practical guides to the everyday things our apps help with.</h1>
           <p className="page-lede">
-            Step-by-step guides to the paperwork our apps were built for: signing PDFs, cleaning up a signature,
-            writing a resume. Each one works whichever tool you use.
+            Signing documents, writing a resume or a novel, running a small shop, getting better at word puzzles,
+            hosting a quiz, keeping a journal. Each guide works whichever tool you use.
           </p>
         </header>
 
