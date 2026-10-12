@@ -409,6 +409,102 @@ export const guides = [
       { p: 'Make the daily commitment tiny, tie it to a routine you already have, write about ordinary things, never miss twice, and read it back now and then. A journal you keep for a year in one-line entries beats a beautiful one you abandon in a month.' },
     ],
   },
+  {
+    slug: 'api-key-in-your-app-google-cloud-suspension',
+    title: 'Google suspended my project over an API key in my app. Here’s how to avoid it',
+    description:
+      'In May 2026 Google Cloud suspended the project behind our trivia game, and the cause was an unrestricted API key inside the app. What went wrong, how we got reinstated, and how to keep keys out of your own builds.',
+    date: '2026-10-12',
+    app: 'sleevr',
+    body: [
+      { p: 'In May 2026, Google Cloud suspended the project behind Sleevr, our multiplayer trivia game. Everything on that project stopped working until it was sorted out. I’d like to say it was bad luck, but the cause was mine: a Gemini API key was compiled into every copy of the app we had shipped, with no application restrictions on it. Anyone who unpacked the APK could have pulled the key out and used it.' },
+      { p: 'The project was reinstated a week later. This guide is what I learned, written for anyone shipping a mobile app that talks to a paid API.' },
+
+      { h2: 'What went wrong' },
+      { p: 'A mobile app is not a safe place for a secret. When you build an Android app, everything in it, including strings, config files and constants, ends up in the APK that users download. Tools to unpack an APK and read those strings are free and take minutes to use. Obfuscation makes it slower, not impossible.' },
+      { p: 'Our key was an API key for Gemini, Google’s AI API, which is billed per request. It sat in the app with no restrictions saying which app or which APIs it could be used for. From Google’s side, a key like that is a risk to the project whether or not anyone has misused it yet, and keys found in public places get abused for exactly that reason.' },
+
+      { h2: 'What I did to get reinstated' },
+      { ol: [
+        'Audited every key on the project, not just the one that caused the problem. There were four. For each, I listed where it was used and what it needed to call.',
+        'Rotated them: created new keys, shipped the app changes that used them, and deleted the old ones, so the leaked key stopped working everywhere.',
+        'Restricted every new key to the APIs it actually calls and to our app, so a copied key would be useless elsewhere.',
+        'Scrubbed the keys from the repository history. Deleting a key from the current code isn’t enough while it’s still in old commits.',
+        'Wrote up the whole thing for the appeal: what was exposed, how, what had been changed, and how it would be prevented. A clear, honest account is what the review needs to see.',
+      ] },
+
+      { h2: 'How to avoid it in your own app' },
+      { p: 'The fixes are not complicated, and almost all of them take minutes. The hard part is doing them before you ship rather than after.' },
+
+      { h2: '1. Keep paid API keys out of the app entirely' },
+      { p: 'The safest key is one the app never contains. Instead of calling a paid API directly from the phone, have the app call your own backend, such as a Cloud Function, and let the backend call the API with a key kept in a secret manager. Your backend can then check who is asking, limit how often, and refuse anything unexpected. For AI APIs this also lets you change prompts and models without shipping an update.' },
+
+      { h2: '2. Restrict every key that does ship' },
+      { p: 'Some keys have to be in the app, such as the Firebase config or a Maps key. Google’s documentation is clear that the Firebase config isn’t a secret in itself, but every key should still be restricted in the Google Cloud console:' },
+      { ul: [
+        'Application restrictions: for Android, limit the key to your package name and your signing certificate’s SHA-1 fingerprint. For the web, limit it to your domains.',
+        'API restrictions: allow only the APIs that key needs. A Maps key has no business calling Gemini.',
+        'Remember that application restrictions on Android keys can be spoofed by a determined attacker, which is why paid APIs belong behind your backend rather than relying on restrictions alone.',
+      ] },
+
+      { h2: '3. Add App Check and budgets' },
+      { p: 'Firebase App Check lets your backend and Firebase services reject requests that don’t come from your genuine app on a genuine device. Pair it with billing budgets and alerts in Google Cloud, so a sudden spike in usage emails you the same day instead of showing up at the end of the month. Quotas on individual APIs put a hard ceiling on how much a leaked key could cost.' },
+
+      { h2: '4. Keep keys out of your repository' },
+      { ul: [
+        'Store keys in environment files or a secret manager that are excluded from version control, and add the filenames to .gitignore before you create them.',
+        'Turn on secret scanning in your Git host. GitHub can block a push that contains a recognisable key.',
+        'If a key is ever committed, treat it as leaked: rotate it first, then clean the history with a tool such as git filter-repo.',
+      ] },
+
+      { h2: '5. Audit before every release' },
+      { p: 'Once per release, run through the list: which keys exist on the project, where each is used, what each is allowed to do, and whether any appear in the built app. Unpack your own APK and search it for “key” and “AIza”, the prefix Google API keys start with. If you can find a secret in a minute, so can anyone else.' },
+
+      { h2: 'If it happens to you' },
+      { p: 'Don’t panic, and don’t appeal immediately with a one-line request. Fix the problem completely first: rotate, restrict, remove from history and check every other key on the project. Then write an appeal that explains what happened, what you changed and how you’ll prevent it. In our case that got the project back within a week. The suspension was painful, but the project is now in better shape than it was before, and every app we build starts with these rules.' },
+    ],
+  },
+  {
+    slug: 'panic-button-that-works-with-bad-signal',
+    title: 'How to build a panic button that still works with bad signal',
+    description:
+      'Security guards work nights at sites with weak signal, and a panic button that fails once is worse than none. How we designed the alert in the LISABEM guard app to get through anyway.',
+    date: '2026-10-12',
+    app: 'lisabem',
+    body: [
+      { p: 'LISABEM is a Kenyan security company, and we built the app their guards and managers use: shift sign-in at the site, live location while on duty, incident reports, and a one-tap panic button. Most of the app could tolerate the occasional failure. The panic button could not.' },
+      { p: 'Guards work nights at sites where the mobile signal is weak or drops out entirely. A panic button that works in the office and fails at 2 a.m. on a remote site is worse than having none, because the guard believes help is coming. This guide explains how we designed the alert to get through anyway, and the principles apply to any app where one message absolutely has to arrive.' },
+
+      { h2: 'Start from the failure, not the happy path' },
+      { p: 'The obvious design is simple: tap the button, send a request to the server, the server notifies the managers. On a good connection that works every time. The question that shapes the real design is what happens when it doesn’t: the request times out, the phone is between towers, the data connection is up but nothing gets through.' },
+      { p: 'So we listed the ways it could fail and made sure each one had an answer: no data connection, a slow connection that takes too long, the app being closed or the phone restarted before the alert is sent, and the alert arriving while every manager is asleep.' },
+
+      { h2: '1. Save the alert on the phone first' },
+      { p: 'The moment the guard taps the button, the alert is written to a queue on the phone before anything is sent. That means the alert exists even if the network is down, and it survives the app being closed. From then on, the phone keeps retrying the write until the server accepts it. Firebase’s offline persistence handles much of this, but the important decision is architectural: the alert is recorded locally first and delivered later, not sent once and hoped for.' },
+
+      { h2: '2. Don’t wait forever for the server' },
+      { p: 'Retrying in the background guarantees the alert arrives eventually, but eventually isn’t good enough in an emergency. So the phone also starts a timer. If the server hasn’t confirmed the alert within eight seconds, the phone stops waiting and texts the managers directly by SMS. SMS often gets through when mobile data won’t, because it needs far less from the network.' },
+      { p: 'The background retry keeps running after the text is sent. Whichever channel succeeds first, the alert ends up recorded on the server too, with the guard’s location and time, so the incident appears in the dashboard and the reports.' },
+
+      { h2: '3. Make sure someone actually notices' },
+      { p: 'Delivering the alert isn’t the end of the job; someone has to see it. When the server receives a panic alert, every manager gets a push notification and an alarm that keeps ringing until someone acknowledges it. A normal notification at 2 a.m. is easy to sleep through or swipe away. An alarm that won’t stop until a person responds turns “delivered” into “handled”.' },
+
+      { h2: 'Lessons for any must-arrive message' },
+      { ul: [
+        'Write it down locally before you try to send it. A message that only exists in a network request is one dropped connection away from being lost.',
+        'Retry until confirmed, and make the server safe to receive the same alert twice, so retries and a second channel can’t create duplicate incidents.',
+        'Have a second channel with different failure modes, and a deadline for switching to it. A few seconds is the right scale for an emergency.',
+        'Require acknowledgement from a person, and escalate until you get it.',
+        'Check the platform rules early. Sending an SMS silently from an app needs a permission that Google Play restricts to a few kinds of apps, and iOS always asks the user to tap Send. Those rules shape how a fallback can work.',
+      ] },
+
+      { h2: 'Test it where it will be used' },
+      { p: 'An office with good wifi tells you almost nothing about a guard post at night. Test with airplane mode, with data off but calls and SMS on, with a weak signal, after a restart, and with the app closed. Test on the cheaper phones the guards actually carry, since aggressive battery savers on some Android phones stop apps working in the background. And test the whole chain: tap the button, then time how long it takes until a manager’s alarm rings.' },
+
+      { h2: 'The short version' },
+      { p: 'For anything safety-critical, assume the network will fail at the worst moment. Save the alert on the device, retry until confirmed, fall back to SMS after a short deadline, and keep alerting a human until one responds. The button should feel simple to the person pressing it, because all of that is happening behind it.' },
+    ],
+  },
 ];
 
 export const guideBySlug = (slug) => guides.find((g) => g.slug === slug) ?? null;
