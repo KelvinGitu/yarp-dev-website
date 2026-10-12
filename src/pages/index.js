@@ -96,7 +96,7 @@ export default function Home() {
         </section>
 
         <section className="detail-section">
-          <SectionHead eyebrow="About" title="A small studio, run by Kelvin Gitu" />
+          <SectionHead eyebrow="About" title="A small studio, run by Kelvin Gitu and Patrick Kimani" />
           <p className="page-text">
             We build every part of these apps ourselves, from the interface to the billing, and keep them running
             after launch, which is where the real work is. <Link href="/about">About us →</Link>

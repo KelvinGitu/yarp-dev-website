@@ -7,7 +7,13 @@ import StatRow from '@/components/StatRow';
 import { GitHubIcon, MailIcon, PlayIcon, LinkedInIcon, XIcon } from '@/components/icons';
 import { SALES_EMAIL, studioStats } from '@/data/studio';
 
-const LINKEDIN_URL = 'https://www.linkedin.com/in/kelvin-gitu-587696152/';
+// The people behind the studio, for the team section.
+const FOUNDERS = [
+  { name: 'Kelvin Gitu', role: 'Co-founder' },
+  { name: 'Patrick Kimani', role: 'Co-founder' },
+];
+
+const LINKEDIN_URL ='https://www.linkedin.com/in/kelvin-gitu-587696152/';
 const X_URL = 'https://x.com/GituKelvin';
 
 const SOCIALS = [
@@ -64,7 +70,7 @@ export default function About() {
           <p className="detail-section-title">About</p>
           <h1 className="page-title">A small studio that builds apps and keeps them running.</h1>
           <p className="page-lede">
-            Yarp Developers is run by Kelvin Gitu: {storeApps.length}{' '}Flutter apps live on Google Play, client work
+            Yarp Developers is run by its co-founders, Kelvin Gitu and Patrick Kimani: {storeApps.length}{' '}Flutter apps live on Google Play, client work
             like LISABEM Security, and a handful of Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
             Cloud Functions, subscription plumbing, and the store listing that gets rejected and resubmitted until
             it isn&apos;t.
@@ -85,6 +91,18 @@ export default function About() {
             </p>
             <p className="about-sign">— Kelvin Gitu</p>
           </div>
+        </section>
+
+        <section className="detail-section">
+          <SectionHead eyebrow="The team" title="Who runs Yarp Developers" />
+          <ul className="card-grid card-grid-2">
+            {FOUNDERS.map((f) => (
+              <li key={f.name} className="card-grid-item">
+                <h3 className="card-title">{f.name}</h3>
+                <p className="card-text">{f.role}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Proof, from the apps' own engineering notes (apps.js). */}

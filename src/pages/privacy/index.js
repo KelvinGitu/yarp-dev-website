@@ -6,7 +6,7 @@ import { SUPPORT_EMAIL } from '@/data/products';
 // Google Play app has one at /privacy/<package>. Not legal advice.
 const paragraphs = [
   '1. What this covers',
-  'This policy covers the website at yarpdevelopers.com, run by Yarp Developers (Kelvin Gitu). Our apps have their own policies: the desktop apps and the store at yarpdevelopers.com/store/privacy, and each Google Play app on its page under yarpdevelopers.com/support.',
+  'This policy covers the website at yarpdevelopers.com, run by Yarp Developers (Kelvin Gitu and Patrick Kimani). Our apps have their own policies: the desktop apps and the store at yarpdevelopers.com/store/privacy, and each Google Play app on its page under yarpdevelopers.com/support.',
   '2. What the website collects',
   'The website is hosted on Google Firebase Hosting, which keeps standard server logs: your IP address, your browser, the page you asked for and the time. They are used to keep the site running and secure. The website has no accounts, runs no analytics, and the pages other than the guides set no cookies.',
   '3. Advertising on the guides',
