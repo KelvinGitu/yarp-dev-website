@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 // One shell for every page, homepage included: a fixed navbar (Home, Store,
-// Guides, About) over a single scrolling column, so the site reads as a studio
+// Guides, Blog, About) over a single scrolling column, so the site reads as a studio
 // with a product front and center rather than a personal portfolio with a sidebar bio.
 export default function Layout({ children, className = '' }) {
   return (
@@ -19,6 +19,8 @@ export default function Layout({ children, className = '' }) {
             <Link href="/" className="nav-home">Home</Link>
             <Link href="/store" className="nav-cta">Store</Link>
             <Link href="/guides">Guides</Link>
+            {/* The Sleevr Trails blog lives on Blogger, not on this site. */}
+            <a href="https://trails.yarpdevelopers.com">Blog</a>
             <Link href="/about">About</Link>
           </nav>
         </div>
