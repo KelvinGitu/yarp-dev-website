@@ -21,7 +21,8 @@ const paragraphs = [
   'Your licence key is emailed to you through Resend (https://resend.com/legal/privacy-policy). Order records are kept in Google Firebase, hosted in the EU.',
   'We keep order records for as long as tax law requires (currently up to ten years in Belgium), then delete them. We don’t sell or share your details with anyone else, and we don’t send marketing email.',
   '3. This website',
-  'This website is hosted on Google Firebase Hosting, which keeps standard server logs. It sets no cookies of its own and runs no analytics, and there are no advertising pixels or trackers on it.',
+  'This website is hosted on Google Firebase Hosting, which keeps standard server logs. It runs no analytics, and the store, the product pages and checkout carry no ads and set no advertising cookies.',
+  'The guides at yarpdevelopers.com/guides show Google ads, which use cookies. The website’s own privacy policy, at yarpdevelopers.com/privacy, explains how and how to opt out.',
   'If you arrive through one of our ads, the link carries a short tag naming the ad. Your browser remembers that tag for a week, and if you buy, it is saved with your order so we know which ad worked. It is never sent to the ad network or anyone else.',
   '4. Your rights',
   'You can ask to see, correct or delete the personal data we hold about you from a purchase, and you can complain to your data protection authority. Some records must be kept for tax purposes even if you ask us to delete them.',
@@ -30,5 +31,5 @@ const paragraphs = [
 ];
 
 export default function StorePrivacy() {
-  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="September 26, 2026" />;
+  return <PolicyPage title="Privacy: the Yarp desktop apps and the store" paragraphs={paragraphs} lastUpdated="October 12, 2026" />;
 }

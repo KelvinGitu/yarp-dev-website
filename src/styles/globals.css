@@ -348,6 +348,7 @@ img { max-width: 100%; display: block; }
 }
 
 .footer-content a { transition: color 0.2s var(--ease); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
 .footer-content a:hover { color: var(--gold-bright); }
 
 /* ─────────────────────────────────────────────
@@ -527,6 +528,58 @@ img { max-width: 100%; display: block; }
 }
 
 /* ─────────────────────────────────────────────
+   GUIDES — the article list, and an article, which is .prose plus a few extras
+   ───────────────────────────────────────────── */
+
+.guide-list {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+  max-width: 720px;
+  margin: 3rem auto 0;
+}
+.guide-card { display: flex; flex-direction: column; gap: 0.5rem; }
+.guide-card .card-text { margin-top: 0; }
+.guide-card .card-title { font-size: 1.1rem; }
+.guide-card .card-title a { color: var(--text); transition: color 0.2s var(--ease); }
+.guide-card .card-title a:hover { color: var(--gold-bright); }
+
+.guide .detail-section-title { margin-bottom: 0.75rem; }
+.guide .detail-section-title a { color: var(--text-dim); }
+.guide .detail-section-title a:hover { color: var(--gold-bright); }
+
+/* Numbered steps: .prose lists are dots, these keep their numbers. */
+.prose .guide-steps { counter-reset: step; }
+.prose .guide-steps li { counter-increment: step; padding-left: 1.75rem; }
+.prose .guide-steps li::before {
+  content: counter(step);
+  top: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  opacity: 1;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--gold);
+}
+
+.guide-product {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-top: 3rem;
+  padding: 1.2rem 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+}
+.guide-product img { border-radius: 9px; flex-shrink: 0; }
+.prose .guide-product p { margin-bottom: 0.35rem; }
+.prose .guide-product-name { color: var(--text); font-weight: 600; }
+.prose .guide-product a { font-size: 0.88rem; }
+
+/* ─────────────────────────────────────────────
    HOME + SUPPORT + ABOUT — plain content pages
    Home reuses the store page's hero/button styling since both are making the
    same kind of pitch (here's the thing, here's the button). Support and About
@@ -536,6 +589,7 @@ img { max-width: 100%; display: block; }
 .home,
 .about,
 .support,
+.guides,
 .app-detail { padding: 5rem 0 4rem; }
 
 /* Links inside a line of centred copy. */
@@ -1390,7 +1444,10 @@ img { max-width: 100%; display: block; }
   .home,
   .about,
   .support,
+  .guides,
   .app-detail { padding-top: 2.75rem; }
+  .prose.guide { margin-top: 2.75rem; }
+  .nav-home { display: none; } /* the logo already goes home */
 
   /* Three phone shots side by side stop being legible here, so the strip
      scrolls sideways instead of shrinking further. */
@@ -1417,6 +1474,7 @@ img { max-width: 100%; display: block; }
   .logo-sub { display: none; }
 
   .footer-content { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .footer-links { justify-content: center; }
 
   .store-legal { float: none; display: block; margin-top: 1rem; }
   .store-promise { padding: 1.25rem; }

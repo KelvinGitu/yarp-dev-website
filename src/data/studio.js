@@ -6,6 +6,11 @@ import { products } from '@/data/products';
 export const SALES_EMAIL = 'sales@yarpdevelopers.com'; // work: "have an app in mind?"
 export const FEEDBACK_EMAIL = 'feedback@yarpdevelopers.com'; // ideas and feature requests
 
+// Google AdSense publisher ID. The meta tag in _document links every page to the
+// account; the ad script itself loads only on the guides (guides/[slug].js), so
+// the store and product pages stay ad-free.
+export const ADSENSE_CLIENT = 'ca-pub-3080135685963201';
+
 // The studio's numbers, for the proof row on Home and About. Counted from the
 // data files, so they're right as long as apps.js and products.js are.
 export function studioStats() {

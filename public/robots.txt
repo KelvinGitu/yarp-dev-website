@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /store/success
+
+Sitemap: https://yarpdevelopers.com/sitemap.xml

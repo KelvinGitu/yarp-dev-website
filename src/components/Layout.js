@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-// One shell for every page, homepage included: a fixed navbar (Home, Store, About)
-// over a single scrolling column, so the site reads as a studio with a product
-// front and center rather than a personal portfolio with a sidebar bio.
+// One shell for every page, homepage included: a fixed navbar (Home, Store,
+// Guides, About) over a single scrolling column, so the site reads as a studio
+// with a product front and center rather than a personal portfolio with a sidebar bio.
 export default function Layout({ children, className = '' }) {
   return (
     <div className={`layout-container ${className}`}>
@@ -16,8 +16,9 @@ export default function Layout({ children, className = '' }) {
             </div>
           </Link>
           <nav className="nav-links">
-            <Link href="/">Home</Link>
+            <Link href="/" className="nav-home">Home</Link>
             <Link href="/store" className="nav-cta">Store</Link>
+            <Link href="/guides">Guides</Link>
             <Link href="/about">About</Link>
           </nav>
         </div>
@@ -28,7 +29,11 @@ export default function Layout({ children, className = '' }) {
       <footer className="footer">
         <div className="footer-content">
           <p suppressHydrationWarning>© {new Date().getFullYear()} Yarp Developers</p>
-          <Link href="/support">Support</Link>
+          <nav className="footer-links">
+            <Link href="/guides">Guides</Link>
+            <Link href="/support">Support</Link>
+            <Link href="/privacy">Privacy</Link>
+          </nav>
         </div>
       </footer>
     </div>

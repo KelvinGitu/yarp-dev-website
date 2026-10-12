@@ -6,11 +6,12 @@ import ProjectCard from '@/components/ProjectCard';
 import SectionHead from '@/components/SectionHead';
 import StatRow from '@/components/StatRow';
 import { MailIcon } from '@/components/icons';
+import { guides } from '@/data/guides';
 import { products } from '@/data/products';
 import { SALES_EMAIL, studioStats } from '@/data/studio';
 
 // The studio's front door: who we are, the proof, the mobile apps, the desktop
-// apps you can buy, and a way to get in touch.
+// apps you can buy, the latest guides, and a way to get in touch.
 export default function Home() {
   return (
     <>
@@ -75,6 +76,22 @@ export default function Home() {
           </ul>
           <p className="page-text home-desktop-more">
             Three are free; StoryForger is free to try, then a one-time price. <Link href="/store">See the store →</Link>
+          </p>
+        </section>
+
+        <section className="detail-section">
+          <SectionHead eyebrow="Guides" title="How to get the paperwork done" />
+          <ul className="card-grid">
+            {guides.slice(0, 3).map((g) => (
+              <li key={g.slug} className="card-grid-item note-card">
+                <h3 className="card-title">{g.title}</h3>
+                <p className="card-text">{g.description}</p>
+                <Link href={`/guides/${g.slug}`} className="note-card-link">Read the guide →</Link>
+              </li>
+            ))}
+          </ul>
+          <p className="page-text home-desktop-more">
+            <Link href="/guides">All guides →</Link>
           </p>
         </section>
 
