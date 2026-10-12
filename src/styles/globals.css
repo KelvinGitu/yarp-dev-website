@@ -1501,13 +1501,9 @@ img { max-width: 100%; display: block; }
   .sticky-buy .store-btn { width: auto; }
 }
 
-/* Four nav links only fit a phone with tighter spacing, and on the narrowest
-   phones the logo drops to its YD mark. */
+/* Tighter nav spacing so the logo and links share a phone's width. */
 @media (max-width: 480px) {
   .nav-links { gap: 0.75rem; font-size: 0.8rem; }
-}
-@media (max-width: 374px) {
-  .logo-label { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

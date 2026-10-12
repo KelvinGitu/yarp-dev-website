@@ -10,7 +10,7 @@ const SECTIONS = [
 ];
 
 // One shell for every page, homepage included: a fixed navbar (Home, Store,
-// Guides, Blog, About) over a single scrolling column, so the site reads as a studio
+// Guides, About) over a single scrolling column, so the site reads as a studio
 // with a product front and center rather than a personal portfolio with a sidebar bio.
 export default function Layout({ children, className = '' }) {
   const { pathname } = useRouter();
@@ -41,8 +41,6 @@ export default function Layout({ children, className = '' }) {
           </Link>
           <nav className="nav-links">
             {SECTIONS.map(navLink)}
-            {/* The Sleevr Trails blog lives on Blogger, not on this site. */}
-            <a href="https://trails.yarpdevelopers.com">Blog</a>
             {navLink({ href: '/about', label: 'About' })}
           </nav>
         </div>
