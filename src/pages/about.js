@@ -83,7 +83,7 @@ export default function About() {
           <SectionHead eyebrow="The story" title="Building is an afternoon. Keeping it alive is the work." />
           <div className="about-story">
             <p>
-              Our background is in mechatronic engineering, which taught us less about code than about the
+              Our background is in engineering, which taught us less about code than about the
               distance between building something and keeping it alive. A feature is an afternoon&apos;s
               work. Keeping it running for real users, on someone else&apos;s billing account, under someone
               else&apos;s review policy, is the actual work — and it&apos;s what these projects are really
