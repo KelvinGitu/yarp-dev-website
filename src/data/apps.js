@@ -6,8 +6,10 @@
 // `kind` types the note so the reader knows what sort of problem it was.
 // `shots` are phone screenshots in public/assets/shots/<slug>/ — 1 to 3, in order.
 // `webShots` (optional) are browser screenshots in the same folder, shown wide.
-// `status` is 'live' for our apps on Google Play, or 'client' for an app built for
-// one company (`client`), which isn't on the store and has no policy pages here.
+// `status` is 'live' for our apps on Google Play, 'product' for one we sell to
+// businesses from the web (not on the store yet), or 'client' for an app built for
+// one company (`client`). Only 'live' apps have policy pages here.
+// `webLabel` and `ctaText` (optional) word the web button and the closing band.
 
 export const apps = [
   {
@@ -99,28 +101,24 @@ export const apps = [
     hasMic: false,
   },
   {
-    slug: 'lisabem',
-    name: 'LISABEM Security',
+    slug: 'nightpost',
+    name: 'Nightpost',
     tagline: 'Guard attendance, live shift monitoring and panic alerts.',
-    packageId: 'com.lisabem.security',
-    status: 'client', // built for LISABEM, used by their guards and managers, not on the store
-    client: 'LISABEM',
-    version: '1.0.0',
+    packageId: 'com.yarpdevelopers.nightpost',
+    status: 'product', // ours, sold to security companies on a subscription; not on the store yet
+    version: '0.1.0',
     builds: 1,
     playUrl: null,
-    webUrl: 'https://lisabem-security.web.app', // the manager dashboard; accounts are issued by LISABEM
-    description: "Built for LISABEM, a Kenyan security company. Guards sign in to a shift on their phone at the site, and managers watch who is on duty, late or absent from a phone or the browser. One Flutter app serves both.",
-    features: ['Geofenced shift sign-in, checked on the server', 'Live location, only while on shift', 'One-tap panic button', 'QR check-in from a poster or a rotating code', 'Incident reports with photos', 'Weekly and monthly reports, as PDF or CSV'],
-    stack: ['Flutter', 'Firebase', 'Cloud Functions', 'Realtime Database', 'Riverpod', 'Google Maps'],
+    webUrl: 'https://nightpost-38d28.web.app', // sign-up and the manager dashboard
+    webLabel: 'Start a free trial',
+    ctaText: 'Free for 14 days. Sign your company up in the browser, then add your sites and guards.',
+    description: "For security companies. Guards sign in to a shift on their phone at the site, and managers watch who is on duty, late or absent from a phone or the browser. A company signs itself up, and one Flutter app serves guards and managers both.",
+    features: ['Geofenced shift sign-in, checked on the server', 'Live location, only while on shift', 'One-tap panic button, with push, SMS and a voice call', 'QR check-in at the post', 'Weekly and monthly attendance reports', 'Self-serve sign-up, paid per guard by card or M-Pesa'],
+    stack: ['Flutter', 'Firebase', 'Cloud Functions', 'Realtime Database', 'Riverpod', 'Google Maps', 'Paystack', "Africa's Talking"],
     shots: ['1.webp', '2.webp', '3.webp'],
-    webShots: [
-      { file: 'web-1.webp', alt: 'Manager dashboard: who is on duty, late or absent, and what needs attention' },
-      { file: 'web-2.webp', alt: 'Live map of sites and guards on shift' },
-      { file: 'web-3.webp', alt: 'Weekly attendance report with PDF and CSV export' },
-    ],
     note: {
       kind: 'Reliability',
-      text: "A panic button that fails once is worse than none, and guards work nights at sites with poor signal. The alert is queued on the phone first. If the server hasn't confirmed it within eight seconds, the phone texts the managers itself, and the queued write keeps retrying until it gets through. When it does, every manager gets a push and an alarm that keeps ringing until someone acknowledges it.",
+      text: "A panic button that fails once is worse than none, and guards work nights at sites with poor signal. The alert is queued on the phone first. If the server hasn't confirmed it within eight seconds, the phone texts the managers itself, and the queued write keeps retrying until it gets through. When it does, every manager gets a push, a text and a phone call, and an alarm that keeps ringing until someone acknowledges it.",
     },
     hasAds: false,
     hasPurchases: false,
@@ -128,6 +126,5 @@ export const apps = [
   }
 ];
 
-// Ours, on Google Play (with policy pages and support here), and apps built for clients.
+// Ours, on Google Play (with policy pages and support here).
 export const storeApps = apps.filter((a) => a.status === 'live');
-export const clientApps = apps.filter((a) => a.status === 'client');

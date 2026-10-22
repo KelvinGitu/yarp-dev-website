@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { clientApps, storeApps } from '@/data/apps';
+import { apps, storeApps } from '@/data/apps';
 import CtaBand from '@/components/CtaBand';
 import ProjectCard from '@/components/ProjectCard';
 import SectionHead from '@/components/SectionHead';
@@ -28,7 +28,7 @@ export default function Home() {
           <p className="detail-section-title">Yarp Developers</p>
           <h1 className="page-title">Mobile and desktop apps, built and kept running.</h1>
           <p className="page-lede">
-            {storeApps.length} Flutter apps live on Google Play, a guard-monitoring app for a security company, and{' '}
+            {storeApps.length} Flutter apps live on Google Play, Nightpost, a guard-monitoring service for security companies, and{' '}
             {products.length} private Windows apps, each one built and kept running by us — interface, backend, billing, and the store review
             that comes after.
           </p>
@@ -44,9 +44,9 @@ export default function Home() {
         </header>
 
         <section id="apps" className="detail-section">
-          <SectionHead eyebrow="Mobile apps" title="Live on Google Play, and built for clients" />
+          <SectionHead eyebrow="Mobile apps" title="Live on Google Play, and for businesses" />
           <div className="projects">
-            {[...storeApps, ...clientApps].map((app) => (
+            {apps.map((app) => (
               <ProjectCard key={app.slug} app={app} />
             ))}
           </div>

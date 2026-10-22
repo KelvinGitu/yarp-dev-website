@@ -20,7 +20,7 @@ function GetButtons({ app }) {
       {app.webUrl && (
         <a href={app.webUrl} target="_blank" rel="noopener noreferrer" className="store-btn">
           <GlobeIcon />
-          <span className="store-btn-main">{app.client ? 'Sign in to the dashboard' : 'Open the web app'}</span>
+          <span className="store-btn-main">{app.webLabel ?? (app.client ? 'Sign in to the dashboard' : 'Open the web app')}</span>
         </a>
       )}
     </>
@@ -55,7 +55,7 @@ export default function AppDetail({ app }) {
             <span className="project-icon"><AppIcon slug={app.slug} name={app.name} size={36} /></span>
             <span className="page-eyebrow-name">{app.name}</span>
             <span className="detail-release">
-              {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} builds`}
+              {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} ${app.builds === 1 ? 'build' : 'builds'}`}
             </span>
           </p>
           <h1 className="page-title">{app.tagline}</h1>
@@ -132,7 +132,11 @@ export default function AppDetail({ app }) {
           </div>
         )}
 
-        {app.client ? (
+        {app.status === 'product' ? (
+          <CtaBand title={`Try ${app.name}`} text={app.ctaText}>
+            <GetButtons app={app} />
+          </CtaBand>
+        ) : app.client ? (
           <CtaBand title="Need something like it?" text="We build and run apps for businesses, on phones and in the browser.">
             <a href={`mailto:${SALES_EMAIL}`} className="store-btn store-btn-primary">
               <MailIcon />
@@ -147,7 +151,7 @@ export default function AppDetail({ app }) {
 
         <div className="detail-back">
           <Link href="/#apps" className="detail-back-link">← All apps</Link>
-          {!app.client && (
+          {app.status === 'live' && (
             <span className="store-legal">
               <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>
             </span>

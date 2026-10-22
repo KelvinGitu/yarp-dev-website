@@ -20,7 +20,7 @@ export default function ProjectCard({ app }) {
       </header>
 
       <p className="project-release" title={`${app.packageId} — version ${app.version}, build ${app.builds}`}>
-        {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} builds`}
+        {app.client ? `Built for ${app.client} · v${app.version}` : `v${app.version} · ${app.builds} ${app.builds === 1 ? 'build' : 'builds'}`}
       </p>
 
       <ul className="project-stack">
@@ -37,7 +37,7 @@ export default function ProjectCard({ app }) {
         )}
         {app.webUrl && (
           <a href={app.webUrl} target="_blank" rel="noopener noreferrer">
-            {app.client ? 'Dashboard' : 'Web app'} <span aria-hidden="true">↗</span>
+            {app.status === 'live' ? 'Web app' : 'Dashboard'} <span aria-hidden="true">↗</span>
           </a>
         )}
         <Link href={`/apps/${app.slug}`}>

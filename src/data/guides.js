@@ -468,11 +468,11 @@ export const guides = [
     slug: 'panic-button-that-works-with-bad-signal',
     title: 'How to build a panic button that still works with bad signal',
     description:
-      'Security guards work nights at sites with weak signal, and a panic button that fails once is worse than none. How we designed the alert in the LISABEM guard app to get through anyway.',
+      'Security guards work nights at sites with weak signal, and a panic button that fails once is worse than none. How we designed the alert in Nightpost, our guard app, to get through anyway.',
     date: '2026-10-12',
-    app: 'lisabem',
+    app: 'nightpost',
     body: [
-      { p: 'LISABEM is a Kenyan security company, and we built the app their guards and managers use: shift sign-in at the site, live location while on duty, incident reports, and a one-tap panic button. Most of the app could tolerate the occasional failure. The panic button could not.' },
+      { p: 'Nightpost is the app we build for security companies, used by their guards and managers: shift sign-in at the site, live location while on duty, incident reports, and a one-tap panic button. Most of the app could tolerate the occasional failure. The panic button could not.' },
       { p: 'Guards work nights at sites where the mobile signal is weak or drops out entirely. A panic button that works in the office and fails at 2 a.m. on a remote site is worse than having none, because the guard believes help is coming. This guide explains how we designed the alert to get through anyway, and the principles apply to any app where one message absolutely has to arrive.' },
 
       { h2: 'Start from the failure, not the happy path' },
@@ -487,7 +487,7 @@ export const guides = [
       { p: 'The background retry keeps running after the text is sent. Whichever channel succeeds first, the alert ends up recorded on the server too, with the guard’s location and time, so the incident appears in the dashboard and the reports.' },
 
       { h2: '3. Make sure someone actually notices' },
-      { p: 'Delivering the alert isn’t the end of the job; someone has to see it. When the server receives a panic alert, every manager gets a push notification and an alarm that keeps ringing until someone acknowledges it. A normal notification at 2 a.m. is easy to sleep through or swipe away. An alarm that won’t stop until a person responds turns “delivered” into “handled”.' },
+      { p: 'Delivering the alert isn’t the end of the job; someone has to see it. When the server receives a panic alert, every manager gets a push notification, a text and a phone call, and an alarm that keeps ringing until someone acknowledges it. A normal notification at 2 a.m. is easy to sleep through or swipe away. An alarm that won’t stop until a person responds turns “delivered” into “handled”.' },
 
       { h2: 'Lessons for any must-arrive message' },
       { ul: [
