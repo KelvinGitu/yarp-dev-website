@@ -1501,6 +1501,130 @@ img { max-width: 100%; display: block; }
   .sticky-buy .store-btn { width: auto; }
 }
 
+/* ─────────────────────────────────────────────
+   AUTH ACTION — where an app's verify-email and reset-password links
+   land. One narrow card: the app it's for, the outcome, and the next step.
+   ───────────────────────────────────────────── */
+
+.auth-action {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0 6rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 26rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  background: var(--bg-raised);
+}
+
+.auth-app {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.75rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+}
+
+.auth-app .project-icon,
+.auth-app .project-icon img { width: 32px; height: 32px; border-radius: 8px; }
+
+.auth-tick {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid var(--gold-faint);
+  border-radius: 50%;
+  color: var(--gold);
+}
+
+.auth-tick svg { width: 20px; height: 20px; }
+
+.auth-title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.auth-text { margin-top: 0.75rem; color: var(--text-muted); }
+.auth-text strong { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
+
+.auth-help { margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-dim); }
+.auth-help a { color: var(--text-muted); text-decoration: underline; }
+.auth-help a:hover { color: var(--gold-bright); }
+
+.auth-get {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.auth-get svg { width: 16px; height: 16px; flex-shrink: 0; }
+.auth-get:hover { color: var(--gold-bright); }
+
+.auth-form .auth-text { margin-bottom: 0.5rem; }
+
+.auth-field { display: block; margin-top: 1.1rem; }
+.auth-field > span { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: 500; }
+.auth-field small { display: block; margin-top: 0.35rem; font-size: 0.78rem; color: var(--text-dim); }
+.auth-field small.auth-bad { color: #E08A7A; }
+
+.auth-input {
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-sunken);
+  transition: border-color 0.2s var(--ease);
+}
+
+.auth-input:focus-within { border-color: var(--gold); }
+
+.auth-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem; /* 16px stops iOS zooming into the field */
+  outline: none;
+}
+
+.auth-show {
+  padding: 0 0.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.auth-show:hover { color: var(--text); }
+
+.auth-error { margin-top: 1rem; font-size: 0.88rem; color: #E08A7A; }
+
+.auth-submit { width: 100%; justify-content: center; margin-top: 1.5rem; cursor: pointer; }
+
+@media (max-width: 480px) {
+  .auth-action { padding: 2rem 0 4rem; }
+  .auth-card { padding: 1.6rem 1.25rem; }
+}
+
 /* Tighter nav spacing so the logo and links share a phone's width. */
 @media (max-width: 480px) {
   .nav-links { gap: 0.75rem; font-size: 0.8rem; }

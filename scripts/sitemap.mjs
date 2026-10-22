@@ -6,7 +6,7 @@ import { join, relative, sep } from 'node:path';
 
 const SITE = 'https://yarpdevelopers.com';
 const OUT = 'out';
-const SKIP = [/^404\.html$/, /^google[0-9a-f]+\.html$/, /^store\/success\.html$/];
+const SKIP = [/^404\.html$/, /^google[0-9a-f]+\.html$/, /^store\/success\.html$/, /^auth\//];
 
 function htmlFiles(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
