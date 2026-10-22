@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { apps, storeApps } from '@/data/apps';
+import { clientApps, ownApps, storeApps } from '@/data/apps';
 import CtaBand from '@/components/CtaBand';
 import ProjectCard from '@/components/ProjectCard';
 import SectionHead from '@/components/SectionHead';
@@ -10,7 +10,7 @@ import { guides } from '@/data/guides';
 import { products } from '@/data/products';
 import { SALES_EMAIL, studioStats } from '@/data/studio';
 
-// The studio's front door: who we are, the proof, the mobile apps, the desktop
+// The studio's front door: who we are, the proof, our apps, client work, the desktop
 // apps you can buy, the latest guides, and a way to get in touch.
 export default function Home() {
   return (
@@ -28,7 +28,7 @@ export default function Home() {
           <p className="detail-section-title">Yarp Developers</p>
           <h1 className="page-title">Mobile and desktop apps, built and kept running.</h1>
           <p className="page-lede">
-            {storeApps.length} Flutter apps live on Google Play, Nightpost, a guard-monitoring service for security companies, and{' '}
+            {storeApps.length} Flutter apps live on Google Play, Nightpost for security companies, {clientApps.length} apps built for clients, and{' '}
             {products.length} private Windows apps, each one built and kept running by us — interface, backend, billing, and the store review
             that comes after.
           </p>
@@ -44,9 +44,18 @@ export default function Home() {
         </header>
 
         <section id="apps" className="detail-section">
-          <SectionHead eyebrow="Mobile apps" title="Live on Google Play, and for businesses" />
+          <SectionHead eyebrow="Our apps" title="On Google Play, and for businesses" />
           <div className="projects">
-            {apps.map((app) => (
+            {ownApps.map((app) => (
+              <ProjectCard key={app.slug} app={app} />
+            ))}
+          </div>
+        </section>
+
+        <section id="clients" className="detail-section">
+          <SectionHead eyebrow="Client work" title="Built for one organisation, and run for them" />
+          <div className="projects">
+            {clientApps.map((app) => (
               <ProjectCard key={app.slug} app={app} />
             ))}
           </div>

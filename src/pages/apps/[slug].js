@@ -79,10 +79,10 @@ export default function AppDetail({ app }) {
 
         {app.webShots?.length > 0 && (
           <section className="detail-section">
-            <SectionHead eyebrow="On the web" title="The same app, in a browser" />
+            <SectionHead eyebrow="On the web" title={app.webShotsTitle ?? 'The same app, in a browser'} />
             <div className="web-shots">
               {app.webShots.map((shot) => (
-                <img key={shot.file} src={`/assets/shots/${app.slug}/${shot.file}`} alt={shot.alt} width={1440} height={764} loading="lazy" />
+                <img key={shot.file} src={`/assets/shots/${app.slug}/${shot.file}`} alt={shot.alt} width={1440} height={shot.height ?? 764} loading="lazy" />
               ))}
             </div>
           </section>
@@ -121,9 +121,9 @@ export default function AppDetail({ app }) {
             <strong>Note for web users:</strong> In-app purchases and certain features are optimised for the mobile app. To buy credits or upgrade, open the app on your phone.
           </div>
         )}
-        {app.client && app.webUrl && (
+        {app.webNote && (
           <div className="detail-note">
-            <strong>Note:</strong> The dashboard is for {app.client}&apos;s managers, and {app.client} issues the accounts. Guards use the phone app.
+            <strong>Note:</strong> {app.webNote}
           </div>
         )}
         {app.hasMic && (
@@ -150,7 +150,7 @@ export default function AppDetail({ app }) {
         )}
 
         <div className="detail-back">
-          <Link href="/#apps" className="detail-back-link">← All apps</Link>
+          <Link href={app.client ? '/#clients' : '/#apps'} className="detail-back-link">{app.client ? '← All client work' : '← All apps'}</Link>
           {app.status === 'live' && (
             <span className="store-legal">
               <Link href={`/privacy/${app.packageId}`}>Privacy Policy</Link> · <Link href={`/terms/${app.packageId}`}>Terms of Service</Link>

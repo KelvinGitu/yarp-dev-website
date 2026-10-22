@@ -71,7 +71,7 @@ export default function About() {
           <h1 className="page-title">A small studio that builds apps and keeps them running.</h1>
           <p className="page-lede">
             Yarp Developers is run by its co-founders, Kelvin Gitu and Patrick Kimani: {storeApps.length}{' '}Flutter apps live on Google Play, Nightpost
-            for security companies, and a handful of Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
+            for security companies, client work like LISABEM Security and MYWO Sacco, and a handful of Windows desktop apps in the store. We build every part of them ourselves — interface, Firestore schema,
             Cloud Functions, subscription plumbing, and the store listing that gets rejected and resubmitted until
             it isn&apos;t.
           </p>
