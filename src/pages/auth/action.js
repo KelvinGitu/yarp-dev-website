@@ -39,7 +39,7 @@ function failureText(code) {
 export default function AuthAction() {
   const router = useRouter();
   const { mode, oobCode, apiKey } = router.query;
-  const app = apiKey ? authAppByApiKey(apiKey) : null;
+  const [app, setApp] = useState(null);
 
   // checking | verified | emailChanged | resetForm | resetDone | recovered | failed
   const [state, setState] = useState('checking');
@@ -51,6 +51,9 @@ export default function AuthAction() {
     let cancelled = false;
     (async () => {
       try {
+        const app = apiKey ? await authAppByApiKey(apiKey) : null;
+        if (cancelled) return;
+        setApp(app);
         if (!app || !oobCode) {
           throw new Error('INVALID_OOB_CODE');
         } else if (mode === 'verifyEmail') {
@@ -75,8 +78,6 @@ export default function AuthAction() {
       }
     })();
     return () => { cancelled = true; };
-    // `app` is derived from apiKey, so apiKey stands in for it here.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady, mode, oobCode, apiKey]);
 
   const name = app?.name ?? 'Yarp Developers';

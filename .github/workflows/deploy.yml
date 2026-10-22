@@ -23,6 +23,9 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm run build
+        env:
+          # ShopFlow's Firebase web key, for /auth/action. Kept out of the repo, not secret once built.
+          NEXT_PUBLIC_SHOPFLOW_WEB_API_KEY: ${{ secrets.SHOPFLOW_WEB_API_KEY }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
