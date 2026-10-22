@@ -372,7 +372,6 @@ export const guides = [
     description:
       'Most journals are abandoned within weeks because they ask too much. How a one-line-a-day habit, small prompts and noticing ordinary moments make journaling easy to keep up.',
     date: '2026-10-12',
-    app: 'days-end',
     body: [
       { p: 'Lots of people start a journal in January and stop by February. The usual reason isn’t lack of interest; it’s that the journal asks too much. A blank page every night, with the feeling that each entry should be thoughtful and complete, turns a pleasant habit into homework. The fix is to make each entry so small that skipping it feels silly.' },
       { p: 'This guide covers how to build a journaling habit that lasts, starting with one line a day.' },
@@ -403,7 +402,6 @@ export const guides = [
 
       { h2: 'Paper or phone?' },
       { p: 'Paper is calm, private and pleasant to hold, and handwriting slows you down in a good way. Your phone is always with you, which makes the one-line habit almost frictionless, and it can remind you at the same time each day. Choose the one you will actually have to hand at your journaling moment.' },
-      { p: 'If you like the idea of logging small moments but want something lighter and more social than a private diary, our app Day’s End takes a different angle. You log everyday moments, like making coffee, skipping the gym or seeing a rainbow, and see how many people around the world did the same thing today. It’s a reminder that your ordinary day is shared with a lot of other people, and it can be a gentle way into the daily-noticing habit.' },
 
       { h2: 'The short version' },
       { p: 'Make the daily commitment tiny, tie it to a routine you already have, write about ordinary things, never miss twice, and read it back now and then. A journal you keep for a year in one-line entries beats a beautiful one you abandon in a month.' },
